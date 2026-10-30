@@ -1,0 +1,14 @@
+{
+  "name": "mimica-loca",
+  "version": "1.0.0",
+  "description": "Juego de mímica para el navegador del móvil (estilo Heads Up!) con sensores de inclinación.",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^4.156.0"
+  }
+}
