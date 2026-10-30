@@ -3,6 +3,8 @@
 Juego de mímica para jugar en el navegador del móvil (estilo *Heads Up!*), sin app nativa.
 Pon el móvil en la frente, **inclínalo hacia abajo si lo adivinan** y **hacia arriba para pasar**.
 
+Ideal para pasar el rato con los niños mientras haces cola en un parque temático 😉
+
 - 8 paquetes de palabras para niños (~10 años): objetos, animales, herramientas,
   profesiones, Halloween, Navidad, personajes Disney y verano.
 - Usa los sensores de inclinación del navegador (`deviceorientation`).
