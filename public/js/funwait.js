@@ -75,6 +75,14 @@ window.FW = (function () {
     return () => clearInterval(id);
   }
 
+  /* ---------- Contenido de los juegos (JSON por idioma) ---------- */
+  const LANG = 'es';
+  async function loadContent(game) {
+    const res = await fetch(`./data/${LANG}/${game}.json`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
   /* ---------- Utilidades ---------- */
   function shuffle(arr) {
     const a = [...arr];
@@ -83,6 +91,16 @@ window.FW = (function () {
   }
   function flash(el) { el.classList.remove('is-on'); void el.offsetWidth; el.classList.add('is-on'); }
   function randomGame(urls) { location.href = urls[Math.floor(Math.random() * urls.length)]; }
+  // Tarjeta de paquete/tema. Sin color = tarjeta "al azar".
+  function tile(emoji, nombre, color, onClick) {
+    const b = document.createElement('button');
+    b.className = color ? 'fw-tile' : 'fw-tile fw-tile--random';
+    if (color) { b.style.background = color; b.style.color = '#fff'; }
+    const e = document.createElement('span'); e.className = 'emoji'; e.textContent = emoji;
+    const n = document.createElement('span'); n.textContent = nombre;
+    b.append(e, n); b.onclick = onClick;
+    return b;
+  }
 
   /* ---------- Preferencias: enlaces de UI ---------- */
   function bindSoundToggle(el) {
@@ -95,6 +113,6 @@ window.FW = (function () {
 
   return {
     prefs, save, screen, audio, unlock, haptic, wakeLock, releaseWake,
-    countdown, shuffle, flash, randomGame, bindSoundToggle, rulesSeen, setRulesSeen
+    countdown, shuffle, flash, randomGame, tile, loadContent, bindSoundToggle, rulesSeen, setRulesSeen
   };
 })();

@@ -44,7 +44,7 @@ gh pr create --base main --head dev --fill   # revisar y mergear a mano → PROD
   `observability`, etc. en cada entorno. Producción conserva el nombre `funwait`.
 - **Rutas en el HTML:** mantenerlas **relativas** (`./css/...`, `./js/...`). No cablear
   dominios absolutos ni `canonical`/`og:url` con dominio, para que el sitio sea portable.
-- **Contenido del juego:** al añadir palabras nuevas a `public/index.html`, validar con la
+- **Contenido del juego:** al añadir palabras nuevas a `public/data/es/mimica.json`, validar con la
   skill `validar-palabras-mimica` antes de integrarlas.
 - **Documentos de trabajo interno** (ideas, debates, revisiones de palabras, informes…) van
   en `notas/`, que está **ignorada por git** y nunca se sube. No commitear docs internos en
