@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#b91c1c" />
+<title>💣 ¡Bomba!</title>
+<style>
+  :root { --fondo: #1e1b4b; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden;
+    font-family: "Baloo 2", "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
+    background: var(--fondo); color: #fff; user-select: none; -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  #app { position: fixed; inset: 0; }
+  .pantalla {
+    position: absolute; inset: 0; display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    text-align: center;
+  }
+  .pantalla.activa { display: flex; }
+
+  /* ---------- HOME ---------- */
+  #home {
+    background: linear-gradient(135deg, #b91c1c 0%, #7c2d12 50%, #1e1b4b 100%);
+    overflow-y: auto; justify-content: flex-start;
+    padding-top: calc(env(safe-area-inset-top) + 18px); padding-bottom: 40px;
+  }
+  .titulo {
+    font-size: clamp(2.4rem, 11vw, 4rem); font-weight: 900; margin: 6px 0 2px;
+    text-shadow: 0 4px 0 rgba(0,0,0,.25), 0 8px 18px rgba(0,0,0,.35);
+    letter-spacing: 1px; transform: rotate(-3deg);
+  }
+  .subtitulo { font-size: clamp(.9rem, 4vw, 1.15rem); opacity: .95; margin-bottom: 8px; font-weight: 700; padding: 0 16px; }
+  .enlace-juego {
+    display: inline-block; margin-bottom: 16px; color: #fff; font-weight: 800;
+    font-size: .9rem; text-decoration: none; background: rgba(0,0,0,.25);
+    padding: 7px 16px; border-radius: 999px;
+  }
+  .seccion-tit { font-weight: 800; opacity: .9; margin: 6px 0 10px; font-size: 1rem; }
+
+  .packs {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+    width: min(560px, 92%); margin: 0 auto;
+  }
+  .pack {
+    border: none; border-radius: 20px; padding: 18px 10px; font-family: inherit;
+    font-weight: 800; font-size: clamp(.9rem, 4.2vw, 1.1rem); color: #fff; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 20px rgba(0,0,0,.25);
+    transition: transform .08s ease, box-shadow .08s ease;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    text-shadow: 0 2px 3px rgba(0,0,0,.25);
+  }
+  .pack:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .pack .emoji { font-size: clamp(1.8rem, 9vw, 2.6rem); line-height: 1; }
+
+  .ajustes {
+    margin: 22px auto 0; width: min(560px, 92%); background: rgba(0,0,0,.2);
+    border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .fila-ajuste { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 700; font-size: .95rem; }
+  .fila-ajuste .controles { display: flex; align-items: center; gap: 8px; }
+  .mini-btn {
+    border: none; background: rgba(255,255,255,.25); color: #fff; font-family: inherit;
+    font-weight: 900; font-size: 1.2rem; width: 38px; height: 38px; border-radius: 12px; cursor: pointer;
+  }
+  .mini-btn:active { transform: scale(.92); }
+  .switch { position: relative; width: 56px; height: 32px; background: rgba(255,255,255,.3); border-radius: 999px; cursor: pointer; transition: background .2s; flex: none; }
+  .switch.on { background: #22c55e; }
+  .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 26px; height: 26px; background: #fff; border-radius: 50%; transition: left .2s; }
+  .switch.on::after { left: 27px; }
+
+  /* ---------- CUENTA ATRÁS ---------- */
+  #countdown { font-weight: 900; background: #7c2d12; }
+  #countdown .msg { font-size: clamp(1.2rem, 6vw, 1.8rem); margin-bottom: 10px; padding: 0 20px; }
+  #countNum { font-size: clamp(7rem, 40vw, 14rem); line-height: 1; animation: pop .5s ease; }
+  @keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  /* ---------- JUEGO ---------- */
+  #game { background: radial-gradient(circle at 50% 40%, #7c2d12 0%, #431407 70%, #1c0a02 100%); transition: background .1s; }
+  #temaActual {
+    position: absolute; top: calc(env(safe-area-inset-top) + 20px); left: 0; right: 0;
+    font-size: clamp(1.1rem, 5.5vw, 1.8rem); font-weight: 900; padding: 0 16px;
+  }
+  #temaActual .et { display: block; font-size: .6em; opacity: .75; font-weight: 700; letter-spacing: 2px; }
+  #bombaWrap { position: relative; display: flex; align-items: center; justify-content: center; }
+  #bomba { font-size: clamp(8rem, 46vw, 16rem); line-height: 1; will-change: transform; }
+  #chispa { position: absolute; top: 2%; right: 14%; font-size: clamp(2.5rem, 14vw, 5rem); animation: chispa .25s infinite alternate; }
+  @keyframes chispa { from { transform: scale(.85) rotate(-8deg); opacity: .85; } to { transform: scale(1.15) rotate(8deg); opacity: 1; } }
+  .pista-pasar {
+    position: absolute; bottom: calc(env(safe-area-inset-bottom) + 18px);
+    font-size: clamp(1rem, 4.5vw, 1.3rem); font-weight: 800; opacity: .9; padding: 0 24px;
+  }
+
+  /* ---------- BOOM (estilo cómic) ---------- */
+  #boom { background: #16124a; overflow: hidden; }
+  /* líneas de acción girando de fondo */
+  #boom::before {
+    content: ""; position: absolute; inset: -40%;
+    background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(255,255,255,.09) 0deg 5deg, transparent 5deg 11deg);
+    z-index: 0;
+  }
+  #boom.activa::before { animation: girarLineas 14s linear infinite; }
+  @keyframes girarLineas { to { transform: rotate(360deg); } }
+
+  .estallido {
+    position: relative; z-index: 1;
+    width: clamp(17rem, 84vw, 30rem); height: clamp(17rem, 84vw, 30rem);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #boom.activa .estallido { animation: estallar .45s cubic-bezier(.2,1.4,.5,1); }
+  @keyframes estallar {
+    0%   { transform: scale(.1) rotate(-15deg); opacity: 0; }
+    60%  { transform: scale(1.18) rotate(5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); }
+  }
+  .estrella {
+    position: absolute;
+    clip-path: polygon(50% 0%, 58% 18%, 79% 7%, 72% 30%, 95% 25%, 80% 44%, 100% 55%, 78% 60%, 88% 82%, 64% 72%, 63% 97%, 48% 78%, 34% 97%, 33% 71%, 11% 82%, 22% 59%, 0% 55%, 20% 44%, 5% 25%, 28% 30%, 21% 7%, 42% 18%);
+  }
+  .estrella-tras { inset: 0; background: radial-gradient(circle, #f97316 0%, #dc2626 72%); transform: rotate(9deg); }
+  .estrella-med  { inset: 7%; background: radial-gradient(circle, #fbbf24 0%, #f97316 78%); transform: rotate(-6deg); }
+  .estrella-del  { inset: 15%; background: radial-gradient(circle, #fff7cc 0%, #fde047 80%); }
+  .onoma {
+    position: relative; z-index: 2; font-weight: 900;
+    font-size: clamp(2.4rem, 14vw, 5.2rem); line-height: 1; letter-spacing: 1px;
+    color: #fff; -webkit-text-stroke: 3px #1a1a1a;
+    text-shadow: 5px 5px 0 #1a1a1a, -1px -1px 0 #1a1a1a;
+    transform: rotate(-6deg); padding: 0 8px; text-align: center;
+  }
+  #boom p { position: relative; z-index: 1; font-size: clamp(1.1rem, 5vw, 1.4rem); font-weight: 800; margin: 14px 0 10px; }
+  #boom .acciones { position: relative; z-index: 1; }
+
+  .btn-grande {
+    border: none; border-radius: 999px; padding: 18px 36px; font-family: inherit; font-weight: 900;
+    font-size: clamp(1.1rem, 5vw, 1.4rem); color: #fff; background: #f59e0b; cursor: pointer;
+    box-shadow: 0 6px 0 #b45309, 0 10px 20px rgba(0,0,0,.3); margin: 8px; text-shadow: 0 2px 3px rgba(0,0,0,.25);
+  }
+  .btn-grande:active { transform: translateY(4px); box-shadow: 0 2px 0 #b45309; }
+  .btn-grande.verde { background: #22c55e; box-shadow: 0 6px 0 #15803d, 0 10px 20px rgba(0,0,0,.3); }
+  .btn-grande.verde:active { box-shadow: 0 2px 0 #15803d; }
+
+  .flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 60; }
+  .flash.on { animation: flashAnim .4s ease; }
+  @keyframes flashAnim { 0% { opacity: 1; } 100% { opacity: 0; } }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HOME -->
+  <section id="home" class="pantalla activa">
+    <h1 class="titulo">💣 ¡Bomba!</h1>
+    <p class="subtitulo">Pasad el móvil diciendo una palabra del tema.<br>¡Pierde quien lo tenga al explotar! 💥</p>
+    <a class="enlace-juego" href="./index.html">🎭 Ir a Mímica</a>
+    <div class="seccion-tit">Elige un tema 👇</div>
+    <div class="packs" id="packs"></div>
+
+    <div class="ajustes">
+      <div class="fila-ajuste">
+        <span>⏱️ Explota entre (mínimo)</span>
+        <div class="controles">
+          <button class="mini-btn" id="menosMin">−</button>
+          <span id="minLabel" style="min-width:60px">10 s</span>
+          <button class="mini-btn" id="masMin">+</button>
+        </div>
+      </div>
+      <div class="fila-ajuste">
+        <span>⏱️ y (máximo)</span>
+        <div class="controles">
+          <button class="mini-btn" id="menosMax">−</button>
+          <span id="maxLabel" style="min-width:60px">30 s</span>
+          <button class="mini-btn" id="masMax">+</button>
+        </div>
+      </div>
+      <div class="fila-ajuste">
+        <span>🔊 Sonidos</span>
+        <div class="switch on" id="switchSonido"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUENTA ATRÁS -->
+  <section id="countdown" class="pantalla">
+    <div class="msg">¡Preparados! 💣<br>El primero coge el móvil</div>
+    <div id="countNum">3</div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="game" class="pantalla">
+    <div id="temaActual"><span class="et">TEMA</span><span id="temaTexto">...</span></div>
+    <div id="bombaWrap">
+      <div id="bomba">💣</div>
+      <div id="chispa">🔥</div>
+    </div>
+    <div class="pista-pasar">Di una palabra y ¡pasa rápido! 🔄</div>
+  </section>
+
+  <!-- BOOM -->
+  <section id="boom" class="pantalla">
+    <div class="estallido">
+      <div class="estrella estrella-tras"></div>
+      <div class="estrella estrella-med"></div>
+      <div class="estrella estrella-del"></div>
+      <div class="onoma" id="onoma">¡BOOM!</div>
+    </div>
+    <p>Pierde quien tuviera el móvil 🙈</p>
+    <div class="acciones">
+      <button class="btn-grande verde" id="btnOtraVez">Otra vez 🔁</button>
+      <button class="btn-grande" id="btnTema">Cambiar tema 🎯</button>
+    </div>
+  </section>
+
+</div>
+<div class="flash" id="flash"></div>
+
+<script>
+/* ============================================================
+   TEMAS (solo carteles orientativos; la app no verifica nada)
+   ============================================================ */
+const TEMAS = [
+  ["Animales","🦁","#22c55e"], ["Animales de granja","🐄","#84cc16"], ["Animales del mar","🐙","#2563eb"],
+  ["Frutas","🍓","#ef4444"], ["Verduras","🥦","#16a34a"], ["Comidas","🍕","#f59e0b"],
+  ["Postres y dulces","🍰","#f472b6"], ["Bebidas","🥤","#06b6d4"], ["Colores","🎨","#ec4899"],
+  ["Profesiones","👩‍🚀","#8b5cf6"], ["Herramientas","🔧","#f97316"], ["Electrodomésticos","🔌","#0891b2"],
+  ["Muebles","🛋️","#a16207"], ["Cosas de la cocina","🍳","#fb923c"], ["Cosas del baño","🛁","#38bdf8"],
+  ["Ropa","👕","#0ea5e9"], ["Juguetes","🧸","#eab308"], ["Material del cole","✏️","#f59e0b"],
+  ["Deportes","⚽","#16a34a"], ["Instrumentos musicales","🎸","#a855f7"], ["Medios de transporte","🚗","#64748b"],
+  ["Partes del cuerpo","🦵","#f87171"], ["Colores y formas","🔺","#8b5cf6"], ["Países","🌍","#0ea5e9"],
+  ["Nombres de niña","👧","#d946ef"], ["Nombres de niño","👦","#3b82f6"], ["Dibujos animados","📺","#14b8a6"],
+  ["Superhéroes","🦸","#dc2626"], ["Princesas y cuentos","👑","#ec4899"], ["Películas","🎬","#e11d48"],
+  ["Flores","🌸","#f9a8d4"], ["Árboles","🌳","#15803d"], ["Insectos","🐝","#ca8a04"],
+  ["Pájaros","🦜","#0d9488"], ["Cosas de la playa","🏖️","#facc15"]
+];
+
+const ONOMATOPEYAS = ["¡BOOM!", "¡KABOOM!", "¡CATAPÚM!", "¡PUM!", "¡BUM!", "¡CATACROC!", "¡PLOF!", "¡ZAS!", "¡CRASH!", "¡PAM!", "¡FUAAA!", "¡BADABÚM!"];
+
+let config = { sonido: true, min: 10, max: 30 };
+let juego = { temaActual: null, activo: false, start: 0, boomId: null, tickId: null, rafId: null, wakeLock: null };
+
+/* ============================================================
+   SONIDO
+   ============================================================ */
+let audioCtx = null;
+function ctx() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
+function sonidoTic() {
+  if (!config.sonido) return;
+  try {
+    const c = ctx(), o = c.createOscillator(), g = c.createGain();
+    o.type = 'square'; o.frequency.value = 900;
+    o.connect(g); g.connect(c.destination);
+    g.gain.setValueAtTime(0.0001, c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, c.currentTime + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.05);
+    o.start(); o.stop(c.currentTime + 0.05);
+  } catch(e) {}
+}
+function sonidoCuenta(freq) {
+  if (!config.sonido) return;
+  try {
+    const c = ctx(), o = c.createOscillator(), g = c.createGain();
+    o.type = 'sine'; o.frequency.value = freq;
+    o.connect(g); g.connect(c.destination);
+    g.gain.setValueAtTime(0.0001, c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.3, c.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.2);
+    o.start(); o.stop(c.currentTime + 0.2);
+  } catch(e) {}
+}
+function sonidoBoom() {
+  if (!config.sonido) return;
+  try {
+    const c = ctx(), dur = 0.9, n = c.sampleRate * dur;
+    const buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2);
+    const src = c.createBufferSource(); src.buffer = buf;
+    const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 500;
+    const g = c.createGain(); g.gain.value = 0.7;
+    src.connect(f); f.connect(g); g.connect(c.destination);
+    src.start();
+  } catch(e) {}
+}
+
+/* ============================================================
+   MENÚ
+   ============================================================ */
+const contPacks = document.getElementById('packs');
+
+const cartaAzar = document.createElement('button');
+cartaAzar.className = 'pack';
+cartaAzar.style.background = 'linear-gradient(135deg, #f59e0b, #ec4899)';
+cartaAzar.innerHTML = '<span class="emoji">🎲</span><span>¡Al azar!</span>';
+cartaAzar.addEventListener('click', () => empezar(TEMAS[Math.floor(Math.random() * TEMAS.length)][0]));
+contPacks.appendChild(cartaAzar);
+
+TEMAS.forEach(([nombre, emoji, color]) => {
+  const btn = document.createElement('button');
+  btn.className = 'pack';
+  btn.style.background = color;
+  btn.innerHTML = `<span class="emoji">${emoji}</span><span>${nombre}</span>`;
+  btn.addEventListener('click', () => empezar(nombre));
+  contPacks.appendChild(btn);
+});
+
+/* ============================================================
+   AJUSTES
+   ============================================================ */
+const minLabel = document.getElementById('minLabel');
+const maxLabel = document.getElementById('maxLabel');
+function pintarTiempos() { minLabel.textContent = config.min + ' s'; maxLabel.textContent = config.max + ' s'; }
+document.getElementById('masMin').addEventListener('click', () => { config.min = Math.min(config.max - 5, config.min + 5); pintarTiempos(); });
+document.getElementById('menosMin').addEventListener('click', () => { config.min = Math.max(5, config.min - 5); pintarTiempos(); });
+document.getElementById('masMax').addEventListener('click', () => { config.max = Math.min(120, config.max + 5); pintarTiempos(); });
+document.getElementById('menosMax').addEventListener('click', () => { config.max = Math.max(config.min + 5, config.max - 5); pintarTiempos(); });
+const switchSonido = document.getElementById('switchSonido');
+switchSonido.addEventListener('click', () => { config.sonido = !config.sonido; switchSonido.classList.toggle('on', config.sonido); });
+
+/* ============================================================
+   PANTALLAS
+   ============================================================ */
+function mostrar(id) {
+  document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+  document.getElementById(id).classList.add('activa');
+}
+
+/* ============================================================
+   FLUJO DE JUEGO
+   ============================================================ */
+function empezar(tema) {
+  if (config.sonido) { try { ctx().resume(); } catch(e) {} }
+  juego.temaActual = tema;
+  pedirWakeLock();
+  cuentaAtras(lanzarBomba);
+}
+
+function cuentaAtras(alTerminar) {
+  mostrar('countdown');
+  const numEl = document.getElementById('countNum');
+  let n = 3;
+  const anim = () => { numEl.style.animation = 'none'; void numEl.offsetWidth; numEl.style.animation = ''; };
+  numEl.textContent = n; anim(); sonidoCuenta(440);
+  const id = setInterval(() => {
+    n--;
+    if (n > 0) { numEl.textContent = n; anim(); sonidoCuenta(440); }
+    else { clearInterval(id); numEl.textContent = '¡YA!'; anim(); sonidoCuenta(660); setTimeout(alTerminar, 450); }
+  }, 1000);
+}
+
+const gameEl = document.getElementById('game');
+const bombaEl = document.getElementById('bomba');
+
+function lanzarBomba() {
+  mostrar('game');
+  document.getElementById('temaTexto').textContent = juego.temaActual;
+  juego.activo = true;
+  juego.start = performance.now();
+
+  // Momento de explosión: aleatorio dentro de [min, max] (no predecible)
+  const boomMs = (config.min + Math.random() * (config.max - config.min)) * 1000;
+  juego.boomId = setTimeout(explotar, boomMs);
+
+  tic();   // tic-tac que se acelera
+  animarTension();
+}
+
+function tic() {
+  if (!juego.activo) return;
+  sonidoTic();
+  const elapsed = (performance.now() - juego.start) / 1000;
+  const prog = Math.min(1, elapsed / config.max);           // 0 → 1 según se acerca al máximo
+  const intervalo = 650 - prog * 520;                        // 650 ms → 130 ms
+  juego.tickId = setTimeout(tic, Math.max(120, intervalo));
+}
+
+function animarTension() {
+  const paso = (now) => {
+    if (!juego.activo) return;
+    const elapsed = (now - juego.start) / 1000;
+    const prog = Math.min(1, elapsed / config.max);
+    const amp = 2 + prog * 16;                               // temblor creciente
+    const x = (Math.random() * 2 - 1) * amp;
+    const y = (Math.random() * 2 - 1) * amp;
+    const r = (Math.random() * 2 - 1) * prog * 7;
+    bombaEl.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg)`;
+    // fondo late más fuerte cerca del final
+    gameEl.style.filter = `brightness(${1 + prog * 0.15})`;
+    juego.rafId = requestAnimationFrame(paso);
+  };
+  juego.rafId = requestAnimationFrame(paso);
+}
+
+function pararTodo() {
+  juego.activo = false;
+  clearTimeout(juego.boomId);
+  clearTimeout(juego.tickId);
+  cancelAnimationFrame(juego.rafId);
+}
+
+function explotar() {
+  pararTodo();
+  bombaEl.style.transform = '';
+  gameEl.style.filter = '';
+  sonidoBoom();
+  if (navigator.vibrate) navigator.vibrate([400, 80, 200, 80, 300]);
+  document.getElementById('onoma').textContent = ONOMATOPEYAS[Math.floor(Math.random() * ONOMATOPEYAS.length)];
+  const flash = document.getElementById('flash');
+  flash.classList.remove('on'); void flash.offsetWidth; flash.classList.add('on');
+  liberarWakeLock();
+  mostrar('boom');
+}
+
+document.getElementById('btnOtraVez').addEventListener('click', () => {
+  pedirWakeLock();
+  cuentaAtras(lanzarBomba);
+});
+document.getElementById('btnTema').addEventListener('click', () => { liberarWakeLock(); mostrar('home'); });
+
+/* ============================================================
+   WAKE LOCK
+   ============================================================ */
+async function pedirWakeLock() { try { if ('wakeLock' in navigator) juego.wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {} }
+function liberarWakeLock() { try { if (juego.wakeLock) { juego.wakeLock.release(); juego.wakeLock = null; } } catch(e) {} }
+
+pintarTiempos();
+</script>
+</body>
+</html>

@@ -62,8 +62,13 @@
   .subtitulo {
     font-size: clamp(.9rem, 4vw, 1.2rem);
     opacity: .95;
-    margin-bottom: 22px;
+    margin-bottom: 10px;
     font-weight: 700;
+  }
+  .enlace-juego {
+    display: inline-block; margin-bottom: 22px; color: #fff; font-weight: 800;
+    font-size: .9rem; text-decoration: none; background: rgba(0,0,0,.25);
+    padding: 7px 16px; border-radius: 999px;
   }
 
   .packs {
@@ -287,6 +292,7 @@
   <section id="home" class="pantalla activa">
     <h1 class="titulo">¡Mímica Loca!</h1>
     <p class="subtitulo">Elige un paquete y pon el móvil en la frente 🤪</p>
+    <a class="enlace-juego" href="./bomba.html">💣 Jugar a la Bomba</a>
     <div class="packs" id="packs"></div>
 
     <div class="ajustes">
@@ -400,14 +406,15 @@ let config = { tiempo: 60, invertir: false, sonido: true };
 let juego = {
   mazo: [], indice: 0, aciertos: 0, resultados: [],
   tiempoRestante: 0, timerId: null, activo: false,
-  armado: true, baseGz: null, gz: null, usandoTilt: false, wakeLock: null
+  armado: true, baseGz: null, gz: null, neutroDesde: null, usandoTilt: false, wakeLock: null
 };
 
 /* Detección por gravedad (eje perpendicular a la pantalla, en m/s²).
    Independiente de cómo se gire el móvil, por eso el signo es estable.
    Hay que inclinar BASTANTE para que cuente. */
 const UMBRAL = 6;       // ~38° de inclinación para activar un gesto
-const RETORNO = 3;      // volver cerca de la vertical para rearmar
+const RETORNO = 3;      // margen de "vertical" para rearmar
+const DWELL = 350;      // ms que hay que estar QUIETO en vertical antes de rearmar
 
 /* ============================================================
    UTILIDADES
@@ -453,6 +460,17 @@ const sonidoFin = () => { beep(523,0.15); setTimeout(()=>beep(392,0.15),150); se
    MENÚ DE PAQUETES
    ============================================================ */
 const contPacks = document.getElementById('packs');
+
+const cartaAzar = document.createElement('button');
+cartaAzar.className = 'pack';
+cartaAzar.style.background = 'linear-gradient(135deg, #f59e0b, #ec4899)';
+cartaAzar.innerHTML = '<span class="emoji">🎲</span><span>¡Al azar!</span>';
+cartaAzar.addEventListener('click', () => {
+  const claves = Object.keys(PAQUETES);
+  iniciarJuego(claves[Math.floor(Math.random() * claves.length)]);
+});
+contPacks.appendChild(cartaAzar);
+
 Object.entries(PAQUETES).forEach(([clave, pack]) => {
   const btn = document.createElement('button');
   btn.className = 'pack';
@@ -554,6 +572,7 @@ function empezarRonda() {
   juego.armado = true;
   juego.baseGz = null;
   juego.gz = null;
+  juego.neutroDesde = null;
   juego.tiempoRestante = config.tiempo;
   juego.aciertos = 0;
   puntosEl.textContent = '✅ 0';
@@ -639,15 +658,23 @@ function onMovimiento(e) {
   const delta = val - juego.baseGz;
 
   if (juego.armado) {
-    if (delta > UMBRAL)       { juego.armado = false; accionTilt(true); }
-    else if (delta < -UMBRAL) { juego.armado = false; accionTilt(false); }
+    if (delta > UMBRAL)       { juego.armado = false; juego.neutroDesde = null; accionTilt(true); }
+    else if (delta < -UMBRAL) { juego.armado = false; juego.neutroDesde = null; accionTilt(false); }
   } else {
-    // Solo se rearma cuando el móvil ha vuelto cerca de la vertical.
-    // Ahí recentramos la referencia (en la posición neutra, nunca en la
-    // posición inclinada) para absorber el movimiento de la cabeza.
+    // Rearmar solo tras permanecer QUIETO cerca de la vertical un instante.
+    // Así el movimiento de recolocar el móvil (que pasa por el centro pero
+    // no se detiene) no cuenta como respuesta. Al rearmar recentramos la
+    // referencia en esa posición neutra para absorber el movimiento de la cabeza.
     if (Math.abs(delta) < RETORNO) {
-      juego.armado = true;
-      juego.baseGz = val;
+      if (juego.neutroDesde === null) {
+        juego.neutroDesde = performance.now();
+      } else if (performance.now() - juego.neutroDesde >= DWELL) {
+        juego.armado = true;
+        juego.baseGz = val;
+        juego.neutroDesde = null;
+      }
+    } else {
+      juego.neutroDesde = null; // salió del centro: reinicia el conteo de reposo
     }
   }
 }
@@ -688,6 +715,7 @@ document.getElementById('btnContinuar').addEventListener('click', () => {
     juego.armado = true;
     juego.baseGz = null;
     juego.gz = null;
+    juego.neutroDesde = null;
     correrTimer();
     engancharSensores();
   });
