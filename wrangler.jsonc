@@ -1,5 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
+  // Config base = desarrollo local (wrangler dev). Cada entorno de deploy
+  // vive en su propio bloque dentro de "env" y se elige con --env.
   "name": "mimica-loca",
   "compatibility_date": "2026-10-23",
   "observability": {
@@ -7,5 +9,32 @@
   },
   "assets": {
     "directory": "public"
+  },
+
+  // ⚠️ Los recursos NO se heredan entre entornos: "assets" y "observability"
+  // se repiten en cada bloque a propósito (patrón del modelo de despliegue).
+  "env": {
+    // STAGING → wrangler deploy --env dev  (push a la rama dev)
+    "dev": {
+      "name": "mimica-loca-dev",
+      "observability": {
+        "enabled": true
+      },
+      "assets": {
+        "directory": "public"
+      }
+    },
+
+    // PRODUCCIÓN → wrangler deploy --env production  (merge a la rama main)
+    // Conserva el nombre "mimica-loca" para no cambiar la URL ya existente.
+    "production": {
+      "name": "mimica-loca",
+      "observability": {
+        "enabled": true
+      },
+      "assets": {
+        "directory": "public"
+      }
+    }
   }
 }

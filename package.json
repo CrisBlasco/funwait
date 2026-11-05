@@ -4,9 +4,11 @@
   "description": "Juego de mímica para el navegador del móvil (estilo Heads Up!) con sensores de inclinación.",
   "private": true,
   "scripts": {
-    "dev": "wrangler pages dev public",
-    "deploy": "wrangler deploy",
-    "preview": "wrangler dev"
+    "dev": "wrangler dev",
+    "check": "wrangler deploy --dry-run && node scripts/check-html.mjs",
+    "deploy:dev": "wrangler deploy --env dev",
+    "deploy:production": "wrangler deploy --env production",
+    "deploy": "wrangler deploy --env production"
   },
   "devDependencies": {
     "wrangler": "^4.156.0"

@@ -1,0 +1,41 @@
+name: CI/CD
+
+on:
+  push: { branches: [dev, main] }
+  pull_request: { branches: [dev, main] } # los PR SOLO validan, NO despliegan
+
+jobs:
+  check: # puerta de calidad (sitio estático: config válida + HTML/assets sin romper)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run check # wrangler --dry-run + scripts/check-html.mjs
+
+  deploy:
+    needs: check # si la calidad falla, NO despliega
+    if: github.event_name == 'push' # los PR no despliegan (solo validan)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+
+      - name: Desplegar a STAGING
+        if: github.ref == 'refs/heads/dev'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env dev
+
+      - name: Desplegar a PRODUCCIÓN
+        if: github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env production
