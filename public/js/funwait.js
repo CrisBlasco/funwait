@@ -1,0 +1,100 @@
+/* ============================================================
+   FunWait · Lógica compartida (window.FW)
+   La usan el hub y todos los minijuegos.
+   ============================================================ */
+window.FW = (function () {
+  const PREF_KEY = 'funwait:prefs';
+
+  function load() { try { return JSON.parse(localStorage.getItem(PREF_KEY)) || {}; } catch (e) { return {}; } }
+  const prefs = Object.assign({ sound: true, rulesSeen: {} }, load());
+  function save() { try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch (e) {} }
+
+  /* ---------- Pantallas ---------- */
+  function screen(id) {
+    document.querySelectorAll('.fw-screen').forEach(s => s.classList.remove('is-active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('is-active');
+    return el;
+  }
+
+  /* ---------- Audio (WebAudio, sin archivos) ---------- */
+  let ctx = null;
+  function ac() { if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)(); return ctx; }
+  function unlock() { if (prefs.sound) { try { ac().resume(); } catch (e) {} } }
+  function tone(freq, dur, type, vol) {
+    if (!prefs.sound) return;
+    try {
+      const c = ac(), o = c.createOscillator(), g = c.createGain();
+      o.type = type || 'square'; o.frequency.value = freq;
+      o.connect(g); g.connect(c.destination);
+      g.gain.setValueAtTime(0.0001, c.currentTime);
+      g.gain.exponentialRampToValueAtTime(vol || 0.3, c.currentTime + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+      o.start(); o.stop(c.currentTime + dur);
+    } catch (e) {}
+  }
+  function boom() {
+    if (!prefs.sound) return;
+    try {
+      const c = ac(), dur = 0.9, n = c.sampleRate * dur;
+      const buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2);
+      const src = c.createBufferSource(); src.buffer = buf;
+      const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 500;
+      const g = c.createGain(); g.gain.value = 0.7;
+      src.connect(f); f.connect(g); g.connect(c.destination); src.start();
+    } catch (e) {}
+  }
+  const audio = {
+    tic: () => tone(900, 0.05, 'square', 0.25),
+    cuenta: (f) => tone(f || 440, 0.2, 'sine', 0.3),
+    acierto: () => { tone(660, 0.1); setTimeout(() => tone(880, 0.14), 90); },
+    pasar: () => tone(200, 0.2, 'sawtooth'),
+    fin: () => { tone(523, 0.15); setTimeout(() => tone(392, 0.15), 150); setTimeout(() => tone(330, 0.3), 300); },
+    boom, tone
+  };
+
+  /* ---------- Háptica ---------- */
+  function haptic(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
+
+  /* ---------- Wake lock (pantalla encendida) ---------- */
+  let wl = null;
+  async function wakeLock() { try { if ('wakeLock' in navigator) wl = await navigator.wakeLock.request('screen'); } catch (e) {} }
+  function releaseWake() { try { if (wl) { wl.release(); wl = null; } } catch (e) {} }
+
+  /* ---------- Cuenta atrás (3·2·1·¡YA!) ---------- */
+  function countdown(numEl, onDone) {
+    let n = 3;
+    const anim = () => { numEl.style.animation = 'none'; void numEl.offsetWidth; numEl.style.animation = ''; };
+    numEl.textContent = n; anim(); audio.cuenta(440);
+    const id = setInterval(() => {
+      n--;
+      if (n > 0) { numEl.textContent = n; anim(); audio.cuenta(440); }
+      else { clearInterval(id); numEl.textContent = '¡YA!'; anim(); audio.cuenta(660); setTimeout(onDone, 450); }
+    }, 1000);
+    return () => clearInterval(id);
+  }
+
+  /* ---------- Utilidades ---------- */
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  }
+  function flash(el) { el.classList.remove('is-on'); void el.offsetWidth; el.classList.add('is-on'); }
+  function randomGame(urls) { location.href = urls[Math.floor(Math.random() * urls.length)]; }
+
+  /* ---------- Preferencias: enlaces de UI ---------- */
+  function bindSoundToggle(el) {
+    const paint = () => el.classList.toggle('is-on', prefs.sound);
+    paint();
+    el.addEventListener('click', () => { prefs.sound = !prefs.sound; save(); paint(); if (prefs.sound) unlock(); });
+  }
+  function rulesSeen(game) { return !!prefs.rulesSeen[game]; }
+  function setRulesSeen(game, v) { prefs.rulesSeen[game] = !!v; save(); }
+
+  return {
+    prefs, save, screen, audio, unlock, haptic, wakeLock, releaseWake,
+    countdown, shuffle, flash, randomGame, bindSoundToggle, rulesSeen, setRulesSeen
+  };
+})();

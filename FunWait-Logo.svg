@@ -1,0 +1,140 @@
+<?xml stroke="1.0" encoding="utf-8"?>
+<svg id="funwait-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 340" class="w-full h-auto drop-shadow-md">
+                    <defs>
+                        <!-- Gradients -->
+                        <linearGradient id="sandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FFD54F"/>
+                            <stop offset="100%" stop-color="#FFC700"/>
+                        </linearGradient>
+                        
+                        <linearGradient id="cartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FF4D82"/>
+                            <stop offset="100%" stop-color="#FF2A6D"/>
+                        </linearGradient>
+
+                        <!-- Drop Shadows -->
+                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                            <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#101828" flood-opacity="0.12"/>
+                        </filter>
+                    </defs>
+
+                    <!-- Background Burst Subtle FX -->
+                    <g opacity="0.4">
+                        <line x1="200" y1="145" x2="170" y2="70" stroke="#FFC700" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/>
+                        <line x1="200" y1="145" x2="330" y2="110" stroke="#0066FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/>
+                        <line x1="200" y1="145" x2="260" y2="40" stroke="#FF2A6D" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/>
+                    </g>
+
+                    <!-- HOURGLASS (ISOTIPO) -->
+                    <g class="hourglass-body" filter="url(#shadow)">
+                        <!-- Hourglass Frame Outer Stroke & Glass Body -->
+                        <g transform="rotate(-22 200 145)">
+                            <!-- Sand Top Section -->
+                            <path d="M175,100 C175,125 190,135 197,143 L203,143 C210,135 225,125 225,100 Z" fill="url(#sandGrad)"/>
+                            
+                            <!-- Sand Bottom Section -->
+                            <path d="M178,185 C178,165 192,152 198,147 L202,147 C208,152 222,165 222,185 Z" fill="url(#sandGrad)"/>
+                            
+                            <!-- Falling Sand Stream -->
+                            <line x1="200" y1="135" x2="200" y2="182" stroke="#FFC700" stroke-width="3" stroke-linecap="round" class="sand-stream"/>
+
+                            <!-- Glass Contour -->
+                            <path d="M170,95 C170,128 188,138 196,145 C188,152 170,162 170,195 L230,195 C230,162 212,152 204,145 C212,138 230,128 230,95 Z" fill="none" stroke="#101828" stroke-width="7.5" stroke-linejoin="round" stroke-linecap="round"/>
+                            
+                            <!-- Top/Bottom Caps -->
+                            <rect x="162" y="87" width="76" height="12" rx="6" fill="#FF2A6D" stroke="#101828" stroke-width="5"/>
+                            <rect x="162" y="191" width="76" height="12" rx="6" fill="#FF2A6D" stroke="#101828" stroke-width="5"/>
+                            
+                            <!-- Glass Glare Lines -->
+                            <path d="M177,102 C177,112 182,120 185,124" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+                            <path d="M177,185 C177,178 181,172 184,168" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+                        </g>
+                    </g>
+
+                    <!-- CONFETTI & PARTICLES -->
+                    <g id="confetti-group">
+                        <!-- Yellow Stars -->
+                        <polygon class="particle p-1" points="255,82 258,89 265,90 260,95 261,102 255,98 249,102 250,95 245,90 252,89" fill="#FFC700" stroke="#101828" stroke-width="2"/>
+                        <polygon class="particle p-4" points="152,65 154,70 159,71 155,75 156,80 152,77 148,80 149,75 145,71 150,70" fill="#FFC700" stroke="#101828" stroke-width="1.8"/>
+
+                        <!-- Blue Circles -->
+                        <circle class="particle p-2" cx="325" cy="118" r="6" fill="#0066FF" stroke="#101828" stroke-width="2"/>
+                        <circle class="particle p-3" cx="215" cy="55" r="4.5" fill="#0066FF" stroke="#101828" stroke-width="1.8"/>
+                        
+                        <!-- Magenta Pills / Confetti -->
+                        <rect class="particle p-5" x="295" y="125" width="6" height="12" rx="3" transform="rotate(25 295 125)" fill="#FF2A6D" stroke="#101828" stroke-width="1.8"/>
+                        <rect class="particle p-1" x="175" y="48" width="5" height="10" rx="2.5" transform="rotate(-40 175 48)" fill="#FF2A6D" stroke="#101828" stroke-width="1.5"/>
+                        <rect class="particle p-3" x="240" y="40" width="6" height="11" rx="3" transform="rotate(15 240 40)" fill="#00E676" stroke="#101828" stroke-width="1.8"/>
+
+                        <!-- Sparkles -->
+                        <path class="particle p-2" d="M 285 58 Q 285 66 293 66 Q 285 66 285 74 Q 285 66 277 66 Q 285 66 285 58 Z" fill="#FFC700"/>
+                        <path class="particle p-4" d="M 190 75 Q 190 80 195 80 Q 190 80 190 85 Q 190 80 185 80 Q 190 80 190 75 Z" fill="#00E676"/>
+                    </g>
+
+                    <!-- COASTER CART (LAUNCHING) -->
+                    <g class="coaster-cart" filter="url(#shadow)">
+                        <!-- Coaster Motion Track Trail -->
+                        <path d="M210,130 Q245,100 280,80" fill="none" stroke="#101828" stroke-width="4" stroke-dasharray="3 5" opacity="0.4"/>
+                        
+                        <g transform="translate(255, 55) rotate(18)">
+                            <!-- Cart Main Body -->
+                            <path d="M0,22 L42,22 C48,22 52,17 55,10 L58,0 L6,0 L2,-10 L-10,-10 L-6,12 C-5,18 -2,22 0,22 Z" fill="url(#cartGrad)" stroke="#101828" stroke-width="5" stroke-linejoin="round"/>
+                            
+                            <!-- Cart Front Seat Hood Accent -->
+                            <path d="M30,3 L48,3 C51,3 53,6 52,10 L50,15 L28,15 Z" fill="#FFC700" stroke="#101828" stroke-width="3"/>
+
+                            <!-- Wheels -->
+                            <circle cx="8" cy="24" r="7" fill="#F4F6F8" stroke="#101828" stroke-width="4"/>
+                            <circle cx="8" cy="24" r="2" fill="#101828"/>
+                            
+                            <circle cx="38" cy="24" r="7" fill="#F4F6F8" stroke="#101828" stroke-width="4"/>
+                            <circle cx="38" cy="24" r="2" fill="#101828"/>
+
+                            <!-- Speed Lines Behind Cart -->
+                            <line x1="-16" y1="-2" x2="-26" y2="-2" stroke="#FFC700" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="-14" y1="8" x2="-28" y2="8" stroke="#FF2A6D" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="-12" y1="18" x2="-22" y2="18" stroke="#0066FF" stroke-width="3.5" stroke-linecap="round"/>
+                        </g>
+                    </g>
+
+                    <!-- TYPOGRAPHY: FUNWAIT -->
+                    <g class="brand-text" filter="url(#shadow)">
+                        <!-- "Fun" in Yellow -->
+                        <g class="text-fun">
+                            <!-- Outer Stroke for Fun -->
+                            <text x="65" y="252" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="78" fill="none" stroke="#101828" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">Fun</text>
+                            <!-- Fill Fun -->
+                            <text x="65" y="252" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="78" fill="#FFC700">Fun</text>
+                        </g>
+
+                        <!-- "Wait" in Blue -->
+                        <g class="text-wait">
+                            <!-- Outer Stroke for Wait -->
+                            <text x="222" y="252" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="78" fill="none" stroke="#101828" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">Wait</text>
+                            <!-- Fill Wait -->
+                            <text x="222" y="252" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="78" fill="#0066FF">Wait</text>
+                        </g>
+
+                        <!-- BOMB ELEMENT ON THE 't' DOT/TOP -->
+                        <g transform="translate(418, 172)" class="bomb-icon">
+                            <!-- Bomb Fuse -->
+                            <path d="M 10 5 Q 18 -6 24 -2" fill="none" stroke="#101828" stroke-width="3.5" stroke-linecap="round"/>
+                            <!-- Spark -->
+                            <path class="fuse-spark" d="M 24 -2 L 27 -7 M 24 -2 L 29 -1 M 24 -2 L 22 3 M 24 -2 L 19 -5" stroke="#FFC700" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Bomb Body -->
+                            <circle cx="8" cy="18" r="11" fill="#101828"/>
+                            <rect x="5" y="6" width="6" height="4" rx="1" fill="#101828"/>
+                            <!-- Highlight -->
+                            <circle cx="5" cy="14" r="3" fill="#FFFFFF" opacity="0.8"/>
+                        </g>
+                    </g>
+
+                    <!-- SLOGAN / SUBTITLE -->
+                    <g class="slogan-text">
+                        <!-- Background pill for extra readability -->
+                        <rect x="110" y="278" width="280" height="32" rx="16" fill="#F4F6F8"/>
+                        <text x="250" y="300" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="700" font-size="17" fill="#101828" letter-spacing="0.2">
+                            La cola también se juega.
+                        </text>
+                    </g>
+                </svg>

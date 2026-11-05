@@ -3,783 +3,221 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<meta name="theme-color" content="#7c3aed" />
-<title>¡Mímica Loca! 🎉</title>
+<meta name="theme-color" content="#FFC700" />
+<title>FunWait · La cola también se juega</title>
+<link rel="icon" href="./assets/logo.svg" />
+<link rel="stylesheet" href="./css/funwait.css" />
 <style>
-  :root {
-    --fondo: #1e1b4b;
-    --acierto: #22c55e;
-    --pasar: #f59e0b;
-  }
-
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    font-family: "Baloo 2", "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
-    background: var(--fondo);
-    color: #fff;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-
-  #app { position: fixed; inset: 0; }
-
-  .pantalla {
-    position: absolute;
-    inset: 0;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    text-align: center;
-  }
-  .pantalla.activa { display: flex; }
-
-  /* ---------- HOME ---------- */
-  #home {
-    background: linear-gradient(135deg, #7c3aed 0%, #db2777 50%, #f59e0b 100%);
-    overflow-y: auto;
-    justify-content: flex-start;
-    padding-top: calc(env(safe-area-inset-top) + 20px);
-    padding-bottom: 40px;
-  }
-
-  .titulo {
-    font-size: clamp(2.4rem, 11vw, 4rem);
-    font-weight: 900;
-    margin: 10px 0 2px;
-    text-shadow: 0 4px 0 rgba(0,0,0,.25), 0 8px 18px rgba(0,0,0,.35);
-    letter-spacing: 1px;
-    transform: rotate(-3deg);
-  }
-  .subtitulo {
-    font-size: clamp(.9rem, 4vw, 1.2rem);
-    opacity: .95;
-    margin-bottom: 10px;
-    font-weight: 700;
-  }
-  .enlace-juego {
-    display: inline-block; margin-bottom: 22px; color: #fff; font-weight: 800;
-    font-size: .9rem; text-decoration: none; background: rgba(0,0,0,.25);
-    padding: 7px 16px; border-radius: 999px;
-  }
-
-  .packs {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    width: min(560px, 92%);
-    margin: 0 auto;
-  }
-
-  .pack {
-    border: none;
-    border-radius: 22px;
-    padding: 20px 10px;
-    font-family: inherit;
-    font-weight: 800;
-    font-size: clamp(.95rem, 4.3vw, 1.15rem);
-    color: #fff;
-    cursor: pointer;
-    box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 20px rgba(0,0,0,.25);
-    transition: transform .08s ease, box-shadow .08s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-shadow: 0 2px 3px rgba(0,0,0,.25);
-  }
-  .pack:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 4px 10px rgba(0,0,0,.25); }
-  .pack .emoji { font-size: clamp(2rem, 10vw, 3rem); line-height: 1; }
-
-  .ajustes {
-    margin: 26px auto 0;
-    width: min(560px, 92%);
-    background: rgba(0,0,0,.18);
-    border-radius: 18px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .fila-ajuste {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    font-weight: 700;
-    font-size: .95rem;
-  }
-  .fila-ajuste .controles { display: flex; align-items: center; gap: 8px; }
-  .mini-btn {
-    border: none;
-    background: rgba(255,255,255,.25);
-    color: #fff;
-    font-family: inherit;
-    font-weight: 900;
-    font-size: 1.2rem;
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    cursor: pointer;
-  }
-  .mini-btn:active { transform: scale(.92); }
-
-  .switch {
-    position: relative;
-    width: 56px;
-    height: 32px;
-    background: rgba(255,255,255,.3);
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background .2s;
-    flex: none;
-  }
-  .switch.on { background: var(--acierto); }
-  .switch::after {
-    content: "";
-    position: absolute;
-    top: 3px; left: 3px;
-    width: 26px; height: 26px;
-    background: #fff;
-    border-radius: 50%;
-    transition: left .2s;
-  }
-  .switch.on::after { left: 27px; }
-
-  /* ---------- CUENTA ATRÁS ---------- */
-  #countdown { font-weight: 900; }
-  #countdown .msg {
-    font-size: clamp(1.2rem, 6vw, 1.8rem);
-    margin-bottom: 10px;
-    padding: 0 20px;
-  }
-  #countNum {
-    font-size: clamp(7rem, 40vw, 14rem);
-    line-height: 1;
-    animation: pop .5s ease;
-  }
-  @keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-  /* ---------- JUEGO ---------- */
-  #game { transition: background-color .15s; }
-  #palabra {
-    font-size: clamp(3rem, 18vw, 9rem);
-    font-weight: 900;
-    padding: 0 18px;
-    text-shadow: 0 4px 14px rgba(0,0,0,.4);
-    line-height: 1.05;
-  }
-  #timer {
-    position: absolute;
-    top: calc(env(safe-area-inset-top) + 14px);
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: clamp(2rem, 9vw, 3.2rem);
-    font-weight: 900;
-    background: rgba(0,0,0,.3);
-    padding: 4px 22px;
-    border-radius: 999px;
-    min-width: 90px;
-  }
-  #puntosEnJuego {
-    position: absolute;
-    top: calc(env(safe-area-inset-top) + 20px);
-    right: 20px;
-    font-size: 1.4rem;
-    font-weight: 900;
-  }
-  #btnPausa {
-    position: absolute;
-    top: calc(env(safe-area-inset-top) + 16px);
-    left: 16px;
-    border: none;
-    background: rgba(0,0,0,.3);
-    color: #fff;
-    font-size: 1.4rem;
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
-    cursor: pointer;
-    z-index: 5;
-  }
-  #btnPausa:active { transform: scale(.92); }
-  .ayuda-gestos {
-    position: absolute;
-    bottom: calc(env(safe-area-inset-bottom) + 14px);
-    font-size: .8rem;
-    opacity: .7;
-    font-weight: 700;
-    padding: 0 20px;
-  }
-  #feedback {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: clamp(3rem, 18vw, 9rem);
-    font-weight: 900;
-    opacity: 0;
-    pointer-events: none;
-    text-shadow: 0 4px 14px rgba(0,0,0,.5);
-  }
-  #feedback.show { animation: flash .5s ease; }
-  @keyframes flash { 0% { opacity: 0; transform: scale(.5); } 30% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0; transform: scale(1.3); } }
-
-  /* ---------- PAUSA ---------- */
-  #pause { background: rgba(30,27,75,.97); }
-  #pause h2 { font-size: clamp(2rem, 10vw, 3rem); margin-bottom: 20px; }
-
-  /* ---------- RESULTADO ---------- */
-  #result {
-    background: linear-gradient(135deg, #0ea5e9 0%, #7c3aed 100%);
-    overflow-y: auto;
-    justify-content: flex-start;
-    padding-top: calc(env(safe-area-inset-top) + 24px);
-    padding-bottom: 30px;
-  }
-  #result h2 { font-size: clamp(1.6rem, 8vw, 2.4rem); margin: 4px 0; }
-  #puntuacionFinal {
-    font-size: clamp(4rem, 22vw, 7rem);
-    font-weight: 900;
-    margin: 6px 0;
-    text-shadow: 0 4px 0 rgba(0,0,0,.2);
-  }
-  .lista-palabras {
-    width: min(500px, 92%);
-    margin: 14px auto;
-    text-align: left;
-    background: rgba(0,0,0,.2);
-    border-radius: 16px;
-    padding: 12px 16px;
-    max-height: 40vh;
-    overflow-y: auto;
-  }
-  .lista-palabras .item { padding: 5px 0; font-weight: 700; font-size: 1.05rem; border-bottom: 1px solid rgba(255,255,255,.12); }
-  .lista-palabras .item:last-child { border-bottom: none; }
-
-  .btn-grande {
-    border: none;
-    border-radius: 999px;
-    padding: 18px 40px;
-    font-family: inherit;
-    font-weight: 900;
-    font-size: clamp(1.1rem, 5vw, 1.4rem);
-    color: #fff;
-    background: #f59e0b;
-    cursor: pointer;
-    box-shadow: 0 6px 0 #b45309, 0 10px 20px rgba(0,0,0,.3);
-    margin: 10px 8px;
-    text-shadow: 0 2px 3px rgba(0,0,0,.25);
-  }
-  .btn-grande:active { transform: translateY(4px); box-shadow: 0 2px 0 #b45309; }
-  .btn-grande.verde { background: var(--acierto); box-shadow: 0 6px 0 #15803d, 0 10px 20px rgba(0,0,0,.3); }
-  .btn-grande.verde:active { box-shadow: 0 2px 0 #15803d; }
+  body { background: var(--fw-mist); }
+  .fw-hero-logo { width: min(380px, 90vw); margin: 0 auto; }
+  .fw-hero-logo svg { width: 100%; height: auto; display: block; }
 </style>
 </head>
 <body>
-<div id="app">
+<div class="fw-app">
 
-  <!-- HOME -->
-  <section id="home" class="pantalla activa">
-    <h1 class="titulo">¡Mímica Loca!</h1>
-    <p class="subtitulo">Elige un paquete y pon el móvil en la frente 🤪</p>
-    <a class="enlace-juego" href="./bomba.html">💣 Jugar a la Bomba</a>
-    <div class="packs" id="packs"></div>
-
-    <div class="ajustes">
-      <div class="fila-ajuste">
-        <span>⏱️ Tiempo por ronda</span>
-        <div class="controles">
-          <button class="mini-btn" id="menosTiempo">−</button>
-          <span id="tiempoLabel" style="min-width:70px">60 s</span>
-          <button class="mini-btn" id="masTiempo">+</button>
-        </div>
-      </div>
-      <div class="fila-ajuste">
-        <span>🔄 Invertir inclinación</span>
-        <div class="switch" id="switchInvertir"></div>
-      </div>
-      <div class="fila-ajuste">
-        <span>🔊 Sonidos</span>
-        <div class="switch on" id="switchSonido"></div>
+  <!-- HUB -->
+  <section id="home" class="fw-screen fw-screen--scroll">
+    <div class="fw-topbar">
+      <span></span>
+      <div class="fw-topbar-actions">
+        <button class="fw-icon-btn fw-help" id="help" aria-label="Ayuda">?</button>
+        <button class="fw-icon-btn" id="sound" aria-label="Sonido">🔊</button>
       </div>
     </div>
+
+    <div style="height: 46px"></div>
+    <div class="fw-hero-logo"><svg id="funwait-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 340" class="w-full h-auto drop-shadow-md">
+                    <defs>
+                        <!-- Gradients -->
+                        <linearGradient id="sandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FFD54F"/>
+                            <stop offset="100%" stop-color="#FFC700"/>
+                        </linearGradient>
+                        
+                        <linearGradient id="cartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FF4D82"/>
+                            <stop offset="100%" stop-color="#FF2A6D"/>
+                        </linearGradient>
+
+                        <!-- Drop Shadows -->
+                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                            <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#101828" flood-opacity="0.12"/>
+                        </filter>
+                    </defs>
+
+                    <!-- Background Burst Subtle FX -->
+                    <g opacity="0.4">
+                        <line x1="200" y1="145" x2="170" y2="70" stroke="#FFC700" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/>
+                        <line x1="200" y1="145" x2="330" y2="110" stroke="#0066FF" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/>
+                        <line x1="200" y1="145" x2="260" y2="40" stroke="#FF2A6D" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/>
+                    </g>
+
+                    <!-- HOURGLASS (ISOTIPO) -->
+                    <g class="hourglass-body" filter="url(#shadow)">
+                        <!-- Hourglass Frame Outer Stroke & Glass Body -->
+                        <g transform="rotate(-22 200 145)">
+                            <!-- Sand Top Section -->
+                            <path d="M175,100 C175,125 190,135 197,143 L203,143 C210,135 225,125 225,100 Z" fill="url(#sandGrad)"/>
+                            
+                            <!-- Sand Bottom Section -->
+                            <path d="M178,185 C178,165 192,152 198,147 L202,147 C208,152 222,165 222,185 Z" fill="url(#sandGrad)"/>
+                            
+                            <!-- Falling Sand Stream -->
+                            <line x1="200" y1="135" x2="200" y2="182" stroke="#FFC700" stroke-width="3" stroke-linecap="round" class="sand-stream"/>
+
+                            <!-- Glass Contour -->
+                            <path d="M170,95 C170,128 188,138 196,145 C188,152 170,162 170,195 L230,195 C230,162 212,152 204,145 C212,138 230,128 230,95 Z" fill="none" stroke="#101828" stroke-width="7.5" stroke-linejoin="round" stroke-linecap="round"/>
+                            
+                            <!-- Top/Bottom Caps -->
+                            <rect x="162" y="87" width="76" height="12" rx="6" fill="#FF2A6D" stroke="#101828" stroke-width="5"/>
+                            <rect x="162" y="191" width="76" height="12" rx="6" fill="#FF2A6D" stroke="#101828" stroke-width="5"/>
+                            
+                            <!-- Glass Glare Lines -->
+                            <path d="M177,102 C177,112 182,120 185,124" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+                            <path d="M177,185 C177,178 181,172 184,168" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+                        </g>
+                    </g>
+
+                    <!-- CONFETTI & PARTICLES -->
+                    <g id="confetti-group">
+                        <!-- Yellow Stars -->
+                        <polygon class="particle p-1" points="255,82 258,89 265,90 260,95 261,102 255,98 249,102 250,95 245,90 252,89" fill="#FFC700" stroke="#101828" stroke-width="2"/>
+                        <polygon class="particle p-4" points="152,65 154,70 159,71 155,75 156,80 152,77 148,80 149,75 145,71 150,70" fill="#FFC700" stroke="#101828" stroke-width="1.8"/>
+
+                        <!-- Blue Circles -->
+                        <circle class="particle p-2" cx="325" cy="118" r="6" fill="#0066FF" stroke="#101828" stroke-width="2"/>
+                        <circle class="particle p-3" cx="215" cy="55" r="4.5" fill="#0066FF" stroke="#101828" stroke-width="1.8"/>
+                        
+                        <!-- Magenta Pills / Confetti -->
+                        <rect class="particle p-5" x="295" y="125" width="6" height="12" rx="3" transform="rotate(25 295 125)" fill="#FF2A6D" stroke="#101828" stroke-width="1.8"/>
+                        <rect class="particle p-1" x="175" y="48" width="5" height="10" rx="2.5" transform="rotate(-40 175 48)" fill="#FF2A6D" stroke="#101828" stroke-width="1.5"/>
+                        <rect class="particle p-3" x="240" y="40" width="6" height="11" rx="3" transform="rotate(15 240 40)" fill="#00E676" stroke="#101828" stroke-width="1.8"/>
+
+                        <!-- Sparkles -->
+                        <path class="particle p-2" d="M 285 58 Q 285 66 293 66 Q 285 66 285 74 Q 285 66 277 66 Q 285 66 285 58 Z" fill="#FFC700"/>
+                        <path class="particle p-4" d="M 190 75 Q 190 80 195 80 Q 190 80 190 85 Q 190 80 185 80 Q 190 80 190 75 Z" fill="#00E676"/>
+                    </g>
+
+                    <!-- COASTER CART (LAUNCHING) -->
+                    <g class="coaster-cart" filter="url(#shadow)">
+                        <!-- Coaster Motion Track Trail -->
+                        <path d="M210,130 Q245,100 280,80" fill="none" stroke="#101828" stroke-width="4" stroke-dasharray="3 5" opacity="0.4"/>
+                        
+                        <g transform="translate(255, 55) rotate(18)">
+                            <!-- Cart Main Body -->
+                            <path d="M0,22 L42,22 C48,22 52,17 55,10 L58,0 L6,0 L2,-10 L-10,-10 L-6,12 C-5,18 -2,22 0,22 Z" fill="url(#cartGrad)" stroke="#101828" stroke-width="5" stroke-linejoin="round"/>
+                            
+                            <!-- Cart Front Seat Hood Accent -->
+                            <path d="M30,3 L48,3 C51,3 53,6 52,10 L50,15 L28,15 Z" fill="#FFC700" stroke="#101828" stroke-width="3"/>
+
+                            <!-- Wheels -->
+                            <circle cx="8" cy="24" r="7" fill="#F4F6F8" stroke="#101828" stroke-width="4"/>
+                            <circle cx="8" cy="24" r="2" fill="#101828"/>
+                            
+                            <circle cx="38" cy="24" r="7" fill="#F4F6F8" stroke="#101828" stroke-width="4"/>
+                            <circle cx="38" cy="24" r="2" fill="#101828"/>
+
+                            <!-- Speed Lines Behind Cart -->
+                            <line x1="-16" y1="-2" x2="-26" y2="-2" stroke="#FFC700" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="-14" y1="8" x2="-28" y2="8" stroke="#FF2A6D" stroke-width="3.5" stroke-linecap="round"/>
+                            <line x1="-12" y1="18" x2="-22" y2="18" stroke="#0066FF" stroke-width="3.5" stroke-linecap="round"/>
+                        </g>
+                    </g>
+
+                    <!-- TYPOGRAPHY: FUNWAIT -->
+                    <g class="brand-text" filter="url(#shadow)">
+                        <!-- "Fun" in Yellow -->
+                        <g class="text-fun">
+                            <!-- Outer Stroke for Fun -->
+                            <text x="65" y="252" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="78" fill="none" stroke="#101828" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">Fun</text>
+                            <!-- Fill Fun -->
+                            <text x="65" y="252" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="78" fill="#FFC700">Fun</text>
+                        </g>
+
+                        <!-- "Wait" in Blue -->
+                        <g class="text-wait">
+                            <!-- Outer Stroke for Wait -->
+                            <text x="222" y="252" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="78" fill="none" stroke="#101828" stroke-width="14" stroke-linejoin="round" stroke-linecap="round">Wait</text>
+                            <!-- Fill Wait -->
+                            <text x="222" y="252" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="78" fill="#0066FF">Wait</text>
+                        </g>
+
+                        <!-- BOMB ELEMENT ON THE 't' DOT/TOP -->
+                        <g transform="translate(418, 172)" class="bomb-icon">
+                            <!-- Bomb Fuse -->
+                            <path d="M 10 5 Q 18 -6 24 -2" fill="none" stroke="#101828" stroke-width="3.5" stroke-linecap="round"/>
+                            <!-- Spark -->
+                            <path class="fuse-spark" d="M 24 -2 L 27 -7 M 24 -2 L 29 -1 M 24 -2 L 22 3 M 24 -2 L 19 -5" stroke="#FFC700" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- Bomb Body -->
+                            <circle cx="8" cy="18" r="11" fill="#101828"/>
+                            <rect x="5" y="6" width="6" height="4" rx="1" fill="#101828"/>
+                            <!-- Highlight -->
+                            <circle cx="5" cy="14" r="3" fill="#FFFFFF" opacity="0.8"/>
+                        </g>
+                    </g>
+
+                    <!-- SLOGAN / SUBTITLE -->
+                    <g class="slogan-text">
+                        <!-- Background pill for extra readability -->
+                        <rect x="110" y="278" width="280" height="32" rx="16" fill="#F4F6F8"/>
+                        <text x="250" y="300" text-anchor="middle" font-family="'Poppins', sans-serif" font-weight="700" font-size="17" fill="#101828" letter-spacing="0.2">
+                            La cola también se juega.
+                        </text>
+                    </g>
+                </svg></div>
+
+    <h2 class="fw-h2" style="margin: 14px 0 4px">¡A jugar en la cola!</h2>
+
+    <button class="fw-game-card" id="goBomba">
+      <span class="emoji">💣</span>
+      <span class="info">
+        <span class="name">La Bomba</span>
+        <span class="fw-chips"><span class="fw-chip">3–8 jugadores</span><span class="fw-chip">Rápido</span></span>
+      </span>
+    </button>
+
+    <button class="fw-game-card" id="goMimica">
+      <span class="emoji">🎭</span>
+      <span class="info">
+        <span class="name">Mímica Express</span>
+        <span class="fw-chips"><span class="fw-chip">Todos</span><span class="fw-chip">Creativo</span></span>
+      </span>
+    </button>
+
+    <button class="fw-btn fw-btn--primary fw-btn--block" id="random" style="margin-top: 20px">🎲 Modo aleatorio</button>
+    <p class="fw-mute" style="margin-top: 20px">Más juegos muy pronto 😜</p>
   </section>
 
-  <!-- CUENTA ATRÁS -->
-  <section id="countdown" class="pantalla">
-    <div class="msg">📱 Pon el móvil en la frente<br>(sin mirar la pantalla)</div>
-    <div id="countNum">3</div>
-  </section>
-
-  <!-- JUEGO -->
-  <section id="game" class="pantalla">
-    <button id="btnPausa">⏸️</button>
-    <div id="timer">60</div>
-    <div id="puntosEnJuego">✅ 0</div>
-    <div id="palabra">...</div>
-    <div class="ayuda-gestos">⬇️ Abajo = acierto &nbsp;·&nbsp; ⬆️ Arriba = pasar &nbsp;·&nbsp; (o toca abajo/arriba)</div>
-    <div id="feedback"></div>
-  </section>
-
-  <!-- PAUSA -->
-  <section id="pause" class="pantalla">
-    <h2>⏸️ Pausa</h2>
-    <button class="btn-grande verde" id="btnContinuar">Continuar ▶️</button>
-    <button class="btn-grande" id="btnSalirMenu">Salir al menú 🏠</button>
-  </section>
-
-  <!-- RESULTADO -->
-  <section id="result" class="pantalla">
-    <h2 id="tituloResultado">¡Se acabó el tiempo!</h2>
-    <div id="puntuacionFinal">0</div>
-    <p style="font-weight:700;opacity:.9">aciertos 🎉</p>
-    <div class="lista-palabras" id="listaPalabras"></div>
-    <div>
-      <button class="btn-grande verde" id="btnOtraVez">Jugar otra vez 🔁</button>
-      <button class="btn-grande" id="btnInicio">Menú 🏠</button>
+  <!-- AYUDA -->
+  <section id="ayuda" class="fw-screen fw-screen--scroll" style="background: var(--fw-night); color: var(--fw-paper)">
+    <div style="height: 24px"></div>
+    <h2 class="fw-h1">¿Qué es FunWait?</h2>
+    <div class="fw-card" style="color: var(--fw-night); text-align: left; width: min(520px, 92%); margin-top: 14px">
+      <p>Minijuegos para pasar el rato en las colas. Elige uno, pasaos el móvil y a reír 🎉</p>
+      <p><b>💣 La Bomba:</b> decid por turnos una palabra del tema y pasad el móvil; pierde quien lo tenga cuando explota.</p>
+      <p><b>🎭 Mímica Express:</b> móvil en la frente, los demás hacen mímica; inclina para acertar o pasar.</p>
     </div>
+    <button class="fw-btn fw-btn--primary" id="cerrarAyuda" style="margin-top: 16px">¡Entendido!</button>
   </section>
 
 </div>
 
+<script src="./js/funwait.js"></script>
 <script>
-/* ============================================================
-   PAQUETES DE PALABRAS (para niños ~10 años) · 100+ cada uno
-   ============================================================ */
-const PAQUETES = {
-  objetos: {
-    nombre: "Objetos cotidianos", emoji: "🪑", color: "#0ea5e9",
-    palabras: ["Silla","Mesa","Cama","Sofá","Armario","Estantería","Lámpara","Bombilla","Reloj","Despertador","Espejo","Cepillo de dientes","Pasta de dientes","Peine","Cepillo de pelo","Toalla","Jabón","Champú","Secador","Tijeras","Lápiz","Bolígrafo","Goma de borrar","Sacapuntas","Regla","Cuaderno","Libro","Mochila","Estuche","Pegamento","Grapadora","Clip","Calculadora","Ordenador","Teclado","Ratón","Pantalla","Teléfono","Móvil","Cargador","Auriculares","Televisión","Mando a distancia","Radio","Altavoz","Nevera","Microondas","Horno","Tostadora","Cafetera","Batidora","Sartén","Olla","Cuchara","Tenedor","Cuchillo","Plato","Vaso","Taza","Botella","Servilleta","Mantel","Cubo de basura","Escoba","Fregona","Aspiradora","Plancha","Lavadora","Paraguas","Gafas","Gafas de sol","Reloj de pulsera","Pulsera","Collar","Anillo","Cartera","Monedero","Llaves","Llavero","Candado","Maleta","Bolsa","Caja","Vela","Cerilla","Mechero","Linterna","Pila","Enchufe","Cable","Ventilador","Calendario","Cojín","Manta","Almohada","Sábana","Cortina","Alfombra","Percha","Pinza de ropa","Paraguas plegable","Felpudo","Jarrón","Maceta","Reloj de arena"]
-  },
-  animales: {
-    nombre: "Animales", emoji: "🦁", color: "#22c55e",
-    palabras: ["León","Tigre","Leopardo","Guepardo","Pantera","Elefante","Rinoceronte","Hipopótamo","Jirafa","Cebra","Mono","Gorila","Chimpancé","Orangután","Oso","Oso polar","Panda","Koala","Canguro","Lobo","Zorro","Perro","Gato","Caballo","Burro","Vaca","Toro","Cerdo","Oveja","Cabra","Conejo","Ratón","Rata","Ardilla","Erizo","Topo","Murciélago","Ciervo","Jabalí","Camello","Llama","Serpiente","Cobra","Lagarto","Iguana","Camaleón","Cocodrilo","Tortuga","Rana","Sapo","Salamandra","Pez","Tiburón","Delfín","Ballena","Orca","Foca","Morsa","Pulpo","Calamar","Medusa","Cangrejo","Langosta","Estrella de mar","Caballito de mar","Pingüino","Águila","Halcón","Búho","Loro","Flamenco","Avestruz","Pavo real","Cisne","Pato","Ganso","Gallina","Gallo","Pollito","Paloma","Gorrión","Golondrina","Cuervo","Tucán","Colibrí","Mariposa","Abeja","Avispa","Hormiga","Mosca","Mosquito","Araña","Escorpión","Escarabajo","Mariquita","Libélula","Saltamontes","Caracol","Gusano","Oruga","Mapache","Nutria","Castor"]
-  },
-  herramientas: {
-    nombre: "Herramientas", emoji: "🔧", color: "#f97316",
-    palabras: ["Martillo","Destornillador","Llave inglesa","Llave fija","Alicates","Tenazas","Sierra","Serrucho","Sierra eléctrica","Taladro","Broca","Clavo","Tornillo","Tuerca","Arandela","Perno","Cincel","Lima","Lija","Papel de lija","Espátula","Rasqueta","Pincel","Brocha","Rodillo de pintura","Bote de pintura","Cinta métrica","Metro","Regla","Escuadra","Nivel","Plomada","Lápiz de carpintero","Compás","Cúter","Tijeras","Grapadora","Pistola de pegamento","Soldador","Pegamento","Cola","Cinta aislante","Cinta adhesiva","Brida","Cuerda","Alambre","Cadena","Candado","Llave","Caja de herramientas","Banco de trabajo","Tornillo de banco","Mordaza","Gato hidráulico","Carretilla","Pala","Pico","Azada","Rastrillo","Horca","Tijeras de podar","Manguera","Regadera","Escalera","Andamio","Casco","Guantes","Gafas de protección","Mascarilla","Tapones","Linterna","Multímetro","Pelacables","Lijadora","Amoladora","Fresadora","Compresor","Generador","Cortacésped","Motosierra","Hormigonera","Nivel láser","Detector de metales","Llave de tubo","Llave Allen","Remachadora","Tacos","Embudo","Bidón","Cubo","Trapo","Cepillo de alambre","Destornillador de estrella","Garlopa","Formón","Punzón","Escofina","Berbiquí","Tornillos","Clavos","Grapas"]
-  },
-  profesiones: {
-    nombre: "Profesiones", emoji: "👩‍🚀", color: "#8b5cf6",
-    palabras: ["Médico","Enfermero","Cirujano","Dentista","Veterinario","Farmacéutico","Psicólogo","Fisioterapeuta","Oculista","Pediatra","Profesor","Maestro","Director de colegio","Bibliotecario","Científico","Químico","Físico","Biólogo","Astrónomo","Astronauta","Ingeniero","Arquitecto","Programador","Mecánico","Electricista","Fontanero","Carpintero","Albañil","Pintor","Soldador","Jardinero","Agricultor","Granjero","Ganadero","Pescador","Cocinero","Chef","Panadero","Pastelero","Carnicero","Pescadero","Frutero","Camarero","Cajero","Dependiente","Peluquero","Barbero","Maquillador","Modista","Sastre","Zapatero","Relojero","Joyero","Florista","Fotógrafo","Periodista","Escritor","Traductor","Locutor","Presentador","Actor","Actriz","Director de cine","Cantante","Músico","Compositor","Guitarrista","Pianista","Bailarín","Escultor","Diseñador","Policía","Bombero","Militar","Soldado","Piloto","Azafata","Marinero","Capitán","Taxista","Conductor de autobús","Camionero","Maquinista","Cartero","Basurero","Barrendero","Socorrista","Árbitro","Futbolista","Entrenador","Juez","Abogado","Notario","Banquero","Contable","Economista","Político","Alcalde","Mago","Payaso","Malabarista","Detective","Espía"]
-  },
-  halloween: {
-    nombre: "Halloween", emoji: "🎃", color: "#ea580c",
-    palabras: ["Fantasma","Calabaza","Bruja","Brujo","Vampiro","Drácula","Esqueleto","Calavera","Momia","Zombi","Hombre lobo","Monstruo","Frankenstein","Espantapájaros","Duende","Gnomo","Ogro","Troll","Gigante","Hada mala","Demonio","Diablo","Muerte","Guadaña","Murciélago","Araña","Telaraña","Gato negro","Búho","Cuervo","Rata","Serpiente","Sapo","Luna llena","Noche","Niebla","Tormenta","Rayo","Trueno","Cementerio","Tumba","Lápida","Ataúd","Cripta","Castillo embrujado","Casa encantada","Mansión","Sótano","Ático","Mazmorra","Caldero","Poción","Pócima","Hechizo","Maldición","Varita mágica","Libro de hechizos","Bola de cristal","Escoba voladora","Sombrero de bruja","Capa","Colmillos","Garras","Sangre","Vendas","Disfraz","Máscara","Careta","Maquillaje","Calabaza iluminada","Vela","Farol","Dulces","Caramelos","Chocolate","Chuches","Truco o trato","Susto","Grito","Escalofrío","Pesadilla","Terror","Miedo","Oscuridad","Sombra","Espíritu","Aparición","Cadáver","Brebaje","Murciélago vampiro","Luna de sangre","Araña gigante","Calabacera","Pasadizo secreto","Tela de araña","Caldero burbujeante","Capucha","Bruja voladora","Gárgola","Cuervo negro","Quiosco de sustos","Casa del terror"]
-  },
-  navidad: {
-    nombre: "Navidad", emoji: "🎄", color: "#dc2626",
-    palabras: ["Papá Noel","Reyes Magos","Melchor","Gaspar","Baltasar","Reno","Rudolph","Trineo","Elfo","Duende de Navidad","Árbol de Navidad","Estrella","Bola de Navidad","Guirnalda","Espumillón","Luces de Navidad","Adorno","Lazo","Campana","Cascabel","Vela","Corona de Adviento","Muérdago","Acebo","Piña","Copo de nieve","Nieve","Muñeco de nieve","Bola de nieve","Hielo","Carámbano","Regalo","Paquete","Caja de regalo","Papel de regalo","Calcetín navideño","Chimenea","Fuego","Villancico","Coro","Pandereta","Zambomba","Belén","Pesebre","Portal de Belén","Niño Jesús","Virgen María","San José","Mula","Buey","Pastor","Oveja","Ángel","Estrella de Belén","Carta a los Reyes","Carbón","Turrón","Mazapán","Polvorón","Mantecado","Roscón de Reyes","Haba del roscón","Uvas de Nochevieja","Campanadas","Cava","Brindis","Cena de Navidad","Pavo relleno","Cordero","Jamón","Langostinos","Cascanueces","Bastón de caramelo","Galletas de jengibre","Casita de jengibre","Chocolate caliente","Postal de Navidad","Felicitación","Nochebuena","Nochevieja","Año Nuevo","Día de Reyes","Cabalgata","Confeti","Gorro de Papá Noel","Barba blanca","Saco de regalos","Fábrica de juguetes","Polo Norte","Lista de buenos","Deseo","Invierno","Abrigo","Bufanda","Guantes","Gorro de lana","Patinaje sobre hielo","Muñecos de nieve","Reno Rudolph","Nochebuena mágica"]
-  },
-  disney: {
-    nombre: "Personajes Disney", emoji: "🏰", color: "#ec4899",
-    palabras: ["Mickey Mouse","Minnie Mouse","Pato Donald","Daisy","Goofy","Pluto","Blancanieves","Cenicienta","Aurora","Ariel","Bella","Jasmín","Pocahontas","Mulán","Tiana","Rapunzel","Mérida","Elsa","Anna","Olaf","Kristoff","Sven","Moana","Maui","Raya","Aladdín","Genio","Jafar","Yago","Simba","Nala","Mufasa","Scar","Timón","Pumba","Rafiki","Zazú","Bambi","Tambor","Dumbo","Peter Pan","Campanilla","Capitán Garfio","Wendy","Pinocho","Pepito Grillo","Gepetto","Alicia","Sombrerero Loco","Reina de Corazones","Gato de Cheshire","Conejo Blanco","Winnie the Pooh","Tigger","Piglet","Ígor","Lilo","Stitch","Hércules","Megara","Hades","Tarzán","Jane","Quasimodo","Esmeralda","Robin Hood","Baloo","Mowgli","Bagheera","Shere Khan","Kaa","Cruella de Vil","Pongo","Dama","Golfo","Woody","Buzz Lightyear","Jessie","Rex","Hamm","Señor Cara de Papa","Slinky","Forky","Bo Peep","Mr. Increíble","Elastigirl","Dash","Violeta","Jack Jack","Nemo","Marlín","Dory","Mike Wazowski","Sulley","Remy","Wall-E","Eva","Carl","Russell","Vaiana","Bruno","Mirabel","Encanto"]
-  },
-  verano: {
-    nombre: "Verano", emoji: "☀️", color: "#facc15",
-    palabras: ["Playa","Arena","Mar","Ola","Marea","Orilla","Sombrilla","Toalla de playa","Hamaca","Tumbona","Bañador","Biquini","Chanclas","Gafas de sol","Gorra","Sombrero de paja","Crema solar","Bronceado","Flotador","Manguitos","Colchoneta","Gafas de buceo","Tubo de buceo","Aletas","Snorkel","Tabla de surf","Bodyboard","Piragua","Kayak","Barca","Velero","Yate","Patín de pedales","Moto de agua","Boya","Salvavidas","Socorrista","Castillo de arena","Cubo","Pala","Rastrillo","Molde de arena","Concha","Caracola","Estrella de mar","Cangrejo","Pez","Medusa","Delfín","Gaviota","Faro","Muelle","Puerto","Chiringuito","Helado","Polo","Granizado","Horchata","Limonada","Sandía","Melón","Piña","Coco","Fresa","Cereza","Zumo","Batido","Barbacoa","Pícnic","Nevera portátil","Ventilador","Abanico","Aire acondicionado","Piscina","Trampolín","Tobogán acuático","Pistola de agua","Globo de agua","Manguera","Aspersor","Cometa","Pelota de playa","Palas de playa","Frisbee","Camping","Tienda de campaña","Saco de dormir","Hoguera","Linterna","Senderismo","Montaña","Lago","Río","Cascada","Calor","Vacaciones","Verbena","Puesta de sol","Hamaca de red","Pulsera de verano","Chiringuito de playa","Helado de cucurucho"]
-  },
-  superheroes: {
-    nombre: "Superhéroes", emoji: "🦸", color: "#ef4444",
-    palabras: ["Spiderman","Batman","Superman","Iron Man","Hulk","Thor","Capitán América","Viuda Negra","Ojo de Halcón","Nick Fury","Loki","Visión","Bruja Escarlata","Mercurio","Ant-Man","La Avispa","Doctor Strange","Capitana Marvel","Black Panther","Star-Lord","Gamora","Groot","Rocket","Drax","Nébula","Mantis","Falcon","Soldado de Invierno","War Machine","Spider-Gwen","Miles Morales","Daredevil","Jessica Jones","Luke Cage","Puño de Hierro","Punisher","Deadpool","Lobezno","Cíclope","Jean Grey","Fénix","Tormenta","Bestia","Rondador Nocturno","Coloso","Gatasombra","Pícara","Gambito","Mística","Magneto","Profesor X","Hombre de Hielo","Dientes de Sable","Cable","Mr. Fantástico","Mujer Invisible","Antorcha Humana","La Cosa","Silver Surfer","Galactus","Wonder Woman","Flash","Aquaman","Linterna Verde","Cyborg","Robin","Nightwing","Batgirl","Catwoman","Joker","Harley Quinn","Pingüino","Enigma","Dos Caras","Bane","Espantapájaros","Hiedra Venenosa","Mr. Frío","Supergirl","Shazam","Flecha Verde","Canario Negro","Detective Marciano","Hawkman","Zatanna","Darkseid","Lex Luthor","Doomsday","Brainiac","Los Vengadores","Liga de la Justicia","Patrulla X","Hellboy","Los Increíbles","Capitán Trueno","Antifaz","Capa roja","Rayo láser","Supervillano","Base secreta","Poder invisible"]
-  },
-  dibujos: {
-    nombre: "Dibujos animados", emoji: "📺", color: "#14b8a6",
-    palabras: ["Bob Esponja","Patricio","Calamardo","Don Cangrejo","Arenita","Plankton","Gary","Pikachu","Ash","Charmander","Bulbasaur","Squirtle","Bart Simpson","Homer Simpson","Marge Simpson","Lisa Simpson","Maggie","Ned Flanders","Mr. Burns","Scooby-Doo","Shaggy","Velma","Fred","Daphne","Tom","Jerry","Bugs Bunny","Pato Lucas","Piolín","Silvestre","Correcaminos","Coyote","Porky","Taz","Marvin el Marciano","Speedy González","Doraemon","Nobita","Shin-chan","Peppa Pig","George Pig","Pocoyó","Caillou","Heidi","Marco","Vickie el Vikingo","D'Artacán","Los Pitufos","Papá Pitufo","Pitufina","Popeye","Olivia","Garfield","Odie","Pingu","Pedro Picapiedra","Pablo Mármol","Dino","Los Supersónicos","El oso Yogui","Pantera Rosa","Inspector Gadget","Penny","Las Supernenas","Pétalo","Burbuja","Cactus","Johnny Bravo","Dexter","Dee Dee","Tortugas Ninja","Leonardo","Donatello","Miguel Ángel","Rafael","Shredder","Goku","Vegeta","Krilin","Piccolo","Bulma","Naruto","Sasuke","Oliver y Benji","Caballeros del Zodiaco","Gumball","Darwin","Anaïs","Finn","Jake","Steven Universe","Phineas","Ferb","Perry el ornitorrinco","Mortadelo","Filemón","Zipi y Zape","Doraemon gato","Teen Titans","Ben 10","Mort el pingüino"]
-  }
-};
+  const $ = id => document.getElementById(id);
+  FW.screen('home');
 
-/* ============================================================
-   ESTADO
-   ============================================================ */
-let config = { tiempo: 60, invertir: false, sonido: true };
-let juego = {
-  mazo: [], indice: 0, aciertos: 0, resultados: [],
-  tiempoRestante: 0, timerId: null, activo: false,
-  armado: true, baseGz: null, gz: null, neutroDesde: null, usandoTilt: false, wakeLock: null
-};
+  const soundBtn = $('sound');
+  const paintSound = () => soundBtn.textContent = FW.prefs.sound ? '🔊' : '🔇';
+  paintSound();
+  soundBtn.onclick = () => { FW.prefs.sound = !FW.prefs.sound; FW.save(); paintSound(); if (FW.prefs.sound) FW.unlock(); };
 
-/* Detección por gravedad (eje perpendicular a la pantalla, en m/s²).
-   Independiente de cómo se gire el móvil, por eso el signo es estable.
-   Hay que inclinar BASTANTE para que cuente. */
-const UMBRAL = 6;       // ~38° de inclinación para activar un gesto
-const RETORNO = 3;      // margen de "vertical" para rearmar
-const DWELL = 350;      // ms que hay que estar QUIETO en vertical antes de rearmar
-
-/* ============================================================
-   UTILIDADES
-   ============================================================ */
-function mostrar(id) {
-  document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
-  document.getElementById(id).classList.add('activa');
-}
-
-function barajar(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-/* ============================================================
-   SONIDO (WebAudio, sin archivos)
-   ============================================================ */
-let audioCtx = null;
-function beep(freq, dur = 0.12, tipo = 'square') {
-  if (!config.sonido) return;
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = tipo; o.frequency.value = freq;
-    o.connect(g); g.connect(audioCtx.destination);
-    g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.3, audioCtx.currentTime + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
-    o.start(); o.stop(audioCtx.currentTime + dur);
-  } catch(e) {}
-}
-const sonidoAcierto = () => { beep(660, 0.1); setTimeout(() => beep(880, 0.14), 90); };
-const sonidoPasar = () => beep(200, 0.2, 'sawtooth');
-const sonidoTic = () => beep(440, 0.05, 'sine');
-const sonidoFin = () => { beep(523,0.15); setTimeout(()=>beep(392,0.15),150); setTimeout(()=>beep(330,0.3),300); };
-
-/* ============================================================
-   MENÚ DE PAQUETES
-   ============================================================ */
-const contPacks = document.getElementById('packs');
-
-const cartaAzar = document.createElement('button');
-cartaAzar.className = 'pack';
-cartaAzar.style.background = 'linear-gradient(135deg, #f59e0b, #ec4899)';
-cartaAzar.innerHTML = '<span class="emoji">🎲</span><span>¡Al azar!</span>';
-cartaAzar.addEventListener('click', () => {
-  const claves = Object.keys(PAQUETES);
-  iniciarJuego(claves[Math.floor(Math.random() * claves.length)]);
-});
-contPacks.appendChild(cartaAzar);
-
-Object.entries(PAQUETES).forEach(([clave, pack]) => {
-  const btn = document.createElement('button');
-  btn.className = 'pack';
-  btn.style.background = pack.color;
-  btn.innerHTML = `<span class="emoji">${pack.emoji}</span><span>${pack.nombre}</span>`;
-  btn.addEventListener('click', () => iniciarJuego(clave));
-  contPacks.appendChild(btn);
-});
-
-/* ============================================================
-   AJUSTES
-   ============================================================ */
-const tiempoLabel = document.getElementById('tiempoLabel');
-document.getElementById('masTiempo').addEventListener('click', () => {
-  config.tiempo = Math.min(120, config.tiempo + 15);
-  tiempoLabel.textContent = config.tiempo + ' s';
-});
-document.getElementById('menosTiempo').addEventListener('click', () => {
-  config.tiempo = Math.max(30, config.tiempo - 15);
-  tiempoLabel.textContent = config.tiempo + ' s';
-});
-const switchInvertir = document.getElementById('switchInvertir');
-switchInvertir.addEventListener('click', () => {
-  config.invertir = !config.invertir;
-  switchInvertir.classList.toggle('on', config.invertir);
-});
-const switchSonido = document.getElementById('switchSonido');
-switchSonido.addEventListener('click', () => {
-  config.sonido = !config.sonido;
-  switchSonido.classList.toggle('on', config.sonido);
-});
-
-/* ============================================================
-   INICIAR JUEGO
-   ============================================================ */
-async function iniciarJuego(clave) {
-  if (config.sonido) { try { if (!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); audioCtx.resume(); } catch(e){} }
-  await pedirPermisoSensores();
-
-  const pack = PAQUETES[clave];
-  juego.mazo = barajar(pack.palabras);
-  juego.indice = 0;
-  juego.aciertos = 0;
-  juego.resultados = [];
-  juego.tiempoRestante = config.tiempo;
-
-  pedirWakeLock();
-  cuentaAtras(empezarRonda);
-}
-
-/* ============================================================
-   PERMISO SENSORES (iOS 13+)
-   ============================================================ */
-async function pedirPermisoSensores() {
-  if (typeof DeviceMotionEvent !== 'undefined' &&
-      typeof DeviceMotionEvent.requestPermission === 'function') {
-    try {
-      const resp = await DeviceMotionEvent.requestPermission();
-      juego.usandoTilt = (resp === 'granted');
-    } catch(e) { juego.usandoTilt = false; }
-  } else {
-    juego.usandoTilt = true;
-  }
-}
-
-/* ============================================================
-   CUENTA ATRÁS  (acepta una función a ejecutar al terminar)
-   ============================================================ */
-function cuentaAtras(alTerminar) {
-  mostrar('countdown');
-  const numEl = document.getElementById('countNum');
-  let n = 3;
-  const reiniciarAnim = () => { numEl.style.animation = 'none'; void numEl.offsetWidth; numEl.style.animation = ''; };
-  numEl.textContent = n; reiniciarAnim(); sonidoTic();
-  const id = setInterval(() => {
-    n--;
-    if (n > 0) { numEl.textContent = n; reiniciarAnim(); sonidoTic(); }
-    else {
-      clearInterval(id);
-      numEl.textContent = '¡YA!';
-      beep(880, 0.25);
-      setTimeout(alTerminar, 500);
-    }
-  }, 1000);
-}
-
-/* ============================================================
-   RONDA DE JUEGO
-   ============================================================ */
-const gameEl = document.getElementById('game');
-const palabraEl = document.getElementById('palabra');
-const timerEl = document.getElementById('timer');
-const puntosEl = document.getElementById('puntosEnJuego');
-const feedbackEl = document.getElementById('feedback');
-
-function empezarRonda() {
-  mostrar('game');
-  juego.activo = true;
-  juego.armado = true;
-  juego.baseGz = null;
-  juego.gz = null;
-  juego.neutroDesde = null;
-  juego.tiempoRestante = config.tiempo;
-  juego.aciertos = 0;
-  puntosEl.textContent = '✅ 0';
-  actualizarTimer();
-  mostrarPalabra();
-  correrTimer();
-  engancharSensores();
-}
-
-function correrTimer() {
-  clearInterval(juego.timerId);
-  juego.timerId = setInterval(() => {
-    juego.tiempoRestante--;
-    actualizarTimer();
-    if (juego.tiempoRestante <= 5 && juego.tiempoRestante > 0) sonidoTic();
-    if (juego.tiempoRestante <= 0) finRonda();
-  }, 1000);
-}
-
-function engancharSensores() {
-  if (!juego.usandoTilt) return;
-  window.removeEventListener('devicemotion', onMovimiento);
-  window.addEventListener('devicemotion', onMovimiento);
-}
-
-function actualizarTimer() {
-  timerEl.textContent = juego.tiempoRestante;
-  timerEl.style.color = juego.tiempoRestante <= 5 ? '#fca5a5' : '#fff';
-}
-
-function mostrarPalabra() {
-  if (juego.indice >= juego.mazo.length) {
-    juego.mazo = barajar(juego.mazo);
-    juego.indice = 0;
-  }
-  palabraEl.textContent = juego.mazo[juego.indice];
-}
-
-function registrar(ok) {
-  if (!juego.activo) return;
-  const palabra = juego.mazo[juego.indice];
-  juego.resultados.push({ palabra, ok });
-  juego.indice++;
-
-  if (ok) {
-    juego.aciertos++;
-    puntosEl.textContent = '✅ ' + juego.aciertos;
-    flash(gameEl, 'var(--acierto)', '✅ ¡BIEN!');
-    sonidoAcierto();
-    if (navigator.vibrate) navigator.vibrate(60);
-  } else {
-    flash(gameEl, 'var(--pasar)', '⏭️ PASO');
-    sonidoPasar();
-    if (navigator.vibrate) navigator.vibrate([30,40,30]);
-  }
-
-  if (juego.tiempoRestante > 0) mostrarPalabra();
-}
-
-let flashTimeout = null;
-function flash(el, color, texto) {
-  el.style.backgroundColor = color;
-  feedbackEl.textContent = texto;
-  feedbackEl.classList.remove('show'); void feedbackEl.offsetWidth; feedbackEl.classList.add('show');
-  clearTimeout(flashTimeout);
-  flashTimeout = setTimeout(() => { el.style.backgroundColor = ''; }, 450);
-}
-
-/* ============================================================
-   DETECCIÓN DE INCLINACIÓN
-   ============================================================ */
-function onMovimiento(e) {
-  if (!juego.activo) return;
-  const g = e.accelerationIncludingGravity;
-  if (!g || g.z == null) return;
-
-  // Suavizado (filtro paso bajo) para quitar el temblor de la mano.
-  juego.gz = (juego.gz === null) ? g.z : juego.gz * 0.8 + g.z * 0.2;
-  const val = juego.gz;
-
-  if (juego.baseGz === null) { juego.baseGz = val; return; }
-
-  const delta = val - juego.baseGz;
-
-  if (juego.armado) {
-    if (delta > UMBRAL)       { juego.armado = false; juego.neutroDesde = null; accionTilt(true); }
-    else if (delta < -UMBRAL) { juego.armado = false; juego.neutroDesde = null; accionTilt(false); }
-  } else {
-    // Rearmar solo tras permanecer QUIETO cerca de la vertical un instante.
-    // Así el movimiento de recolocar el móvil (que pasa por el centro pero
-    // no se detiene) no cuenta como respuesta. Al rearmar recentramos la
-    // referencia en esa posición neutra para absorber el movimiento de la cabeza.
-    if (Math.abs(delta) < RETORNO) {
-      if (juego.neutroDesde === null) {
-        juego.neutroDesde = performance.now();
-      } else if (performance.now() - juego.neutroDesde >= DWELL) {
-        juego.armado = true;
-        juego.baseGz = val;
-        juego.neutroDesde = null;
-      }
-    } else {
-      juego.neutroDesde = null; // salió del centro: reinicia el conteo de reposo
-    }
-  }
-}
-
-function accionTilt(positivo) {
-  const esAcierto = config.invertir ? positivo : !positivo;
-  registrar(esAcierto);
-}
-
-/* ============================================================
-   FALLBACK TÁCTIL (toca abajo = acierto, arriba = pasar)
-   ============================================================ */
-gameEl.addEventListener('click', (e) => {
-  if (!juego.activo) return;
-  const abajo = e.clientY > window.innerHeight / 2;
-  const esAcierto = config.invertir ? !abajo : abajo;
-  registrar(esAcierto);
-});
-
-/* ============================================================
-   PAUSA
-   ============================================================ */
-const btnPausa = document.getElementById('btnPausa');
-btnPausa.addEventListener('click', (e) => { e.stopPropagation(); pausar(); });
-
-function pausar() {
-  if (!juego.activo) return;
-  juego.activo = false;
-  clearInterval(juego.timerId);
-  window.removeEventListener('devicemotion', onMovimiento);
-  mostrar('pause');
-}
-
-document.getElementById('btnContinuar').addEventListener('click', () => {
-  cuentaAtras(() => {
-    mostrar('game');
-    juego.activo = true;
-    juego.armado = true;
-    juego.baseGz = null;
-    juego.gz = null;
-    juego.neutroDesde = null;
-    correrTimer();
-    engancharSensores();
-  });
-});
-
-document.getElementById('btnSalirMenu').addEventListener('click', salirAlMenu);
-
-function salirAlMenu() {
-  juego.activo = false;
-  clearInterval(juego.timerId);
-  window.removeEventListener('devicemotion', onMovimiento);
-  liberarWakeLock();
-  mostrar('home');
-}
-
-/* ============================================================
-   FIN DE RONDA
-   ============================================================ */
-function finRonda() {
-  juego.activo = false;
-  clearInterval(juego.timerId);
-  window.removeEventListener('devicemotion', onMovimiento);
-  sonidoFin();
-  liberarWakeLock();
-  mostrarResultados();
-}
-
-function mostrarResultados() {
-  document.getElementById('puntuacionFinal').textContent = juego.aciertos;
-  const titulo = document.getElementById('tituloResultado');
-  if (juego.aciertos >= 15) titulo.textContent = '¡INCREÍBLE! 🏆';
-  else if (juego.aciertos >= 8) titulo.textContent = '¡Muy bien! 🎉';
-  else titulo.textContent = '¡Se acabó el tiempo! ⏰';
-
-  const lista = document.getElementById('listaPalabras');
-  lista.innerHTML = '';
-  if (juego.resultados.length === 0) {
-    lista.innerHTML = '<div class="item">No dio tiempo a nada 😅</div>';
-  }
-  juego.resultados.forEach(r => {
-    const div = document.createElement('div');
-    div.className = 'item';
-    div.textContent = `${r.ok ? '✅' : '⏭️'} ${r.palabra}`;
-    lista.appendChild(div);
-  });
-  mostrar('result');
-}
-
-document.getElementById('btnOtraVez').addEventListener('click', async () => {
-  await pedirPermisoSensores();
-  pedirWakeLock();
-  cuentaAtras(empezarRonda);
-});
-document.getElementById('btnInicio').addEventListener('click', () => mostrar('home'));
-
-/* ============================================================
-   WAKE LOCK (pantalla encendida)
-   ============================================================ */
-async function pedirWakeLock() {
-  try { if ('wakeLock' in navigator) juego.wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
-}
-function liberarWakeLock() {
-  try { if (juego.wakeLock) { juego.wakeLock.release(); juego.wakeLock = null; } } catch(e) {}
-}
+  $('help').onclick = () => FW.screen('ayuda');
+  $('cerrarAyuda').onclick = () => FW.screen('home');
+  $('goBomba').onclick = () => { FW.unlock(); location.href = './bomba.html'; };
+  $('goMimica').onclick = () => { FW.unlock(); location.href = './mimica.html'; };
+  $('random').onclick = () => { FW.unlock(); FW.randomGame(['./bomba.html', './mimica.html']); };
 </script>
 </body>
 </html>
