@@ -1,9 +1,36 @@
 #!/bin/sh
-# Bloquea commits directos en main (producción). Trabaja en dev.
+# 1) Bloquea commits directos en main (producción). Trabaja en dev.
 branch=$(git symbolic-ref --short HEAD 2>/dev/null)
 if [ "$branch" = "main" ]; then
   echo "⛔ Commit directo en 'main' bloqueado. Trabaja en 'dev' y promociona con un PR."
   echo "   Excepción puntual: git commit --no-verify"
   exit 1
 fi
+
+# 2) Escáner de secretos: inspecciona SOLO las líneas añadidas (staged) y bloquea
+#    si aparece el VALOR de una credencial. Se excluyen los archivos de infra
+#    (.githooks, .gitignore) porque contienen estos mismos patrones a propósito.
+#    Los placeholders ${{ secrets.* }} no coinciden (buscamos valores, no nombres).
+added=$(git diff --cached --no-color --unified=0 -- . ':(exclude).githooks' ':(exclude).gitignore' \
+  | grep -E '^\+' | grep -vE '^\+\+\+')
+
+# Credenciales con formato conocido (token Cloudflare, clave privada, AWS, GitHub, Slack).
+known='cfut_[A-Za-z0-9_-]{20,}|-----BEGIN[[:space:]][A-Z[:space:]]*PRIVATE[[:space:]]KEY-----|AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{10,}'
+hits=$(printf '%s\n' "$added" | grep -nE -- "$known")
+
+# Asignación genérica de un valor largo a una variable sensible (excluye placeholders).
+generic=$(printf '%s\n' "$added" \
+  | grep -inE -- '(api[_-]?key|secret|token|password|passwd|pwd)[[:space:]]*[:=][[:space:]]*["'\'']?[A-Za-z0-9_/+-]{16,}' \
+  | grep -vE '\$\{\{|secrets\.|process\.env|import\.meta\.env|REPLACE|example|changeme|xxxx|<[^>]+>')
+
+if [ -n "$hits" ] || [ -n "$generic" ]; then
+  echo "⛔ Posible SECRETO en el commit. Revisa estas líneas:"
+  [ -n "$hits" ] && printf '%s\n' "$hits"
+  [ -n "$generic" ] && printf '%s\n' "$generic"
+  echo ""
+  echo "   Los secretos van en GitHub Actions o 'wrangler secret put ... --env', NUNCA en git."
+  echo "   Si es un falso positivo: git commit --no-verify"
+  exit 1
+fi
+
 exit 0

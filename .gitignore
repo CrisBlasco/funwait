@@ -3,3 +3,13 @@ node_modules/
 .DS_Store
 *.log
 .claude/settings.local.json
+
+# Secretos locales (NUNCA deben subir)
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+*.local
+secrets.*
+*.pem
+*.key

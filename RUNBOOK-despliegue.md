@@ -54,6 +54,11 @@ git config core.hooksPath .githooks
 chmod +x .githooks/*
 ```
 
+El `pre-commit` hace dos cosas: bloquea commits en `main` y **escanea las líneas
+añadidas en busca de secretos** (tokens Cloudflare `cfut_`, claves privadas, PAT de
+GitHub, asignaciones tipo `TOKEN=valor`…). Si salta un falso positivo: `git commit --no-verify`.
+Además, `.gitignore` ignora los archivos de secretos locales (`.dev.vars`, `.env*`, `*.key`…).
+
 ### 2. Secretos de deploy en GitHub Actions
 
 Settings → Secrets and variables → Actions → New repository secret, o por CLI:
