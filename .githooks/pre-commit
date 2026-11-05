@@ -1,0 +1,9 @@
+#!/bin/sh
+# Bloquea commits directos en main (producción). Trabaja en dev.
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+if [ "$branch" = "main" ]; then
+  echo "⛔ Commit directo en 'main' bloqueado. Trabaja en 'dev' y promociona con un PR."
+  echo "   Excepción puntual: git commit --no-verify"
+  exit 1
+fi
+exit 0

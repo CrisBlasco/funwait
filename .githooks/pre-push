@@ -1,0 +1,12 @@
+#!/bin/sh
+# Bloquea push a main (producción). A producción solo se llega por PR dev → main.
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main)
+      echo "⛔ Push a 'main' (producción) bloqueado. Abre un PR 'dev → main'."
+      echo "   Excepción puntual: git push --no-verify"
+      exit 1
+      ;;
+  esac
+done
+exit 0
