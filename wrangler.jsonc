@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   // Config base = desarrollo local (wrangler dev). Cada entorno de deploy
   // vive en su propio bloque dentro de "env" y se elige con --env.
-  "name": "mimica-loca",
+  "name": "funwait",
   "compatibility_date": "2026-10-23",
   "observability": {
     "enabled": true
@@ -16,7 +16,7 @@
   "env": {
     // STAGING → wrangler deploy --env dev  (push a la rama dev)
     "dev": {
-      "name": "mimica-loca-dev",
+      "name": "funwait-dev",
       "observability": {
         "enabled": true
       },
@@ -26,9 +26,8 @@
     },
 
     // PRODUCCIÓN → wrangler deploy --env production  (merge a la rama main)
-    // Conserva el nombre "mimica-loca" para no cambiar la URL ya existente.
     "production": {
-      "name": "mimica-loca",
+      "name": "funwait",
       "observability": {
         "enabled": true
       },

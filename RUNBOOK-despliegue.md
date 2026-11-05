@@ -5,8 +5,8 @@ calidad. Basado en `Modelo-Entornos-y-Despliegue-Portable.md`.
 
 | Rama | Entorno | Worker (Cloudflare) | Se despliega… |
 |---|---|---|---|
-| `dev` (por defecto) | **staging** | `mimica-loca-dev` | en cada push a `dev` |
-| `main` (protegida) | **producción** | `mimica-loca` | en cada merge a `main` |
+| `dev` (por defecto) | **staging** | `funwait-dev` | en cada push a `dev` |
+| `main` (protegida) | **producción** | `funwait` | en cada merge a `main` |
 
 ```
 local ──push──▶ dev ──deploy──▶ STAGING ──pruebas OK──▶ PR dev→main ──merge (humano)──▶ main ──deploy──▶ PRODUCCIÓN
@@ -81,8 +81,8 @@ Settings → Branches → Add rule, patrón `main`:
 
 ### 4. Primer despliegue de staging
 
-Tras configurar los secretos, el primer `push` a `dev` crea el Worker `mimica-loca-dev`
-y da su URL `https://mimica-loca-dev.<subdominio>.workers.dev`.
+Tras configurar los secretos, el primer `push` a `dev` crea el Worker `funwait-dev`
+y da su URL `https://funwait-dev.<subdominio>.workers.dev`.
 
 ---
 
@@ -90,3 +90,15 @@ y da su URL `https://mimica-loca-dev.<subdominio>.workers.dev`.
 
 - **Alta de dominios/DNS** y provisión inicial de cada Worker: una vez, al montar el entorno.
 - No hay base de datos ni migraciones de esquema en este proyecto.
+
+## Nota de migración (worker antiguo)
+
+Antes, producción se desplegaba a mano como el Worker **`mimica-loca`**. Al renombrar a
+`funwait`, el primer deploy de producción crea un Worker **nuevo** (`funwait`) y el viejo
+`mimica-loca` queda **huérfano** (deja de actualizarse). Cuando valides que `funwait` sirve
+bien, borra el antiguo para no dejar una URL vieja viva:
+
+```sh
+npx wrangler delete --name mimica-loca
+```
+

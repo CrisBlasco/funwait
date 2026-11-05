@@ -25,8 +25,8 @@ Abre la URL que indica Wrangler. Para probar en el móvil con sensores necesitas
 
 El despliegue está automatizado con GitHub Actions. **No se despliega a mano**:
 
-- Push a **`dev`** → despliega a **staging** (`mimica-loca-dev`).
-- Merge de un PR a **`main`** → despliega a **producción** (`mimica-loca`).
+- Push a **`dev`** → despliega a **staging** (`funwait-dev`).
+- Merge de un PR a **`main`** → despliega a **producción** (`funwait`).
 
 Nada sale sin pasar la puerta de calidad (`npm run check`). El detalle completo del
 flujo, los secretos y los pasos manuales está en **`RUNBOOK-despliegue.md`**.
