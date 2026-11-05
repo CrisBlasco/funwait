@@ -1,15 +1,33 @@
-# 🎉 ¡Mímica Loca!
+# 🎉 FunWait · La cola también se juega
 
-Juego de mímica para jugar en el navegador del móvil (estilo *Heads Up!*), sin app nativa.
-Pon el móvil en la frente, **inclínalo hacia abajo si lo adivinan** y **hacia arriba para pasar**.
+Colección de **minijuegos para el móvil** pensados para pasar el rato en las colas:
+elige uno, os pasáis el teléfono y a reír. Sin app nativa, funciona en el navegador.
 
-Ideal para pasar el rato con los niños mientras haces cola en un parque temático 😉
+Ideal para entretener a los niños mientras hacéis cola en un parque temático 😉
 
-- 8 paquetes de palabras para niños (~10 años): objetos, animales, herramientas,
-  profesiones, Halloween, Navidad, personajes Disney y verano.
-- Usa los sensores de inclinación del navegador (`deviceorientation`).
-- Si no hay sensores (o en el ordenador), funciona tocando: **abajo = acierto**, **arriba = pasar**.
-- Temporizador ajustable, sonidos, vibración y pantalla que no se apaga.
+## Juegos
+
+- **💣 La Bomba** (3–8 jugadores, rápido). Por turnos decís una palabra del tema y os
+  pasáis el móvil; pierde quien lo tenga cuando explota.
+- **🎭 Mímica Express** (todos, creativo). Móvil en la frente: los demás hacen mímica.
+  **Inclina hacia abajo si lo adivinan** y **hacia arriba para pasar**. Si no hay sensores
+  de inclinación (o en el ordenador), funciona tocando: **abajo = acierto**, **arriba = pasar**.
+- **🎲 Modo aleatorio** para que elija por vosotros.
+- Más juegos muy pronto 😜
+
+Extras comunes: temporizador ajustable, sonidos, vibración y pantalla que no se apaga.
+
+## Estructura
+
+Sitio estático servido por **Cloudflare Workers con static assets**. Todo vive en `public/`:
+
+```
+public/
+  index.html     # hub de FunWait (elige juego)
+  mimica.html    # Mímica Express
+  bomba.html     # La Bomba
+  css/ js/ fonts/ assets/   # design system compartido (FunWait)
+```
 
 ## Probar en local
 
@@ -18,24 +36,26 @@ npm install
 npm run dev
 ```
 
-Abre la URL que indica Wrangler. Para probar en el móvil con sensores necesitas HTTPS
-(lo da Cloudflare al desplegar; en local solo funcionará el modo táctil).
+Abre la URL que indica Wrangler. Para probar en el móvil con sensores de inclinación
+necesitas HTTPS (lo da Cloudflare al desplegar; en local solo funcionará el modo táctil).
 
 ## Despliegue (automático: dos ramas → dos entornos)
 
 El despliegue está automatizado con GitHub Actions. **No se despliega a mano**:
 
-- Push a **`dev`** → despliega a **staging** (`funwait-dev`).
-- Merge de un PR a **`main`** → despliega a **producción** (`funwait`).
+- Push a **`dev`** → despliega a **staging** (worker `funwait-dev`).
+- Merge de un PR a **`main`** → despliega a **producción** (worker `funwait`).
 
-Nada sale sin pasar la puerta de calidad (`npm run check`). El detalle completo del
-flujo, los secretos y los pasos manuales está en **`RUNBOOK-despliegue.md`**.
+Nada sale sin pasar la puerta de calidad (`npm run check`). El detalle completo del flujo,
+los secretos y los pasos manuales está en **`RUNBOOK-despliegue.md`**, y las reglas del
+proceso en **`CLAUDE.md`**.
 
 Ciclo típico:
 
 ```bash
 git switch dev
-# ...editar public/index.html, public/mimica.html, etc...
+# ...editar public/index.html, public/mimica.html, public/bomba.html...
+npm run check                  # validar antes de subir
 git add -A && git commit -m "feat: ..."
 git push origin dev            # → CI: calidad → deploy a STAGING
 # probar en staging y, si va bien, abrir y mergear un PR dev → main
