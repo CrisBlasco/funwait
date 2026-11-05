@@ -4,6 +4,10 @@ node_modules/
 *.log
 .claude/settings.local.json
 
+# Documentos de trabajo interno (ideas, debates, revisiones de palabras…)
+# Todo lo interno va aquí y NUNCA se sube al remoto.
+notas/
+
 # Secretos locales (NUNCA deben subir)
 .dev.vars
 .dev.vars.*
