@@ -23,8 +23,6 @@
   #temaBox .txt { font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(1.4rem, 7vw, 2.2rem); line-height: 1.1; }
   #bombaWrap { position: relative; display: flex; align-items: center; justify-content: center; }
   #bomba { font-size: clamp(7rem, 42vw, 15rem); line-height: 1; will-change: transform; }
-  #chispa { position: absolute; top: 2%; right: 16%; font-size: clamp(2.2rem, 13vw, 4.6rem); animation: chispa .25s infinite alternate; }
-  @keyframes chispa { from { transform: scale(.85) rotate(-8deg); } to { transform: scale(1.15) rotate(8deg); } }
   .pista { position: absolute; bottom: calc(var(--fw-safe-b) + 18px); color: var(--fw-paper); font-family: var(--fw-font-display); font-weight: 600; font-size: clamp(1rem, 4.5vw, 1.3rem); opacity: .95; padding: 0 24px; }
 
   /* BOOM cómic */
@@ -114,7 +112,7 @@
   <!-- JUEGO -->
   <section id="game" class="fw-screen">
     <div id="temaBox"><span class="et">TEMA</span><span class="txt" id="temaTxt">…</span></div>
-    <div id="bombaWrap"><div id="bomba">💣</div><div id="chispa">🔥</div></div>
+    <div id="bombaWrap"><div id="bomba">💣</div></div>
     <div class="pista">Di una palabra y ¡pasa rápido! 🔄</div>
   </section>
 
