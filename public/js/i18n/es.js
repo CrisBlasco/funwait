@@ -71,4 +71,27 @@ window.FW_I18N = {
   'mimica.result.words': '📝 Ver palabras ({n})',
   'mimica.result.none': 'No dio tiempo 😅',
   'mimica.words.title': 'Palabras',
+
+  /* ---------- La Bomba ---------- */
+  'bomba.title': 'La Bomba · FunWait',
+  'bomba.heading': '💣 La Bomba',
+  'bomba.tagline': 'Decid una palabra del tema y pasad el móvil',
+  'bomba.loadError': 'No se han podido cargar los temas. Revisa la conexión.',
+  'bomba.options.min': '⏱️ Explota entre (mín)',
+  'bomba.options.max': '⏱️ y (máx)',
+  'bomba.rules.step1': 'Lee el tema en alto.',
+  'bomba.rules.step2': 'Di una palabra válida de ese tema.',
+  'bomba.rules.step3': 'Pasa el móvil al de al lado… ¡antes de que explote!',
+  'bomba.rules.note': '🔁 Seguid jugando rondas hasta que solo quede un jugador: ¡el ganador!',
+  'bomba.round.valid': 'PALABRAS VÁLIDAS',
+  'bomba.round.start': '🚀 ¡Empezar!',
+  'bomba.round.back': '↩️ Elegir otro',
+  'bomba.countdown': '¡Preparados! 💣<br>El primero coge el móvil',
+  'bomba.game.topic': 'TEMA',
+  'bomba.game.hint': 'Di una palabra y ¡pasa rápido! 🔄',
+  'bomba.boom.loser': 'Pierde quien tuviera el móvil 🙈',
+  'bomba.boom.change': '🎯 Cambiar tema',
+
+  /* ---------- Cuenta atrás compartida ---------- */
+  'countdown.go': '¡YA!',
 };

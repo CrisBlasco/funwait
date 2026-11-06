@@ -70,7 +70,7 @@ window.FW = (function () {
     const id = setInterval(() => {
       n--;
       if (n > 0) { numEl.textContent = n; anim(); audio.cuenta(440); }
-      else { clearInterval(id); numEl.textContent = '¡YA!'; anim(); audio.cuenta(660); setTimeout(onDone, 450); }
+      else { clearInterval(id); numEl.textContent = t('countdown.go'); anim(); audio.cuenta(660); setTimeout(onDone, 450); }
     }, 1000);
     return () => clearInterval(id);
   }
