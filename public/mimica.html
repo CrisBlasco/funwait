@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <meta name="theme-color" content="#F4F6F8" />
-<title>Mímica Express · FunWait</title>
+<title data-i18n="mimica.title">Mímica Express · FunWait</title>
 <link rel="icon" href="./assets/logo.svg" />
 <link rel="stylesheet" href="./css/funwait.css" />
 <style>
@@ -38,87 +38,87 @@
   <!-- HOME: elegir paquete -->
   <section id="home" class="fw-screen fw-screen--scroll">
     <div class="fw-topbar">
-      <a class="fw-icon-btn fw-back" href="./index.html" aria-label="Menú"></a>
+      <a class="fw-icon-btn fw-back" href="./index.html" data-i18n-aria-label="common.menu"></a>
       <div class="fw-topbar-actions">
-        <button class="fw-icon-btn" id="opcionesBtn" aria-label="Opciones">⚙️</button>
+        <button class="fw-icon-btn" id="opcionesBtn" data-i18n-aria-label="common.options">⚙️</button>
       </div>
     </div>
     <div style="height: 50px"></div>
-    <h1 class="fw-h1">🎭 Mímica Express</h1>
-    <p class="fw-mute" style="margin: 4px 0 16px">Móvil en la frente · inclina para jugar</p>
+    <h1 class="fw-h1" data-i18n="mimica.heading"></h1>
+    <p class="fw-mute" style="margin: 4px 0 16px" data-i18n="mimica.tagline"></p>
     <div id="packsEstado" role="status">
-      <p class="fw-mute" id="packsMsg">Cargando…</p>
-      <button class="fw-btn" id="packsRetry" hidden>🔁 Reintentar</button>
+      <p class="fw-mute" id="packsMsg"></p>
+      <button class="fw-btn" id="packsRetry" data-i18n="common.retry" hidden></button>
     </div>
     <div class="fw-grid" id="packs"></div>
   </section>
 
   <!-- OPCIONES -->
   <section id="opciones" class="fw-screen fw-screen--scroll">
-    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="opcVolver" aria-label="Volver"></button><div class="fw-topbar-actions"></div></div>
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="opcVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
     <div style="height: 50px"></div>
-    <h1 class="fw-h1">⚙️ Opciones</h1>
+    <h1 class="fw-h1" data-i18n="common.options.title"></h1>
     <div class="fw-panel" style="margin-top: 18px">
-      <div class="fw-row"><span>🔊 Sonido</span><div class="fw-switch" id="swSonido"></div></div>
-      <div class="fw-row"><span>⏱️ Tiempo por ronda</span>
-        <div class="fw-controls"><button class="fw-stepper" id="tMenos">−</button><span id="tLabel" style="min-width: 64px">60 s</span><button class="fw-stepper" id="tMas">+</button></div>
+      <div class="fw-row"><span data-i18n="common.sound"></span><div class="fw-switch" id="swSonido"></div></div>
+      <div class="fw-row"><span data-i18n="mimica.options.time"></span>
+        <div class="fw-controls"><button class="fw-stepper" id="tMenos" data-i18n-aria-label="common.decrease">−</button><span id="tLabel" style="min-width: 64px"></span><button class="fw-stepper" id="tMas" data-i18n-aria-label="common.increase">+</button></div>
       </div>
-      <div class="fw-row"><span>🔄 Invertir inclinación</span><div class="fw-switch" id="swInv"></div></div>
+      <div class="fw-row"><span data-i18n="mimica.options.invert"></span><div class="fw-switch" id="swInv"></div></div>
     </div>
-    <button class="fw-btn fw-btn--primary" id="opcHecho" style="margin-top: 18px">✓ Hecho</button>
+    <button class="fw-btn fw-btn--primary" id="opcHecho" style="margin-top: 18px" data-i18n="common.done"></button>
   </section>
 
   <!-- REGLAS -->
   <section id="reglas" class="fw-screen">
     <div class="fw-card fw-rules">
       <div class="ilu">🙆📱🙆‍♀️</div>
-      <h2 class="fw-h2">Cómo se juega</h2>
+      <h2 class="fw-h2" data-i18n="common.rules.title"></h2>
       <ol>
-        <li><span>Ponte el móvil en la frente, sin mirar la pantalla.</span></li>
-        <li><span>Los demás te hacen <b>mímica</b> de la palabra.</span></li>
-        <li><span>Inclina <b>abajo si aciertas</b> y <b>arriba para pasar</b>.</span></li>
+        <li><span data-i18n="mimica.rules.step1"></span></li>
+        <li><span data-i18n-html="mimica.rules.step2"></span></li>
+        <li><span data-i18n-html="mimica.rules.step3"></span></li>
       </ol>
-      <button class="fw-btn fw-btn--primary fw-btn--xl" id="empezar">¡Empezar ya!</button>
-      <label class="no-repetir"><input type="checkbox" id="noRep" /> No volver a mostrar</label>
+      <button class="fw-btn fw-btn--primary fw-btn--xl" id="empezar" data-i18n="common.rules.start"></button>
+      <label class="no-repetir"><input type="checkbox" id="noRep" /> <span data-i18n="common.rules.noRepeat"></span></label>
     </div>
   </section>
 
   <!-- CUENTA ATRÁS -->
   <section id="countdown" class="fw-screen" style="background: var(--fw-blue); color: var(--fw-paper)">
-    <p class="fw-h2" style="margin-bottom: 10px">📱 Móvil en la frente</p>
+    <p class="fw-h2" style="margin-bottom: 10px" data-i18n="mimica.countdown"></p>
     <div class="fw-countdown-num" id="countNum">3</div>
   </section>
 
   <!-- JUEGO -->
   <section id="game" class="fw-screen">
     <div class="game-top">
-      <button class="fw-icon-btn" id="pausaBtn" aria-label="Pausa">⏸</button>
+      <button class="fw-icon-btn" id="pausaBtn" data-i18n-aria-label="mimica.pause">⏸</button>
       <div id="timer">60</div>
       <div id="score">✅ 0</div>
     </div>
     <div class="tema-chip" id="temaChip"></div>
     <div class="palabra-wrap"><div id="palabra">…</div></div>
-    <div class="ayuda-gestos">⬇️ acierto · ⬆️ pasar · (o toca abajo/arriba)</div>
+    <div class="ayuda-gestos" data-i18n="mimica.game.help"></div>
     <div id="feedback"></div>
   </section>
 
   <!-- PAUSA -->
   <section id="pause" class="fw-screen" style="background: rgba(16,24,40,.96); color: var(--fw-paper)">
-    <h2 class="fw-h1">⏸ Pausa</h2>
-    <button class="fw-btn fw-btn--success fw-btn--block" id="seguir">▶ Continuar</button>
-    <button class="fw-btn fw-btn--ghost fw-btn--block" id="salir">Salir al menú</button>
+    <h2 class="fw-h1" data-i18n="mimica.pause.title"></h2>
+    <button class="fw-btn fw-btn--success fw-btn--block" id="seguir" data-i18n="mimica.pause.resume"></button>
+    <button class="fw-btn fw-btn--ghost fw-btn--block" id="salir" data-i18n="mimica.pause.exit"></button>
   </section>
 
   <!-- RESULTADO -->
   <section id="result" class="fw-screen" style="background: var(--fw-blue); color: var(--fw-paper)">
-    <h2 class="fw-h1" id="rTitulo">¡Se acabó!</h2>
+    <h2 class="fw-h1" id="rTitulo"></h2>
     <div class="fw-display" id="rScore" style="color: var(--fw-yellow)">0</div>
-    <p style="font-weight: 600; margin: 0 0 14px">aciertos 🎉</p>
+    <p style="font-weight: 600; margin: 0 0 14px" id="rAciertos"></p>
     <div>
-      <button class="fw-btn fw-btn--success" id="otra">🔁 Otra vez</button>
-      <a class="fw-btn fw-btn--ghost" href="./index.html">🏠 Menú</a>
+      <button class="fw-btn fw-btn--success" id="otra" data-i18n="common.playAgain"></button>
+      <a class="fw-btn fw-btn--ghost" href="./index.html" data-i18n="mimica.result.menu"></a>
     </div>
-    <button class="fw-btn fw-btn--ghost fw-btn--block" id="verPalabras" style="margin-top: 8px">📝 Ver palabras</button>
+    <button class="fw-btn fw-btn--ghost fw-btn--block" id="verPalabras" style="margin-top: 8px"></button>
   </section>
 
 </div>
@@ -127,12 +127,13 @@
 <div class="fw-drawer-backdrop" id="drawerBg"></div>
 <div class="fw-drawer" id="drawer">
   <div class="fw-drawer-handle"></div>
-  <div class="fw-drawer-head"><h2 class="fw-h2">Palabras</h2><button class="fw-icon-btn" id="drawerClose" aria-label="Cerrar">✕</button></div>
+  <div class="fw-drawer-head"><h2 class="fw-h2" data-i18n="mimica.words.title"></h2><button class="fw-icon-btn" id="drawerClose" data-i18n-aria-label="common.close">✕</button></div>
   <div class="fw-drawer-body"><div class="lista" id="lista"></div></div>
 </div>
 
 <div class="fw-flash" id="flash"></div>
 
+<script src="./js/i18n/es.js"></script>
 <script src="./js/funwait.js"></script>
 <script>
 const UMBRAL = 6, RETORNO = 3, DWELL = 350;
@@ -148,17 +149,17 @@ const gameEl = $('game'), palabraEl = $('palabra'), timerEl = $('timer'), scoreE
 const packsEl = $('packs');
 function pintarPaquetes(paquetes) {
   packsEl.replaceChildren(
-    FW.tile('🎲', '¡Al azar!', null, () => elegir(FW.shuffle(paquetes)[0])),
+    FW.tile('🎲', FW.t('common.random'), null, () => elegir(FW.shuffle(paquetes)[0])),
     ...paquetes.map(p => FW.tile(p.emoji, p.nombre, p.color, () => elegir(p)))
   );
 }
 async function cargarPaquetes() {
-  $('packsEstado').hidden = false; $('packsMsg').textContent = 'Cargando…'; $('packsRetry').hidden = true;
+  $('packsEstado').hidden = false; $('packsMsg').textContent = FW.t('common.loading'); $('packsRetry').hidden = true;
   try {
     pintarPaquetes((await FW.loadContent('mimica')).paquetes);
     $('packsEstado').hidden = true;
   } catch (e) {
-    $('packsMsg').textContent = 'No se han podido cargar los paquetes. Revisa la conexión.';
+    $('packsMsg').textContent = FW.t('mimica.loadError');
     $('packsRetry').hidden = false;
   }
 }
@@ -166,7 +167,7 @@ $('packsRetry').onclick = cargarPaquetes;
 
 /* ---------- ajustes ---------- */
 const tLabel = $('tLabel'), swInv = $('swInv');
-function pintarCfg() { tLabel.textContent = config.tiempo + ' s'; swInv.classList.toggle('is-on', config.invertir); }
+function pintarCfg() { tLabel.textContent = FW.t('common.seconds', { n: config.tiempo }); swInv.classList.toggle('is-on', config.invertir); }
 pintarCfg();
 $('tMas').onclick = () => { config.tiempo = Math.min(120, config.tiempo + 15); pintarCfg(); guardarCfg(); };
 $('tMenos').onclick = () => { config.tiempo = Math.max(30, config.tiempo - 15); pintarCfg(); guardarCfg(); };
@@ -227,8 +228,8 @@ function registrar(ok) {
   if (!juego.activo) return;
   const palabra = juego.mazo[juego.indice];
   juego.resultados.push({ palabra, ok }); juego.indice++;
-  if (ok) { juego.aciertos++; scoreEl.textContent = '✅ ' + juego.aciertos; flash('var(--fw-green)', '✅ ¡BIEN!', 'var(--fw-green-dark)'); FW.audio.acierto(); FW.haptic(60); }
-  else { flash('var(--fw-pink)', '⏭️ PASO', 'var(--fw-pink-dark)'); FW.audio.pasar(); FW.haptic([30, 40, 30]); }
+  if (ok) { juego.aciertos++; scoreEl.textContent = '✅ ' + juego.aciertos; flash('var(--fw-green)', FW.t('mimica.game.correct'), 'var(--fw-green-dark)'); FW.audio.acierto(); FW.haptic(60); }
+  else { flash('var(--fw-pink)', FW.t('mimica.game.pass'), 'var(--fw-pink-dark)'); FW.audio.pasar(); FW.haptic([30, 40, 30]); }
   if (juego.tiempoRestante > 0) mostrarPalabra();
 }
 let flashT = null;
@@ -288,11 +289,13 @@ function finRonda() {
 }
 function mostrarResultados() {
   $('rScore').textContent = juego.aciertos;
-  $('rTitulo').textContent = juego.aciertos >= 15 ? '¡INCREÍBLE! 🏆' : juego.aciertos >= 8 ? '¡Muy bien! 🎉' : '¡Se acabó! ⏰';
-  const lista = $('lista'); lista.innerHTML = '';
-  if (!juego.resultados.length) lista.innerHTML = '<div class="item">No dio tiempo 😅</div>';
-  juego.resultados.forEach(r => { const d = document.createElement('div'); d.className = 'item'; d.textContent = (r.ok ? '✅ ' : '⏭️ ') + r.palabra; lista.appendChild(d); });
-  $('verPalabras').textContent = '📝 Ver palabras (' + juego.resultados.length + ')';
+  $('rAciertos').textContent = FW.tn('mimica.result.hits', juego.aciertos);
+  $('rTitulo').textContent = juego.aciertos >= 15 ? FW.t('mimica.result.great') : juego.aciertos >= 8 ? FW.t('mimica.result.good') : FW.t('mimica.result.end');
+  const lista = $('lista'); lista.replaceChildren();
+  const item = txt => { const d = document.createElement('div'); d.className = 'item'; d.textContent = txt; lista.appendChild(d); };
+  if (!juego.resultados.length) item(FW.t('mimica.result.none'));
+  juego.resultados.forEach(r => item((r.ok ? '✅ ' : '⏭️ ') + r.palabra));
+  $('verPalabras').textContent = FW.t('mimica.result.words', { n: juego.resultados.length });
   cerrarDrawer();
   FW.screen('result');
 }
