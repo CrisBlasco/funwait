@@ -25,7 +25,7 @@ window.FW_I18N = {
   'hub.about.bomba': '<b>💣 La Bomba:</b> decid por turnos una palabra del tema y pasad el móvil; pierde quien lo tenga cuando explota.',
   'hub.about.mimica': '<b>🎭 Mímica Express:</b> móvil en la frente, los demás hacen mímica; inclina para acertar o pasar.',
   'hub.about.close': '¡Entendido!',
-  'hub.install.ios': '<b>📲 Instálala en tu iPhone:</b> en Safari, pulsa Compartir y luego «Añadir a pantalla de inicio».',
+  'hub.install.ios': '<b>📲 Instálala en tu iPhone:</b> en Safari, pulsa Compartir y luego «Añadir a pantalla de inicio». Se abre como una app y funciona sin conexión.',
 
   /* ---------- Común a los juegos ---------- */
   'common.menu': 'Menú',
