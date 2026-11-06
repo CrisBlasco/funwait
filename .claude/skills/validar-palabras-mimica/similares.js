@@ -8,21 +8,22 @@
  * SKILL.md.
  *
  * Uso:
- *   node similares.js --nuevas <archivo> [--tema <clave>] [--index <ruta>]
+ *   node similares.js --nuevas <archivo> [--tema <clave>] [--contenido <ruta>]
  *   node similares.js --nuevas <archivo> --existentes <archivo>
  *   node similares.js --nuevas <archivo> --tema deportes --umbral 0.8 --json
  *
  * --nuevas      Archivo con las palabras propuestas. Acepta .md (viñetas "- palabra")
  *               o texto plano (una palabra por línea; se ignoran líneas que empiezan por #).
- *   --tema      Clave del paquete (objetos, animales, deportes...). Si se da junto con
- *               --index, las palabras existentes se extraen del juego automáticamente.
- *   --index     Ruta al index.html del juego (por defecto: public/index.html).
- *   --existentes Alternativa a --tema/--index: archivo con las palabras ya existentes.
+ *   --tema      Clave del paquete (objetos, animales, deportes...). Las palabras existentes
+ *               se leen del JSON del juego; si el tema no existe, el script falla.
+ *   --contenido Ruta al JSON de la mímica (por defecto: public/data/es/mimica.json).
+ *   --existentes Alternativa a --tema/--contenido: archivo con las palabras ya existentes.
  *   --umbral    Umbral de parecido para marcar [0..1]. Por defecto 0.8.
  *   --json      Salida en JSON en vez de informe legible.
  */
 
 const fs = require('fs');
+const path = require('path');
 
 // ---------- argumentos ----------
 function getArg(name, def) {
@@ -33,7 +34,7 @@ function getArg(name, def) {
 }
 const archivoNuevas = getArg('nuevas');
 const tema = getArg('tema');
-const indexPath = getArg('index', 'public/index.html');
+const contenidoPath = getArg('contenido', path.join(__dirname, '../../../public/data/es/mimica.json'));
 const archivoExistentes = getArg('existentes');
 const UMBRAL = parseFloat(getArg('umbral', '0.8'));
 const JSON_OUT = getArg('json', false) === true;
@@ -108,12 +109,15 @@ function leerNuevas(archivo, temaKey) {
   return txt.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'));
 }
 
-function existentesDesdeIndex(ruta, temaKey) {
-  const html = fs.readFileSync(ruta, 'utf8');
-  const re = /(\w+):\s*\{\s*\n\s*nombre:\s*"([^"]+)",\s*emoji:\s*"[^"]*",\s*color:\s*"[^"]*",\s*\n\s*palabras:\s*(\[[\s\S]*?\])\s*\n\s*\}/g;
-  let m;
-  while ((m = re.exec(html))) if (m[1] === temaKey) return JSON.parse(m[3]);
-  return [];
+function existentesDesdeContenido(ruta, temaKey) {
+  const { paquetes } = JSON.parse(fs.readFileSync(ruta, 'utf8'));
+  const paquete = paquetes.find(p => p.id === temaKey);
+  if (!paquete) {
+    console.error(`El tema "${temaKey}" no existe en ${ruta}. Temas: ${paquetes.map(p => p.id).join(', ')}.`);
+    console.error('Si es un tema nuevo, usa --existentes <archivo>.');
+    process.exit(1);
+  }
+  return paquete.palabras;
 }
 
 // ---------- ejecución ----------
@@ -121,8 +125,8 @@ const nuevas = leerNuevas(archivoNuevas, tema);
 let existentes = [];
 if (archivoExistentes) {
   existentes = fs.readFileSync(archivoExistentes, 'utf8').split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'));
-} else if (tema && fs.existsSync(indexPath)) {
-  existentes = existentesDesdeIndex(indexPath, tema);
+} else if (tema) {
+  existentes = existentesDesdeContenido(contenidoPath, tema);
 }
 
 const marcadas = [];

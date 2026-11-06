@@ -10,10 +10,12 @@ window.FW = (function () {
   function save() { try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch (e) {} }
 
   /* ---------- Pantallas ---------- */
+  let hayVersionNueva = false;
   function screen(id) {
     document.querySelectorAll('.fw-screen').forEach(s => s.classList.remove('is-active'));
     const el = document.getElementById(id);
     if (el) el.classList.add('is-active');
+    if (id === 'home' && hayVersionNueva) location.reload();
     return el;
   }
 
@@ -70,9 +72,33 @@ window.FW = (function () {
     const id = setInterval(() => {
       n--;
       if (n > 0) { numEl.textContent = n; anim(); audio.cuenta(440); }
-      else { clearInterval(id); numEl.textContent = '¡YA!'; anim(); audio.cuenta(660); setTimeout(onDone, 450); }
+      else { clearInterval(id); numEl.textContent = t('countdown.go'); anim(); audio.cuenta(660); setTimeout(onDone, 450); }
     }, 1000);
     return () => clearInterval(id);
+  }
+
+  /* ---------- Idioma ---------- */
+  const LANG = 'es';
+  const DICT = window.FW_I18N || {};
+  const plurales = new Intl.PluralRules(LANG);
+  const rellenar = (txt, vars) => txt.replace(/\{(\w+)\}/g, (m, v) => (vars && v in vars ? vars[v] : m));
+  function t(key, vars) { return key in DICT ? rellenar(DICT[key], vars) : key; }
+  function tn(key, n) {
+    if (!(key in DICT)) return key;
+    return rellenar(DICT[key][plurales.select(n)] || DICT[key].other, { n });
+  }
+  function applyI18n(root) {
+    const el = root || document;
+    el.querySelectorAll('[data-i18n]').forEach(e => { e.textContent = t(e.dataset.i18n); });
+    el.querySelectorAll('[data-i18n-html]').forEach(e => { e.innerHTML = t(e.dataset.i18nHtml); });
+    el.querySelectorAll('[data-i18n-aria-label]').forEach(e => { e.setAttribute('aria-label', t(e.dataset.i18nAriaLabel)); });
+  }
+
+  /* ---------- Contenido de los juegos (JSON por idioma) ---------- */
+  async function loadContent(game) {
+    const res = await fetch(`./data/${LANG}/${game}.json`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
   }
 
   /* ---------- Utilidades ---------- */
@@ -83,6 +109,16 @@ window.FW = (function () {
   }
   function flash(el) { el.classList.remove('is-on'); void el.offsetWidth; el.classList.add('is-on'); }
   function randomGame(urls) { location.href = urls[Math.floor(Math.random() * urls.length)]; }
+  // Tarjeta de paquete/tema. Sin color = tarjeta "al azar".
+  function tile(emoji, nombre, color, onClick) {
+    const b = document.createElement('button');
+    b.className = color ? 'fw-tile' : 'fw-tile fw-tile--random';
+    if (color) { b.style.background = color; b.style.color = '#fff'; }
+    const e = document.createElement('span'); e.className = 'emoji'; e.textContent = emoji;
+    const n = document.createElement('span'); n.textContent = nombre;
+    b.append(e, n); b.onclick = onClick;
+    return b;
+  }
 
   /* ---------- Preferencias: enlaces de UI ---------- */
   function bindSoundToggle(el) {
@@ -93,8 +129,36 @@ window.FW = (function () {
   function rulesSeen(game) { return !!prefs.rulesSeen[game]; }
   function setRulesSeen(game, v) { prefs.rulesSeen[game] = !!v; save(); }
 
+  /* ---------- Service worker ---------- */
+  // Una versión nueva se aplica recargando, pero solo en la pantalla de inicio:
+  // en partida se espera a que vuelva a ella (ver screen). Sin controlador es la
+  // primera instalación: no hay versión anterior que sustituir ni que recargar.
+  function registrarSW() {
+    if (!('serviceWorker' in navigator)) return;
+    const sw = navigator.serviceWorker;
+    const hayAnterior = !!sw.controller;
+    sw.addEventListener('controllerchange', () => {
+      if (!hayAnterior || hayVersionNueva) return;
+      hayVersionNueva = true;
+      if (document.getElementById('home')?.classList.contains('is-active')) location.reload();
+    });
+    window.addEventListener('load', async () => {
+      try {
+        const reg = await sw.register('./sw.js');
+        // Una app instalada puede pasar días abierta en segundo plano sin navegar.
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) reg.update().catch(() => {}); });
+      } catch (e) {}
+    });
+  }
+  registrarSW();
+
+  // funwait.js se carga al final del <body>: las pantallas ya existen y siguen
+  // ocultas hasta el primer FW.screen, así que nunca se ven sin traducir.
+  document.documentElement.lang = LANG;
+  applyI18n();
+
   return {
-    prefs, save, screen, audio, unlock, haptic, wakeLock, releaseWake,
-    countdown, shuffle, flash, randomGame, bindSoundToggle, rulesSeen, setRulesSeen
+    t, tn, applyI18n, prefs, save, screen, audio, unlock, haptic, wakeLock, releaseWake,
+    countdown, shuffle, flash, randomGame, tile, loadContent, bindSoundToggle, rulesSeen, setRulesSeen
   };
 })();

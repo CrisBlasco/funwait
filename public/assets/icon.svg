@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fuente de los PNG de public/icons/. Sin texto, y con todo dentro de la zona
+       segura (círculo central del 80 %) para que sirva también como icono maskable. -->
+  <defs>
+    <linearGradient id="sand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD54F"/>
+      <stop offset="100%" stop-color="#FFC700"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="#0066FF"/>
+
+  <!-- Reloj de arena del logo -->
+  <g transform="translate(236 256) scale(2.15) rotate(-22) translate(-200 -145)">
+    <path d="M170,95 C170,128 188,138 196,145 C188,152 170,162 170,195 L230,195 C230,162 212,152 204,145 C212,138 230,128 230,95 Z" fill="#FFFFFF"/>
+    <path d="M175,100 C175,125 190,135 197,143 L203,143 C210,135 225,125 225,100 Z" fill="url(#sand)"/>
+    <path d="M178,190 C178,165 192,152 198,147 L202,147 C208,152 222,165 222,190 Z" fill="url(#sand)"/>
+    <line x1="200" y1="135" x2="200" y2="182" stroke="#FFC700" stroke-width="3" stroke-linecap="round"/>
+    <path d="M170,95 C170,128 188,138 196,145 C188,152 170,162 170,195 L230,195 C230,162 212,152 204,145 C212,138 230,128 230,95 Z" fill="none" stroke="#101828" stroke-width="7.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <rect x="162" y="87" width="76" height="12" rx="6" fill="#FF2A6D" stroke="#101828" stroke-width="5"/>
+    <rect x="162" y="191" width="76" height="12" rx="6" fill="#FF2A6D" stroke="#101828" stroke-width="5"/>
+  </g>
+
+  <!-- Bomba del logo -->
+  <g transform="translate(318 300) scale(3.4)">
+    <circle cx="8" cy="18" r="13.5" fill="#FFFFFF"/>
+    <path d="M 10 5 Q 18 -6 24 -2" fill="none" stroke="#101828" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M 24 -2 L 27 -7 M 24 -2 L 29 -1 M 24 -2 L 22 3 M 24 -2 L 19 -5" stroke="#FFC700" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="8" cy="18" r="11" fill="#101828"/>
+    <rect x="5" y="6" width="6" height="4" rx="1" fill="#101828"/>
+    <circle cx="5" cy="14" r="3" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+</svg>

@@ -1,6 +1,6 @@
 ---
 name: validar-palabras-mimica
-description: Valida palabras propuestas para los paquetes del juego de mímica. Comprueba dos cosas: (1) que no se parezcan demasiado a otras de la MISMA lista, y (2) que sean representables con mímica. Úsala al revisar contenido nuevo generado para el juego, antes de añadirlo a public/index.html.
+description: Valida palabras propuestas para los paquetes del juego de mímica. Comprueba dos cosas: (1) que no se parezcan demasiado a otras de la MISMA lista, y (2) que sean representables con mímica. Úsala al revisar contenido nuevo generado para el juego, antes de añadirlo a public/data/es/mimica.json.
 ---
 
 # Validar palabras de mímica
@@ -23,7 +23,7 @@ Ejecuta el script de similitud. Marca las palabras demasiado parecidas a otras d
 misma lista o entre sí.
 
 ```bash
-# Si el tema YA existe en el juego (extrae las existentes de public/index.html):
+# Si el tema YA existe en el juego (lee las existentes de public/data/es/mimica.json; falla si el tema no existe):
 node .claude/skills/validar-palabras-mimica/similares.js --nuevas <archivo> --tema <clave>
 
 # Si es un tema NUEVO o tienes las existentes aparte:
@@ -67,13 +67,14 @@ demasiado desconocido para esa edad, va a "No" aunque sea mimable en teoría.
 
 Devuelve un informe accionable, por tema:
 
-- **✅ Aprobadas**: nº y, si se pide, la lista final lista para pegar como array JS.
+- **✅ Aprobadas**: nº y, si se pide, la lista final lista para pegar en el JSON.
 - **⚠️ Parecidas**: cada palabra marcada por el script, con a qué se parece y la
   recomendación (descartar / quedarse con cuál).
 - **🚫 Poco mimables**: las clasificadas como "No" o "Dudosa", con el motivo.
 - Un recuento final (aprobadas vs descartadas) y confirma que quedan **≥100** por tema
   si ese era el objetivo.
 
-No modifiques `public/index.html` salvo que te lo pidan explícitamente: por defecto solo
-revisas y propones. Cuando te den luz verde, las palabras aprobadas se añaden al array
-`palabras` del tema correspondiente dentro de `const PAQUETES`.
+No modifiques `public/data/es/mimica.json` salvo que te lo pidan explícitamente: por defecto
+solo revisas y propones. Cuando te den luz verde, las palabras aprobadas se añaden al array
+`palabras` del paquete correspondiente. La rúbrica está pensada para español de España: para
+otro idioma, habrá que adaptarla.

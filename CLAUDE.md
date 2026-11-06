@@ -44,5 +44,13 @@ gh pr create --base main --head dev --fill   # revisar y mergear a mano → PROD
   `observability`, etc. en cada entorno. Producción conserva el nombre `funwait`.
 - **Rutas en el HTML:** mantenerlas **relativas** (`./css/...`, `./js/...`). No cablear
   dominios absolutos ni `canonical`/`og:url` con dominio, para que el sitio sea portable.
-- **Contenido del juego:** al añadir palabras nuevas a `public/index.html`, validar con la
+- **Contenido del juego:** al añadir palabras nuevas a `public/data/es/mimica.json`, validar con la
   skill `validar-palabras-mimica` antes de integrarlas.
+- **Textos de la interfaz:** nada de texto suelto en el HTML ni en el JS; van como keys literales
+  en `public/js/i18n/es.js` (`data-i18n*`, `FW.t('…')`, `FW.tn('…', n)`). Las valida `npm run check`.
+- **Service worker:** tras tocar `public/`, ejecutar `npm run sw` y commitear el `sw.js` generado.
+  **Nunca borrar `public/sw.js`** una vez publicado; para retirarlo, ver "Emergencias" en el runbook.
+- **Documentos de trabajo interno** (ideas, debates, revisiones de palabras, informes…) van
+  en `notas/`, que está **ignorada por git** y nunca se sube. No commitear docs internos en
+  la raíz del repo. Docs que SÍ pertenecen al repo: `README.md`, `RUNBOOK-despliegue.md`,
+  `CLAUDE.md`.
