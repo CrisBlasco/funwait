@@ -57,6 +57,10 @@
     <div style="height: 50px"></div>
     <h1 class="fw-h1">💣 La Bomba</h1>
     <p style="margin: 4px 0 16px; font-weight: 600; opacity: .95">Decid una palabra del tema y pasad el móvil</p>
+    <div id="temasEstado" role="status">
+      <p class="fw-mute" id="temasMsg">Cargando…</p>
+      <button class="fw-btn" id="temasRetry" hidden>🔁 Reintentar</button>
+    </div>
     <div class="fw-grid" id="temas"></div>
   </section>
 
@@ -136,24 +140,6 @@
 
 <script src="./js/funwait.js"></script>
 <script>
-const TEMAS = [
-  ["Parque de atracciones","🎢","#e11d48"],
-  ["Animales","🦁","#22c55e"], ["Animales de granja","🐄","#84cc16"], ["Animales del mar","🐙","#2563eb"],
-  ["Frutas","🍓","#ef4444"], ["Verduras","🥦","#16a34a"], ["Comidas","🍕","#f59e0b"],
-  ["Postres y dulces","🍰","#f472b6"], ["Bebidas","🥤","#06b6d4"], ["Colores","🎨","#ec4899"],
-  ["Profesiones","👩‍🚀","#8b5cf6"], ["Herramientas","🔧","#f97316"], ["Electrodomésticos","🔌","#0891b2"],
-  ["Muebles","🛋️","#a16207"], ["Cosas de la cocina","🍳","#fb923c"], ["Cosas del baño","🛁","#38bdf8"],
-  ["Ropa","👕","#0ea5e9"], ["Juguetes","🧸","#eab308"], ["Material del cole","✏️","#f59e0b"],
-  ["Deportes","⚽","#16a34a"], ["Instrumentos musicales","🎸","#a855f7"], ["Medios de transporte","🚗","#64748b"],
-  ["Partes del cuerpo","🦵","#f87171"], ["Colores y formas","🔺","#8b5cf6"], ["Países","🌍","#0ea5e9"],
-  ["Nombres de niña","👧","#d946ef"], ["Nombres de niño","👦","#3b82f6"], ["Dibujos animados","📺","#14b8a6"],
-  ["Superhéroes","🦸","#dc2626"], ["Princesas y cuentos","👑","#ec4899"], ["Películas","🎬","#e11d48"],
-  ["Flores","🌸","#f9a8d4"], ["Árboles","🌳","#15803d"], ["Insectos","🐝","#ca8a04"],
-  ["Pájaros","🦜","#0d9488"], ["Cosas de la playa","🏖️","#facc15"],
-  ["Videojuegos","🎮","#7c3aed"], ["Libros","📚","#b45309"], ["Cantantes y grupos","🎤","#db2777"],
-  ["Parques temáticos","🏰","#9333ea"], ["Atracciones","🎡","#f43f5e"]
-];
-
 let config = Object.assign({ min: 10, max: 30 }, FW.prefs.bomba || {});
 function guardarCfg() { FW.prefs.bomba = { min: config.min, max: config.max }; FW.save(); }
 let juego = { tema: null, activo: false, start: 0, boomId: null, tickId: null, rafId: null };
@@ -162,18 +148,26 @@ const gameEl = $('game'), bombaEl = $('bomba');
 
 /* ---------- menú ---------- */
 const temasEl = $('temas');
-const azar = document.createElement('button');
-azar.className = 'fw-tile fw-tile--random';
-azar.innerHTML = '<span class="emoji">🎲</span><span>¡Al azar!</span>';
-azar.onclick = () => empezar(TEMAS[Math.floor(Math.random() * TEMAS.length)][0]);
-temasEl.appendChild(azar);
-TEMAS.forEach(([nombre, emoji, color]) => {
-  const b = document.createElement('button');
-  b.className = 'fw-tile'; b.style.background = color; b.style.color = '#fff';
-  b.innerHTML = `<span class="emoji">${emoji}</span><span>${nombre}</span>`;
-  b.onclick = () => empezar(nombre);
-  temasEl.appendChild(b);
-});
+let onomatopeyas = [];
+function pintarTemas(temas) {
+  temasEl.replaceChildren(
+    FW.tile('🎲', '¡Al azar!', null, () => empezar(temas[Math.floor(Math.random() * temas.length)])),
+    ...temas.map(t => FW.tile(t.emoji, t.nombre, t.color, () => empezar(t)))
+  );
+}
+async function cargarTemas() {
+  $('temasEstado').hidden = false; $('temasMsg').textContent = 'Cargando…'; $('temasRetry').hidden = true;
+  try {
+    const contenido = await FW.loadContent('bomba');
+    onomatopeyas = contenido.onomatopeyas;
+    pintarTemas(contenido.temas);
+    $('temasEstado').hidden = true;
+  } catch (e) {
+    $('temasMsg').textContent = 'No se han podido cargar los temas. Revisa la conexión.';
+    $('temasRetry').hidden = false;
+  }
+}
+$('temasRetry').onclick = cargarTemas;
 
 /* ---------- ajustes ---------- */
 const minLabel = $('minLabel'), maxLabel = $('maxLabel');
@@ -189,54 +183,6 @@ $('opcHecho').onclick = () => FW.screen('home');
 
 FW.bindSoundToggle($('swSonido'));
 
-/* ---------- onomatopeyas ---------- */
-const ONOMATOPEYAS = ["¡BOOM!", "¡KABOOM!", "¡CATAPÚM!", "¡PUM!", "¡BUM!", "¡CATACROC!", "¡PLOF!", "¡ZAS!", "¡CRASH!", "¡PAM!", "¡FUAAA!", "¡BADABÚM!"];
-
-/* ---------- descripción de qué vale en cada tema ---------- */
-const DESCRIPCIONES = {
-  "Parque de atracciones": "Vale cualquier cosa que encuentres en un parque de atracciones: desde nombres de atracciones hasta el algodón de azúcar.",
-  "Animales": "Vale cualquier animal, de la mascota más común al bicho más raro.",
-  "Animales de granja": "Vale cualquier animal que viva en una granja.",
-  "Animales del mar": "Vale cualquier criatura que viva en el mar.",
-  "Frutas": "Vale cualquier fruta que se te ocurra.",
-  "Verduras": "Vale cualquier verdura u hortaliza.",
-  "Comidas": "Vale cualquier plato o comida que se pueda comer.",
-  "Postres y dulces": "Vale cualquier postre, dulce o chuchería.",
-  "Bebidas": "Vale cualquier cosa que se pueda beber.",
-  "Colores": "Vale cualquier color.",
-  "Profesiones": "Vale cualquier oficio o trabajo.",
-  "Herramientas": "Vale cualquier herramienta de bricolaje, jardín o taller.",
-  "Electrodomésticos": "Vale cualquier aparato eléctrico que haya en casa.",
-  "Muebles": "Vale cualquier mueble de una casa.",
-  "Cosas de la cocina": "Vale cualquier utensilio o cosa que haya en la cocina.",
-  "Cosas del baño": "Vale cualquier cosa que encuentres en el cuarto de baño.",
-  "Ropa": "Vale cualquier prenda de ropa o calzado.",
-  "Juguetes": "Vale cualquier juguete.",
-  "Material del cole": "Vale cualquier cosa que uses en el colegio.",
-  "Deportes": "Vale cualquier deporte o actividad deportiva.",
-  "Instrumentos musicales": "Vale cualquier instrumento de música.",
-  "Medios de transporte": "Vale cualquier cosa que sirva para desplazarse.",
-  "Partes del cuerpo": "Vale cualquier parte del cuerpo humano.",
-  "Colores y formas": "Valen colores y formas geométricas.",
-  "Países": "Vale cualquier país del mundo.",
-  "Nombres de niña": "Vale cualquier nombre de niña.",
-  "Nombres de niño": "Vale cualquier nombre de niño.",
-  "Dibujos animados": "Valen personajes o series de dibujos animados.",
-  "Superhéroes": "Valen superhéroes y también supervillanos.",
-  "Princesas y cuentos": "Valen princesas y personajes de cuentos clásicos.",
-  "Películas": "Vale cualquier título de película.",
-  "Flores": "Vale cualquier flor.",
-  "Árboles": "Vale cualquier tipo de árbol.",
-  "Insectos": "Vale cualquier insecto o bichito.",
-  "Pájaros": "Vale cualquier ave o pájaro.",
-  "Cosas de la playa": "Vale cualquier cosa que te lleves o encuentres en la playa.",
-  "Videojuegos": "Valen videojuegos o sus personajes.",
-  "Libros": "Valen títulos de libros o sus personajes.",
-  "Cantantes y grupos": "Valen cantantes o grupos de música.",
-  "Parques temáticos": "Valen nombres de parques temáticos conocidos.",
-  "Atracciones": "Valen tipos de atracción de feria o parque."
-};
-
 /* ---------- flujo ---------- */
 $('noRep').checked = FW.rulesSeen('bomba');
 function empezar(tema) {
@@ -247,10 +193,10 @@ function empezar(tema) {
 $('empezar').onclick = () => { if ($('noRep').checked) FW.setRulesSeen('bomba', true); mostrarPreRonda(); };
 
 function mostrarPreRonda() {
-  const t = TEMAS.find(x => x[0] === juego.tema);
-  $('prEmoji').textContent = t ? t[1] : '💣';
-  $('prTema').textContent = juego.tema;
-  $('prDesc').textContent = DESCRIPCIONES[juego.tema] || ('Vale cualquier cosa relacionada con: ' + juego.tema + '.');
+  const t = juego.tema;
+  $('prEmoji').textContent = t.emoji;
+  $('prTema').textContent = t.nombre;
+  $('prDesc').textContent = t.descripcion;
   FW.screen('preRonda');
 }
 $('prEmpezar').onclick = irCuenta;
@@ -260,7 +206,7 @@ function irCuenta() { FW.wakeLock(); FW.screen('countdown'); FW.countdown($('cou
 
 function lanzar() {
   FW.screen('game');
-  $('temaTxt').textContent = juego.tema;
+  $('temaTxt').textContent = juego.tema.nombre;
   juego.activo = true; juego.start = performance.now();
   const boomMs = (config.min + Math.random() * (config.max - config.min)) * 1000;
   juego.boomId = setTimeout(explotar, boomMs);
@@ -300,7 +246,7 @@ function explotar() {
   bombaEl.style.transform = ''; gameEl.style.background = '';
   FW.audio.boom();
   FW.haptic([400, 80, 200, 80, 300]);
-  $('onoma').textContent = ONOMATOPEYAS[Math.floor(Math.random() * ONOMATOPEYAS.length)];
+  $('onoma').textContent = onomatopeyas[Math.floor(Math.random() * onomatopeyas.length)];
   FW.flash($('flash'));
   FW.releaseWake();
   FW.screen('boom');
@@ -310,6 +256,7 @@ $('otra').onclick = () => { FW.wakeLock(); irCuenta(); };
 $('cambiar').onclick = () => { FW.releaseWake(); FW.screen('home'); };
 
 FW.screen('home');
+cargarTemas();
 </script>
 </body>
 </html>
