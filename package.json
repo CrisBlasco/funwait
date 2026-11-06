@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
-    "check": "wrangler deploy --dry-run && node scripts/check-html.mjs",
+    "check": "wrangler deploy --dry-run && node scripts/check-html.mjs && node scripts/check-content.mjs",
     "deploy:dev": "wrangler deploy --env dev",
     "deploy:production": "wrangler deploy --env production",
     "deploy": "wrangler deploy --env production"
