@@ -10,10 +10,12 @@ window.FW = (function () {
   function save() { try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch (e) {} }
 
   /* ---------- Pantallas ---------- */
+  let hayVersionNueva = false;
   function screen(id) {
     document.querySelectorAll('.fw-screen').forEach(s => s.classList.remove('is-active'));
     const el = document.getElementById(id);
     if (el) el.classList.add('is-active');
+    if (id === 'home' && hayVersionNueva) location.reload();
     return el;
   }
 
@@ -126,6 +128,29 @@ window.FW = (function () {
   }
   function rulesSeen(game) { return !!prefs.rulesSeen[game]; }
   function setRulesSeen(game, v) { prefs.rulesSeen[game] = !!v; save(); }
+
+  /* ---------- Service worker ---------- */
+  // Una versión nueva se aplica recargando, pero solo en la pantalla de inicio:
+  // en partida se espera a que vuelva a ella (ver screen). Sin controlador es la
+  // primera instalación: no hay versión anterior que sustituir ni que recargar.
+  function registrarSW() {
+    if (!('serviceWorker' in navigator)) return;
+    const sw = navigator.serviceWorker;
+    const hayAnterior = !!sw.controller;
+    sw.addEventListener('controllerchange', () => {
+      if (!hayAnterior || hayVersionNueva) return;
+      hayVersionNueva = true;
+      if (document.getElementById('home')?.classList.contains('is-active')) location.reload();
+    });
+    window.addEventListener('load', async () => {
+      try {
+        const reg = await sw.register('./sw.js');
+        // Una app instalada puede pasar días abierta en segundo plano sin navegar.
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) reg.update().catch(() => {}); });
+      } catch (e) {}
+    });
+  }
+  registrarSW();
 
   // funwait.js se carga al final del <body>: las pantallas ya existen y siguen
   // ocultas hasta el primer FW.screen, así que nunca se ven sin traducir.

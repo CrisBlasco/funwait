@@ -27,8 +27,17 @@ public/
   mimica.html    # Mímica Express
   bomba.html     # La Bomba
   data/es/       # contenido de los juegos (palabras, temas) en JSON
+  js/i18n/es.js  # textos de la interfaz (keys de traducción)
+  manifest.webmanifest, icons/, sw.js, _headers   # PWA instalable y sin conexión
   css/ js/ fonts/ assets/   # design system compartido (FunWait)
 ```
+
+**Tras cambiar cualquier cosa de `public/`, ejecuta `npm run sw`**: actualiza la versión y
+la lista de ficheros de `sw.js`. Si se olvida, `npm run check` falla y lo indica. Los iconos
+de `icons/` salen de `assets/icon.svg`.
+
+Para probar en local sin la copia guardada, desactiva el service worker en las
+herramientas de desarrollo del navegador (Application → Service Workers → Bypass for network).
 
 ## Probar en local
 

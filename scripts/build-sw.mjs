@@ -17,8 +17,9 @@ export const SW_PATH = join(PUBLIC, "sw.js");
 const EXCLUIDOS = new Set(["sw.js", "_headers"]);
 const BLOQUE = /\/\/ <generado por npm run sw>[\s\S]*?\/\/ <\/generado>/;
 
+// Sin ocultos: un .DS_Store local cambiaría la versión respecto a la de CI.
 function allFiles(dir) {
-  return readdirSync(dir).sort().flatMap((name) => {
+  return readdirSync(dir).filter((name) => !name.startsWith(".")).sort().flatMap((name) => {
     const p = join(dir, name);
     return statSync(p).isDirectory() ? allFiles(p) : [p];
   });
