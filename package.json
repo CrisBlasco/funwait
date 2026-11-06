@@ -5,10 +5,11 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
-    "check": "wrangler deploy --dry-run && node scripts/check-html.mjs",
+    "check": "wrangler deploy --dry-run && node scripts/check-html.mjs && node scripts/check-content.mjs && node scripts/check-i18n.mjs && node scripts/check-pwa.mjs",
     "deploy:dev": "wrangler deploy --env dev",
     "deploy:production": "wrangler deploy --env production",
-    "deploy": "wrangler deploy --env production"
+    "deploy": "wrangler deploy --env production",
+    "sw": "node scripts/build-sw.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.156.0"

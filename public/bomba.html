@@ -4,8 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <meta name="theme-color" content="#0066FF" />
-<title>La Bomba · FunWait</title>
+<title data-i18n="bomba.title">La Bomba · FunWait</title>
 <link rel="icon" href="./assets/logo.svg" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="FunWait" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <link rel="stylesheet" href="./css/funwait.css" />
 <style>
   body { background: var(--fw-blue); }
@@ -23,6 +29,7 @@
   #temaBox .txt { font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(1.4rem, 7vw, 2.2rem); line-height: 1.1; }
   #bombaWrap { position: relative; display: flex; align-items: center; justify-content: center; }
   #bomba { font-size: clamp(7rem, 42vw, 15rem); line-height: 1; will-change: transform; }
+  #abandonar.is-confirm { width: auto; padding: 0 14px; font-size: 1rem; }
   .pista { position: absolute; bottom: calc(var(--fw-safe-b) + 18px); color: var(--fw-paper); font-family: var(--fw-font-display); font-weight: 600; font-size: clamp(1rem, 4.5vw, 1.3rem); opacity: .95; padding: 0 24px; }
 
   /* BOOM cómic */
@@ -49,45 +56,50 @@
   <!-- HOME: elegir tema -->
   <section id="home" class="fw-screen fw-screen--scroll">
     <div class="fw-topbar">
-      <a class="fw-icon-btn fw-back" href="./index.html" aria-label="Menú"></a>
+      <a class="fw-icon-btn fw-back" href="./index.html" data-i18n-aria-label="common.menu"></a>
       <div class="fw-topbar-actions">
-        <button class="fw-icon-btn" id="opcionesBtn" aria-label="Opciones">⚙️</button>
+        <button class="fw-icon-btn" id="opcionesBtn" data-i18n-aria-label="common.options">⚙️</button>
       </div>
     </div>
     <div style="height: 50px"></div>
-    <h1 class="fw-h1">💣 La Bomba</h1>
-    <p style="margin: 4px 0 16px; font-weight: 600; opacity: .95">Decid una palabra del tema y pasad el móvil</p>
+    <h1 class="fw-h1" data-i18n="bomba.heading"></h1>
+    <p style="margin: 4px 0 16px; font-weight: 600; opacity: .95" data-i18n="bomba.tagline"></p>
+    <div id="temasEstado" role="status">
+      <p class="fw-mute" id="temasMsg"></p>
+      <button class="fw-btn" id="temasRetry" data-i18n="common.retry" hidden></button>
+    </div>
     <div class="fw-grid" id="temas"></div>
   </section>
 
   <!-- OPCIONES -->
   <section id="opciones" class="fw-screen fw-screen--scroll">
-    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="opcVolver" aria-label="Volver"></button><div class="fw-topbar-actions"></div></div>
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="opcVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
     <div style="height: 50px"></div>
-    <h1 class="fw-h1">⚙️ Opciones</h1>
+    <h1 class="fw-h1" data-i18n="common.options.title"></h1>
     <div class="fw-panel" style="margin-top: 18px">
-      <div class="fw-row"><span>🔊 Sonido</span><div class="fw-switch" id="swSonido"></div></div>
-      <div class="fw-row"><span>⏱️ Explota entre (mín)</span>
-        <div class="fw-controls"><button class="fw-stepper" id="minMenos">−</button><span id="minLabel" style="min-width: 56px">10 s</span><button class="fw-stepper" id="minMas">+</button></div></div>
-      <div class="fw-row"><span>⏱️ y (máx)</span>
-        <div class="fw-controls"><button class="fw-stepper" id="maxMenos">−</button><span id="maxLabel" style="min-width: 56px">30 s</span><button class="fw-stepper" id="maxMas">+</button></div></div>
+      <div class="fw-row"><span data-i18n="common.sound"></span><div class="fw-switch" id="swSonido"></div></div>
+      <div class="fw-row"><span data-i18n="bomba.options.min"></span>
+        <div class="fw-controls"><button class="fw-stepper" id="minMenos" data-i18n-aria-label="common.decrease">−</button><span id="minLabel" style="min-width: 56px"></span><button class="fw-stepper" id="minMas" data-i18n-aria-label="common.increase">+</button></div></div>
+      <div class="fw-row"><span data-i18n="bomba.options.max"></span>
+        <div class="fw-controls"><button class="fw-stepper" id="maxMenos" data-i18n-aria-label="common.decrease">−</button><span id="maxLabel" style="min-width: 56px"></span><button class="fw-stepper" id="maxMas" data-i18n-aria-label="common.increase">+</button></div></div>
     </div>
-    <button class="fw-btn fw-btn--primary" id="opcHecho" style="margin-top: 18px">✓ Hecho</button>
+    <button class="fw-btn fw-btn--primary" id="opcHecho" style="margin-top: 18px" data-i18n="common.done"></button>
   </section>
 
   <!-- REGLAS -->
   <section id="reglas" class="fw-screen">
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="reglasVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
     <div class="fw-card fw-rules">
       <div class="ilu">🙌📱💥</div>
-      <h2 class="fw-h2">Cómo se juega</h2>
+      <h2 class="fw-h2" data-i18n="common.rules.title"></h2>
       <ol>
-        <li><span>Lee el tema en alto.</span></li>
-        <li><span>Di una palabra válida de ese tema.</span></li>
-        <li><span>Pasa el móvil al de al lado… ¡antes de que explote!</span></li>
+        <li><span data-i18n="bomba.rules.step1"></span></li>
+        <li><span data-i18n="bomba.rules.step2"></span></li>
+        <li><span data-i18n="bomba.rules.step3"></span></li>
       </ol>
-      <p class="nota">🔁 Seguid jugando rondas hasta que solo quede un jugador: ¡el ganador!</p>
-      <button class="fw-btn fw-btn--primary fw-btn--xl" id="empezar">¡Empezar ya!</button>
-      <label class="no-repetir"><input type="checkbox" id="noRep" /> No volver a mostrar</label>
+      <p class="nota" data-i18n="bomba.rules.note"></p>
+      <button class="fw-btn fw-btn--primary fw-btn--xl" id="empezar" data-i18n="common.rules.start"></button>
+      <label class="no-repetir"><input type="checkbox" id="noRep" /> <span data-i18n="common.rules.noRepeat"></span></label>
     </div>
   </section>
 
@@ -95,25 +107,26 @@
   <section id="preRonda" class="fw-screen">
     <div class="fw-card" style="width: min(520px, 92%); text-align: center">
       <div id="prEmoji" style="font-size: clamp(3rem, 16vw, 4.5rem); line-height: 1">🎢</div>
-      <h2 class="fw-h1" id="prTema" style="margin: 4px 0 0">Tema</h2>
-      <p class="fw-mute" style="margin: 12px 0 2px; letter-spacing: 1px">PALABRAS VÁLIDAS</p>
+      <h2 class="fw-h1" id="prTema" style="margin: 4px 0 0"></h2>
+      <p class="fw-mute" style="margin: 12px 0 2px; letter-spacing: 1px" data-i18n="bomba.round.valid"></p>
       <p id="prDesc" style="font-weight: 600; font-size: var(--fw-fs-body); margin: 0"></p>
-      <button class="fw-btn fw-btn--primary fw-btn--xl" id="prEmpezar" style="margin-top: 16px">🚀 ¡Empezar!</button>
-      <button class="fw-btn fw-btn--block" id="prVolver" style="margin-top: 6px">↩️ Elegir otro</button>
+      <button class="fw-btn fw-btn--primary fw-btn--xl" id="prEmpezar" style="margin-top: 16px" data-i18n="bomba.round.start"></button>
+      <button class="fw-btn fw-btn--block" id="prVolver" style="margin-top: 6px" data-i18n="bomba.round.back"></button>
     </div>
   </section>
 
   <!-- CUENTA ATRÁS -->
   <section id="countdown" class="fw-screen" style="color: var(--fw-paper)">
-    <p class="fw-h2" style="margin-bottom: 10px">¡Preparados! 💣<br>El primero coge el móvil</p>
+    <p class="fw-h2" style="margin-bottom: 10px" data-i18n-html="bomba.countdown"></p>
     <div class="fw-countdown-num" id="countNum">3</div>
   </section>
 
   <!-- JUEGO -->
   <section id="game" class="fw-screen">
-    <div id="temaBox"><span class="et">TEMA</span><span class="txt" id="temaTxt">…</span></div>
+    <div class="fw-topbar"><button class="fw-icon-btn" id="abandonar" data-i18n-aria-label="bomba.game.quit">✕</button><div class="fw-topbar-actions"></div></div>
+    <div id="temaBox"><span class="et" data-i18n="bomba.game.topic"></span><span class="txt" id="temaTxt">…</span></div>
     <div id="bombaWrap"><div id="bomba">💣</div></div>
-    <div class="pista">Di una palabra y ¡pasa rápido! 🔄</div>
+    <div class="pista" data-i18n="bomba.game.hint"></div>
   </section>
 
   <!-- BOOM -->
@@ -122,38 +135,21 @@
       <div class="estrella estrella-tras"></div>
       <div class="estrella estrella-med"></div>
       <div class="estrella estrella-del"></div>
-      <div class="onoma" id="onoma">¡BOOM!</div>
+      <div class="onoma" id="onoma"></div>
     </div>
-    <p>Pierde quien tuviera el móvil 🙈</p>
+    <p data-i18n="bomba.boom.loser"></p>
     <div class="acciones">
-      <button class="fw-btn fw-btn--success" id="otra">🔁 Otra vez</button>
-      <button class="fw-btn fw-btn--ghost" id="cambiar">🎯 Cambiar tema</button>
+      <button class="fw-btn fw-btn--success" id="otra" data-i18n="common.playAgain"></button>
+      <button class="fw-btn fw-btn--ghost" id="cambiar" data-i18n="bomba.boom.change"></button>
     </div>
   </section>
 
 </div>
 <div class="fw-flash" id="flash"></div>
 
+<script src="./js/i18n/es.js"></script>
 <script src="./js/funwait.js"></script>
 <script>
-const TEMAS = [
-  ["Parque de atracciones","🎢","#e11d48"],
-  ["Animales","🦁","#22c55e"], ["Animales de granja","🐄","#84cc16"], ["Animales del mar","🐙","#2563eb"],
-  ["Frutas","🍓","#ef4444"], ["Verduras","🥦","#16a34a"], ["Comidas","🍕","#f59e0b"],
-  ["Postres y dulces","🍰","#f472b6"], ["Bebidas","🥤","#06b6d4"], ["Colores","🎨","#ec4899"],
-  ["Profesiones","👩‍🚀","#8b5cf6"], ["Herramientas","🔧","#f97316"], ["Electrodomésticos","🔌","#0891b2"],
-  ["Muebles","🛋️","#a16207"], ["Cosas de la cocina","🍳","#fb923c"], ["Cosas del baño","🛁","#38bdf8"],
-  ["Ropa","👕","#0ea5e9"], ["Juguetes","🧸","#eab308"], ["Material del cole","✏️","#f59e0b"],
-  ["Deportes","⚽","#16a34a"], ["Instrumentos musicales","🎸","#a855f7"], ["Medios de transporte","🚗","#64748b"],
-  ["Partes del cuerpo","🦵","#f87171"], ["Colores y formas","🔺","#8b5cf6"], ["Países","🌍","#0ea5e9"],
-  ["Nombres de niña","👧","#d946ef"], ["Nombres de niño","👦","#3b82f6"], ["Dibujos animados","📺","#14b8a6"],
-  ["Superhéroes","🦸","#dc2626"], ["Princesas y cuentos","👑","#ec4899"], ["Películas","🎬","#e11d48"],
-  ["Flores","🌸","#f9a8d4"], ["Árboles","🌳","#15803d"], ["Insectos","🐝","#ca8a04"],
-  ["Pájaros","🦜","#0d9488"], ["Cosas de la playa","🏖️","#facc15"],
-  ["Videojuegos","🎮","#7c3aed"], ["Libros","📚","#b45309"], ["Cantantes y grupos","🎤","#db2777"],
-  ["Parques temáticos","🏰","#9333ea"], ["Atracciones","🎡","#f43f5e"]
-];
-
 let config = Object.assign({ min: 10, max: 30 }, FW.prefs.bomba || {});
 function guardarCfg() { FW.prefs.bomba = { min: config.min, max: config.max }; FW.save(); }
 let juego = { tema: null, activo: false, start: 0, boomId: null, tickId: null, rafId: null };
@@ -162,22 +158,30 @@ const gameEl = $('game'), bombaEl = $('bomba');
 
 /* ---------- menú ---------- */
 const temasEl = $('temas');
-const azar = document.createElement('button');
-azar.className = 'fw-tile fw-tile--random';
-azar.innerHTML = '<span class="emoji">🎲</span><span>¡Al azar!</span>';
-azar.onclick = () => empezar(TEMAS[Math.floor(Math.random() * TEMAS.length)][0]);
-temasEl.appendChild(azar);
-TEMAS.forEach(([nombre, emoji, color]) => {
-  const b = document.createElement('button');
-  b.className = 'fw-tile'; b.style.background = color; b.style.color = '#fff';
-  b.innerHTML = `<span class="emoji">${emoji}</span><span>${nombre}</span>`;
-  b.onclick = () => empezar(nombre);
-  temasEl.appendChild(b);
-});
+let onomatopeyas = [];
+function pintarTemas(temas) {
+  temasEl.replaceChildren(
+    FW.tile('🎲', FW.t('common.random'), null, () => empezar(temas[Math.floor(Math.random() * temas.length)])),
+    ...temas.map(t => FW.tile(t.emoji, t.nombre, t.color, () => empezar(t)))
+  );
+}
+async function cargarTemas() {
+  $('temasEstado').hidden = false; $('temasMsg').textContent = FW.t('common.loading'); $('temasRetry').hidden = true;
+  try {
+    const contenido = await FW.loadContent('bomba');
+    onomatopeyas = contenido.onomatopeyas;
+    pintarTemas(contenido.temas);
+    $('temasEstado').hidden = true;
+  } catch (e) {
+    $('temasMsg').textContent = FW.t('bomba.loadError');
+    $('temasRetry').hidden = false;
+  }
+}
+$('temasRetry').onclick = cargarTemas;
 
 /* ---------- ajustes ---------- */
 const minLabel = $('minLabel'), maxLabel = $('maxLabel');
-const pintar = () => { minLabel.textContent = config.min + ' s'; maxLabel.textContent = config.max + ' s'; };
+const pintar = () => { minLabel.textContent = FW.t('common.seconds', { n: config.min }); maxLabel.textContent = FW.t('common.seconds', { n: config.max }); };
 $('minMas').onclick = () => { config.min = Math.min(config.max - 5, config.min + 5); pintar(); guardarCfg(); };
 $('minMenos').onclick = () => { config.min = Math.max(5, config.min - 5); pintar(); guardarCfg(); };
 $('maxMas').onclick = () => { config.max = Math.min(120, config.max + 5); pintar(); guardarCfg(); };
@@ -189,54 +193,6 @@ $('opcHecho').onclick = () => FW.screen('home');
 
 FW.bindSoundToggle($('swSonido'));
 
-/* ---------- onomatopeyas ---------- */
-const ONOMATOPEYAS = ["¡BOOM!", "¡KABOOM!", "¡CATAPÚM!", "¡PUM!", "¡BUM!", "¡CATACROC!", "¡PLOF!", "¡ZAS!", "¡CRASH!", "¡PAM!", "¡FUAAA!", "¡BADABÚM!"];
-
-/* ---------- descripción de qué vale en cada tema ---------- */
-const DESCRIPCIONES = {
-  "Parque de atracciones": "Vale cualquier cosa que encuentres en un parque de atracciones: desde nombres de atracciones hasta el algodón de azúcar.",
-  "Animales": "Vale cualquier animal, de la mascota más común al bicho más raro.",
-  "Animales de granja": "Vale cualquier animal que viva en una granja.",
-  "Animales del mar": "Vale cualquier criatura que viva en el mar.",
-  "Frutas": "Vale cualquier fruta que se te ocurra.",
-  "Verduras": "Vale cualquier verdura u hortaliza.",
-  "Comidas": "Vale cualquier plato o comida que se pueda comer.",
-  "Postres y dulces": "Vale cualquier postre, dulce o chuchería.",
-  "Bebidas": "Vale cualquier cosa que se pueda beber.",
-  "Colores": "Vale cualquier color.",
-  "Profesiones": "Vale cualquier oficio o trabajo.",
-  "Herramientas": "Vale cualquier herramienta de bricolaje, jardín o taller.",
-  "Electrodomésticos": "Vale cualquier aparato eléctrico que haya en casa.",
-  "Muebles": "Vale cualquier mueble de una casa.",
-  "Cosas de la cocina": "Vale cualquier utensilio o cosa que haya en la cocina.",
-  "Cosas del baño": "Vale cualquier cosa que encuentres en el cuarto de baño.",
-  "Ropa": "Vale cualquier prenda de ropa o calzado.",
-  "Juguetes": "Vale cualquier juguete.",
-  "Material del cole": "Vale cualquier cosa que uses en el colegio.",
-  "Deportes": "Vale cualquier deporte o actividad deportiva.",
-  "Instrumentos musicales": "Vale cualquier instrumento de música.",
-  "Medios de transporte": "Vale cualquier cosa que sirva para desplazarse.",
-  "Partes del cuerpo": "Vale cualquier parte del cuerpo humano.",
-  "Colores y formas": "Valen colores y formas geométricas.",
-  "Países": "Vale cualquier país del mundo.",
-  "Nombres de niña": "Vale cualquier nombre de niña.",
-  "Nombres de niño": "Vale cualquier nombre de niño.",
-  "Dibujos animados": "Valen personajes o series de dibujos animados.",
-  "Superhéroes": "Valen superhéroes y también supervillanos.",
-  "Princesas y cuentos": "Valen princesas y personajes de cuentos clásicos.",
-  "Películas": "Vale cualquier título de película.",
-  "Flores": "Vale cualquier flor.",
-  "Árboles": "Vale cualquier tipo de árbol.",
-  "Insectos": "Vale cualquier insecto o bichito.",
-  "Pájaros": "Vale cualquier ave o pájaro.",
-  "Cosas de la playa": "Vale cualquier cosa que te lleves o encuentres en la playa.",
-  "Videojuegos": "Valen videojuegos o sus personajes.",
-  "Libros": "Valen títulos de libros o sus personajes.",
-  "Cantantes y grupos": "Valen cantantes o grupos de música.",
-  "Parques temáticos": "Valen nombres de parques temáticos conocidos.",
-  "Atracciones": "Valen tipos de atracción de feria o parque."
-};
-
 /* ---------- flujo ---------- */
 $('noRep').checked = FW.rulesSeen('bomba');
 function empezar(tema) {
@@ -244,13 +200,14 @@ function empezar(tema) {
   juego.tema = tema;
   if (FW.rulesSeen('bomba')) mostrarPreRonda(); else FW.screen('reglas');
 }
+$('reglasVolver').onclick = () => FW.screen('home');
 $('empezar').onclick = () => { if ($('noRep').checked) FW.setRulesSeen('bomba', true); mostrarPreRonda(); };
 
 function mostrarPreRonda() {
-  const t = TEMAS.find(x => x[0] === juego.tema);
-  $('prEmoji').textContent = t ? t[1] : '💣';
-  $('prTema').textContent = juego.tema;
-  $('prDesc').textContent = DESCRIPCIONES[juego.tema] || ('Vale cualquier cosa relacionada con: ' + juego.tema + '.');
+  const t = juego.tema;
+  $('prEmoji').textContent = t.emoji;
+  $('prTema').textContent = t.nombre;
+  $('prDesc').textContent = t.descripcion;
   FW.screen('preRonda');
 }
 $('prEmpezar').onclick = irCuenta;
@@ -260,7 +217,7 @@ function irCuenta() { FW.wakeLock(); FW.screen('countdown'); FW.countdown($('cou
 
 function lanzar() {
   FW.screen('game');
-  $('temaTxt').textContent = juego.tema;
+  $('temaTxt').textContent = juego.tema.nombre;
   juego.activo = true; juego.start = performance.now();
   const boomMs = (config.min + Math.random() * (config.max - config.min)) * 1000;
   juego.boomId = setTimeout(explotar, boomMs);
@@ -295,21 +252,39 @@ function tension() {
 
 function parar() { juego.activo = false; clearTimeout(juego.boomId); clearTimeout(juego.tickId); cancelAnimationFrame(juego.rafId); }
 
-function explotar() {
-  parar();
+function limpiarJuego() {
+  parar(); armarAbandono(false);
   bombaEl.style.transform = ''; gameEl.style.background = '';
+}
+
+/* ---------- abandonar: dos toques, para no salir sin querer al pasar el móvil ---------- */
+const abandonarBtn = $('abandonar');
+let abandonoT = null;
+function armarAbandono(armado) {
+  clearTimeout(abandonoT); abandonoT = armado ? setTimeout(() => armarAbandono(false), 2500) : null;
+  abandonarBtn.classList.toggle('is-confirm', armado);
+  abandonarBtn.textContent = armado ? FW.t('bomba.game.quitConfirm') : '✕';
+}
+abandonarBtn.onclick = () => {
+  if (!abandonoT) { armarAbandono(true); return; }
+  limpiarJuego(); FW.releaseWake(); FW.screen('home');
+};
+
+function explotar() {
+  limpiarJuego();
   FW.audio.boom();
   FW.haptic([400, 80, 200, 80, 300]);
-  $('onoma').textContent = ONOMATOPEYAS[Math.floor(Math.random() * ONOMATOPEYAS.length)];
+  $('onoma').textContent = onomatopeyas[Math.floor(Math.random() * onomatopeyas.length)];
   FW.flash($('flash'));
   FW.releaseWake();
   FW.screen('boom');
 }
 
-$('otra').onclick = () => { FW.wakeLock(); irCuenta(); };
+$('otra').onclick = irCuenta;
 $('cambiar').onclick = () => { FW.releaseWake(); FW.screen('home'); };
 
 FW.screen('home');
+cargarTemas();
 </script>
 </body>
 </html>

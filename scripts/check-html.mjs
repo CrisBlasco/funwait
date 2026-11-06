@@ -10,8 +10,8 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = join(ROOT, "public");
 
-// Páginas que SIEMPRE deben existir (si falta una, el deploy no tiene sentido).
-const REQUIRED = ["index.html", "mimica.html", "bomba.html"];
+// Ficheros que SIEMPRE deben existir (si falta uno, el deploy no tiene sentido).
+const REQUIRED = ["index.html", "mimica.html", "bomba.html", "sw.js"];
 
 const errors = [];
 
@@ -19,10 +19,10 @@ const errors = [];
 for (const f of REQUIRED) {
   const p = join(PUBLIC, f);
   if (!existsSync(p)) {
-    errors.push(`Falta la página obligatoria: public/${f}`);
+    errors.push(`Falta el fichero obligatorio: public/${f}`);
     continue;
   }
-  if (statSync(p).size === 0) errors.push(`Página vacía: public/${f}`);
+  if (statSync(p).size === 0) errors.push(`Fichero vacío: public/${f}`);
 }
 
 // Recorre public/ y devuelve todos los .html.

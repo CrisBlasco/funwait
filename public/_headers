@@ -1,0 +1,3 @@
+# El navegador debe comprobar siempre si hay un sw.js nuevo.
+/sw.js
+  Cache-Control: no-cache

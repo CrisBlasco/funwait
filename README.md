@@ -26,6 +26,7 @@ public/
   index.html     # hub de FunWait (elige juego)
   mimica.html    # Mímica Express
   bomba.html     # La Bomba
+  data/es/       # contenido de los juegos (palabras, temas) en JSON
   css/ js/ fonts/ assets/   # design system compartido (FunWait)
 ```
 
@@ -36,7 +37,8 @@ npm install
 npm run dev
 ```
 
-Abre la URL que indica Wrangler. Para probar en el móvil con sensores de inclinación
+Abre la URL que indica Wrangler (abrir los HTML con `file://` no funciona, porque el
+contenido se carga con `fetch`). Para probar en el móvil con sensores de inclinación
 necesitas HTTPS (lo da Cloudflare al desplegar; en local solo funcionará el modo táctil).
 
 ## Despliegue (automático: dos ramas → dos entornos)

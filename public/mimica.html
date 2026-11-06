@@ -4,8 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <meta name="theme-color" content="#F4F6F8" />
-<title>Mímica Express · FunWait</title>
+<title data-i18n="mimica.title">Mímica Express · FunWait</title>
 <link rel="icon" href="./assets/logo.svg" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="FunWait" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <link rel="stylesheet" href="./css/funwait.css" />
 <style>
   body { background: var(--fw-mist); }
@@ -38,83 +44,88 @@
   <!-- HOME: elegir paquete -->
   <section id="home" class="fw-screen fw-screen--scroll">
     <div class="fw-topbar">
-      <a class="fw-icon-btn fw-back" href="./index.html" aria-label="Menú"></a>
+      <a class="fw-icon-btn fw-back" href="./index.html" data-i18n-aria-label="common.menu"></a>
       <div class="fw-topbar-actions">
-        <button class="fw-icon-btn" id="opcionesBtn" aria-label="Opciones">⚙️</button>
+        <button class="fw-icon-btn" id="opcionesBtn" data-i18n-aria-label="common.options">⚙️</button>
       </div>
     </div>
     <div style="height: 50px"></div>
-    <h1 class="fw-h1">🎭 Mímica Express</h1>
-    <p class="fw-mute" style="margin: 4px 0 16px">Móvil en la frente · inclina para jugar</p>
+    <h1 class="fw-h1" data-i18n="mimica.heading"></h1>
+    <p class="fw-mute" style="margin: 4px 0 16px" data-i18n="mimica.tagline"></p>
+    <div id="packsEstado" role="status">
+      <p class="fw-mute" id="packsMsg"></p>
+      <button class="fw-btn" id="packsRetry" data-i18n="common.retry" hidden></button>
+    </div>
     <div class="fw-grid" id="packs"></div>
   </section>
 
   <!-- OPCIONES -->
   <section id="opciones" class="fw-screen fw-screen--scroll">
-    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="opcVolver" aria-label="Volver"></button><div class="fw-topbar-actions"></div></div>
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="opcVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
     <div style="height: 50px"></div>
-    <h1 class="fw-h1">⚙️ Opciones</h1>
+    <h1 class="fw-h1" data-i18n="common.options.title"></h1>
     <div class="fw-panel" style="margin-top: 18px">
-      <div class="fw-row"><span>🔊 Sonido</span><div class="fw-switch" id="swSonido"></div></div>
-      <div class="fw-row"><span>⏱️ Tiempo por ronda</span>
-        <div class="fw-controls"><button class="fw-stepper" id="tMenos">−</button><span id="tLabel" style="min-width: 64px">60 s</span><button class="fw-stepper" id="tMas">+</button></div>
+      <div class="fw-row"><span data-i18n="common.sound"></span><div class="fw-switch" id="swSonido"></div></div>
+      <div class="fw-row"><span data-i18n="mimica.options.time"></span>
+        <div class="fw-controls"><button class="fw-stepper" id="tMenos" data-i18n-aria-label="common.decrease">−</button><span id="tLabel" style="min-width: 64px"></span><button class="fw-stepper" id="tMas" data-i18n-aria-label="common.increase">+</button></div>
       </div>
-      <div class="fw-row"><span>🔄 Invertir inclinación</span><div class="fw-switch" id="swInv"></div></div>
+      <div class="fw-row"><span data-i18n="mimica.options.invert"></span><div class="fw-switch" id="swInv"></div></div>
     </div>
-    <button class="fw-btn fw-btn--primary" id="opcHecho" style="margin-top: 18px">✓ Hecho</button>
+    <button class="fw-btn fw-btn--primary" id="opcHecho" style="margin-top: 18px" data-i18n="common.done"></button>
   </section>
 
   <!-- REGLAS -->
   <section id="reglas" class="fw-screen">
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="reglasVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
     <div class="fw-card fw-rules">
       <div class="ilu">🙆📱🙆‍♀️</div>
-      <h2 class="fw-h2">Cómo se juega</h2>
+      <h2 class="fw-h2" data-i18n="common.rules.title"></h2>
       <ol>
-        <li><span>Ponte el móvil en la frente, sin mirar la pantalla.</span></li>
-        <li><span>Los demás te hacen <b>mímica</b> de la palabra.</span></li>
-        <li><span>Inclina <b>abajo si aciertas</b> y <b>arriba para pasar</b>.</span></li>
+        <li><span data-i18n="mimica.rules.step1"></span></li>
+        <li><span data-i18n-html="mimica.rules.step2"></span></li>
+        <li><span data-i18n-html="mimica.rules.step3"></span></li>
       </ol>
-      <button class="fw-btn fw-btn--primary fw-btn--xl" id="empezar">¡Empezar ya!</button>
-      <label class="no-repetir"><input type="checkbox" id="noRep" /> No volver a mostrar</label>
+      <button class="fw-btn fw-btn--primary fw-btn--xl" id="empezar" data-i18n="common.rules.start"></button>
+      <label class="no-repetir"><input type="checkbox" id="noRep" /> <span data-i18n="common.rules.noRepeat"></span></label>
     </div>
   </section>
 
   <!-- CUENTA ATRÁS -->
   <section id="countdown" class="fw-screen" style="background: var(--fw-blue); color: var(--fw-paper)">
-    <p class="fw-h2" style="margin-bottom: 10px">📱 Móvil en la frente</p>
+    <p class="fw-h2" style="margin-bottom: 10px" data-i18n="mimica.countdown"></p>
     <div class="fw-countdown-num" id="countNum">3</div>
   </section>
 
   <!-- JUEGO -->
   <section id="game" class="fw-screen">
     <div class="game-top">
-      <button class="fw-icon-btn" id="pausaBtn" aria-label="Pausa">⏸</button>
+      <button class="fw-icon-btn" id="pausaBtn" data-i18n-aria-label="mimica.pause">⏸</button>
       <div id="timer">60</div>
       <div id="score">✅ 0</div>
     </div>
     <div class="tema-chip" id="temaChip"></div>
     <div class="palabra-wrap"><div id="palabra">…</div></div>
-    <div class="ayuda-gestos">⬇️ acierto · ⬆️ pasar · (o toca abajo/arriba)</div>
+    <div class="ayuda-gestos" data-i18n="mimica.game.help"></div>
     <div id="feedback"></div>
   </section>
 
   <!-- PAUSA -->
   <section id="pause" class="fw-screen" style="background: rgba(16,24,40,.96); color: var(--fw-paper)">
-    <h2 class="fw-h1">⏸ Pausa</h2>
-    <button class="fw-btn fw-btn--success fw-btn--block" id="seguir">▶ Continuar</button>
-    <button class="fw-btn fw-btn--ghost fw-btn--block" id="salir">Salir al menú</button>
+    <h2 class="fw-h1" data-i18n="mimica.pause.title"></h2>
+    <button class="fw-btn fw-btn--success fw-btn--block" id="seguir" data-i18n="mimica.pause.resume"></button>
+    <button class="fw-btn fw-btn--ghost fw-btn--block" id="salir" data-i18n="mimica.pause.exit"></button>
   </section>
 
   <!-- RESULTADO -->
   <section id="result" class="fw-screen" style="background: var(--fw-blue); color: var(--fw-paper)">
-    <h2 class="fw-h1" id="rTitulo">¡Se acabó!</h2>
+    <h2 class="fw-h1" id="rTitulo"></h2>
     <div class="fw-display" id="rScore" style="color: var(--fw-yellow)">0</div>
-    <p style="font-weight: 600; margin: 0 0 14px">aciertos 🎉</p>
+    <p style="font-weight: 600; margin: 0 0 14px" id="rAciertos"></p>
     <div>
-      <button class="fw-btn fw-btn--success" id="otra">🔁 Otra vez</button>
-      <a class="fw-btn fw-btn--ghost" href="./index.html">🏠 Menú</a>
+      <button class="fw-btn fw-btn--success" id="otra" data-i18n="common.playAgain"></button>
+      <a class="fw-btn fw-btn--ghost" href="./index.html" data-i18n="mimica.result.menu"></a>
     </div>
-    <button class="fw-btn fw-btn--ghost fw-btn--block" id="verPalabras" style="margin-top: 8px">📝 Ver palabras</button>
+    <button class="fw-btn fw-btn--ghost fw-btn--block" id="verPalabras" style="margin-top: 8px"></button>
   </section>
 
 </div>
@@ -123,65 +134,15 @@
 <div class="fw-drawer-backdrop" id="drawerBg"></div>
 <div class="fw-drawer" id="drawer">
   <div class="fw-drawer-handle"></div>
-  <div class="fw-drawer-head"><h2 class="fw-h2">Palabras</h2><button class="fw-icon-btn" id="drawerClose" aria-label="Cerrar">✕</button></div>
+  <div class="fw-drawer-head"><h2 class="fw-h2" data-i18n="mimica.words.title"></h2><button class="fw-icon-btn" id="drawerClose" data-i18n-aria-label="common.close">✕</button></div>
   <div class="fw-drawer-body"><div class="lista" id="lista"></div></div>
 </div>
 
 <div class="fw-flash" id="flash"></div>
 
+<script src="./js/i18n/es.js"></script>
 <script src="./js/funwait.js"></script>
 <script>
-const PAQUETES = {
-  objetos: {
-    nombre: "Objetos cotidianos", emoji: "🪑", color: "#0ea5e9",
-    palabras: ["Silla","Mesa","Cama","Sofá","Armario","Estantería","Lámpara","Bombilla","Reloj","Despertador","Espejo","Cepillo de dientes","Pasta de dientes","Peine","Cepillo de pelo","Toalla","Jabón","Champú","Secador","Tijeras","Lápiz","Bolígrafo","Goma de borrar","Sacapuntas","Regla","Cuaderno","Libro","Mochila","Estuche","Pegamento","Grapadora","Clip","Calculadora","Ordenador","Teclado","Ratón","Pantalla","Teléfono","Móvil","Cargador","Auriculares","Televisión","Mando a distancia","Radio","Altavoz","Nevera","Microondas","Horno","Tostadora","Cafetera","Batidora","Sartén","Olla","Cuchara","Tenedor","Cuchillo","Plato","Vaso","Taza","Botella","Servilleta","Mantel","Cubo de basura","Escoba","Fregona","Aspiradora","Plancha","Lavadora","Paraguas","Gafas","Gafas de sol","Reloj de pulsera","Pulsera","Collar","Anillo","Cartera","Monedero","Llaves","Llavero","Candado","Maleta","Bolsa","Caja","Vela","Cerilla","Mechero","Linterna","Pila","Enchufe","Cable","Ventilador","Calendario","Cojín","Manta","Almohada","Sábana","Cortina","Alfombra","Percha","Pinza de ropa","Paraguas plegable","Felpudo","Jarrón","Maceta","Reloj de arena","Cucharón","Colador","Rallador","Abrelatas","Sacacorchos","Exprimidor","Rodillo de cocina","Molde de bizcocho","Bandeja","Fuente","Ensaladera","Tabla de cortar","Pelador de patatas","Termómetro","Báscula de cocina","Reloj de cuco","Cronómetro","Agenda","Pizarra","Tiza","Rotulador","Subrayador","Pincel de pintura","Acuarelas","Ceras de colores","Compás escolar","Transportador","Carpeta","Archivador","Celo","Taladradora de papel","Chincheta","Imán","Cortaúñas","Esponja","Bañera","Ducha","Grifo","Lavabo","Inodoro","Papel higiénico","Cesto de la ropa","Tendedero","Tabla de planchar","Cubertería","Salero","Pimentero","Aceitera","Azucarero","Tetera","Termo","Fiambrera","Carro de la compra","Hucha","Portarretrato","Álbum de fotos","Baraja de cartas","Dado","Tablero de ajedrez","Puzle","Peluche","Globo terráqueo","Mapa","Brújula","Prismáticos","Lupa","Microscopio","Flexo","Interruptor","Timbre","Pomo de puerta","Cerradura","Mirilla","Buzón","Escalera de mano","Banqueta","Taburete","Hamaca de jardín","Mecedora","Perchero","Zapatero","Cómoda","Mesilla de noche","Baúl","Cajón","Botiquín","Tirita","Venda","Cepillo de barrer","Recogedor","Trapo de cocina","Bayeta","Guante de fregar"]
-  },
-  animales: {
-    nombre: "Animales", emoji: "🦁", color: "#22c55e",
-    palabras: ["León","Tigre","Leopardo","Guepardo","Pantera","Elefante","Rinoceronte","Hipopótamo","Jirafa","Cebra","Mono","Gorila","Chimpancé","Orangután","Oso","Oso polar","Panda","Koala","Canguro","Lobo","Zorro","Perro","Gato","Caballo","Burro","Vaca","Toro","Cerdo","Oveja","Cabra","Conejo","Ratón","Rata","Ardilla","Erizo","Topo","Murciélago","Ciervo","Jabalí","Camello","Llama","Serpiente","Cobra","Lagarto","Iguana","Camaleón","Cocodrilo","Tortuga","Rana","Sapo","Salamandra","Pez","Tiburón","Delfín","Ballena","Orca","Foca","Morsa","Pulpo","Calamar","Medusa","Cangrejo","Langosta","Estrella de mar","Caballito de mar","Pingüino","Águila","Halcón","Búho","Loro","Flamenco","Avestruz","Pavo real","Cisne","Pato","Ganso","Gallina","Gallo","Pollito","Paloma","Gorrión","Golondrina","Cuervo","Tucán","Colibrí","Mariposa","Abeja","Avispa","Hormiga","Mosca","Mosquito","Araña","Escorpión","Escarabajo","Mariquita","Libélula","Saltamontes","Caracol","Gusano","Oruga","Mapache","Nutria","Castor","Pollo","Codorniz","Faisán","Cigüeña","Garza","Pelícano","Gaviota","Martín pescador","Petirrojo","Jilguero","Canario","Periquito","Pájaro carpintero","Mirlo","Urraca","Buitre","Cóndor","Lechuza","Avispón","Abejorro","Grillo","Cigarra","Luciérnaga","Mantis religiosa","Ciempiés","Garrapata","Pulga","Piojo","Termita","Lombriz","Babosa","Almeja","Mejillón","Ostra","Gamba","Camarón","Anémona","Coral","Manta raya","Pez espada","Pez payaso","Anguila","Salmón","Trucha","Sardina","Atún","Bacalao","Merluza","Beluga","Narval","Marmota","Comadreja","Hurón","Tejón","Lince","Puma","Jaguar","Oso hormiguero","Perezoso","Armadillo","Tapir","Antílope","Ñu","Gacela","Impala","Búfalo","Bisonte","Alce","Reno","Dromedario","Suricata","Mangosta","Lémur","Babuino","Mandril","Gibón","Dragón de Komodo","Gecko","Tritón","Pitón","Boa","Víbora","Anaconda","Potro","Ternero","Lechón","Cordero","Cabrito","Cachorro"]
-  },
-  herramientas: {
-    nombre: "Herramientas", emoji: "🔧", color: "#f97316",
-    palabras: ["Martillo","Destornillador","Llave inglesa","Llave fija","Alicates","Tenazas","Sierra","Serrucho","Sierra eléctrica","Taladro","Broca","Clavo","Tornillo","Tuerca","Arandela","Perno","Cincel","Lima","Lija","Papel de lija","Espátula","Rasqueta","Pincel","Brocha","Rodillo de pintura","Bote de pintura","Cinta métrica","Metro","Regla","Escuadra","Nivel","Plomada","Lápiz de carpintero","Compás","Cúter","Tijeras","Grapadora","Pistola de pegamento","Soldador","Pegamento","Cola","Cinta aislante","Cinta adhesiva","Brida","Cuerda","Alambre","Cadena","Candado","Llave","Caja de herramientas","Banco de trabajo","Tornillo de banco","Mordaza","Gato hidráulico","Carretilla","Pala","Pico","Azada","Rastrillo","Horca","Tijeras de podar","Manguera","Regadera","Escalera","Andamio","Casco","Guantes","Gafas de protección","Mascarilla","Tapones","Linterna","Multímetro","Pelacables","Lijadora","Amoladora","Fresadora","Compresor","Generador","Cortacésped","Motosierra","Hormigonera","Nivel láser","Detector de metales","Llave de tubo","Llave Allen","Remachadora","Tacos","Embudo","Bidón","Cubo","Trapo","Cepillo de alambre","Destornillador de estrella","Garlopa","Formón","Punzón","Escofina","Berbiquí","Tornillos","Clavos","Grapas","Mazo","Maza","Hacha","Hachuela","Machete","Navaja","Cuchilla","Sierra circular","Atornillador eléctrico","Punta de atornillar","Nivel de burbuja","Escuadra de carpintero","Tiza de marcar","Raspador","Cepillo de carpintero","Pistola de silicona","Soplete","Pinzas","Cinta de carrocero","Velcro","Imán de taller","Taco de lijar","Disco de corte","Caballete","Prensa","Sargento","Gato de coche","Llave de ruedas","Bomba de inflar","Soldadura","Grapa de tapicero","Espátula de masilla","Llana","Paleta de albañil","Taladro percutor","Broca de madera","Caladora","Ingletadora","Tijera de setos","Cortasetos","Desbrozadora","Soplador de hojas","Plantador","Transplantador","Horquilla de jardín","Guadaña","Hoz","Cizalla","Tenaza de corte","Pata de cabra","Palanca","Barra de uña","Cubeta de pintura"]
-  },
-  profesiones: {
-    nombre: "Profesiones", emoji: "👩‍🚀", color: "#8b5cf6",
-    palabras: ["Médico","Enfermero","Cirujano","Dentista","Veterinario","Farmacéutico","Psicólogo","Fisioterapeuta","Oculista","Pediatra","Profesor","Maestro","Director de colegio","Bibliotecario","Científico","Químico","Físico","Biólogo","Astrónomo","Astronauta","Ingeniero","Arquitecto","Programador","Mecánico","Electricista","Fontanero","Carpintero","Albañil","Pintor","Soldador","Jardinero","Agricultor","Granjero","Ganadero","Pescador","Cocinero","Chef","Panadero","Pastelero","Carnicero","Pescadero","Frutero","Camarero","Cajero","Dependiente","Peluquero","Barbero","Maquillador","Modista","Sastre","Zapatero","Relojero","Joyero","Florista","Fotógrafo","Periodista","Escritor","Traductor","Locutor","Presentador","Actor","Actriz","Director de cine","Cantante","Músico","Compositor","Guitarrista","Pianista","Bailarín","Escultor","Diseñador","Policía","Bombero","Militar","Soldado","Piloto","Azafata","Marinero","Capitán","Taxista","Conductor de autobús","Camionero","Maquinista","Cartero","Basurero","Barrendero","Socorrista","Árbitro","Futbolista","Entrenador","Juez","Abogado","Notario","Banquero","Contable","Economista","Político","Alcalde","Mago","Payaso","Malabarista","Detective","Espía","Herrero","Cerrajero","Afilador","Soplador de vidrio","Alfarero","Ceramista","Tejedor","Tapicero","Sombrerero","Costurera","Bordadora","Lavandero","Limpiabotas","Conserje","Vigilante","Guardabosques","Guardia civil","Buzo","Salvavidas","Submarinista","Equilibrista","Trapecista","Domador","Faquir","Titiritero","Ventrílocuo","Mimo","Acróbata","Contorsionista","Tragafuegos","Hipnotizador","Adivino","Meteorólogo","Geólogo","Arqueólogo","Paleontólogo","Botánico","Zoólogo","Explorador","Montañero","Apicultor","Pastor de ovejas","Vaquero","Herrador","Molinero","Leñador","Minero","Tallista","Ilustrador","Dibujante","Caricaturista","Animador","Técnico de sonido","Iluminador","Decorador","Doble de acción","Masajista","Nadador profesional","Gimnasta","Patinador","Esquiador","Surfista","Boxeador","Luchador","Jinete","Torero","Ciclista","Atleta","Tenista","Baloncestista","Portero de fútbol","Comentarista deportivo","Óptico","Enfermera de urgencias","Camillero","Celador","Repartidor","Mozo de almacén","Reponedor","Guía turístico","Recepcionista"]
-  },
-  halloween: {
-    nombre: "Halloween", emoji: "🎃", color: "#ea580c",
-    palabras: ["Fantasma","Calabaza","Bruja","Brujo","Vampiro","Drácula","Esqueleto","Calavera","Momia","Zombi","Hombre lobo","Monstruo","Frankenstein","Espantapájaros","Duende","Gnomo","Ogro","Troll","Gigante","Hada mala","Demonio","Diablo","Muerte","Guadaña","Murciélago","Araña","Telaraña","Gato negro","Búho","Cuervo","Rata","Serpiente","Sapo","Luna llena","Noche","Niebla","Tormenta","Rayo","Trueno","Cementerio","Tumba","Lápida","Ataúd","Cripta","Castillo embrujado","Casa encantada","Mansión","Sótano","Ático","Mazmorra","Caldero","Poción","Pócima","Hechizo","Maldición","Varita mágica","Libro de hechizos","Bola de cristal","Escoba voladora","Sombrero de bruja","Capa","Colmillos","Garras","Sangre","Vendas","Disfraz","Máscara","Careta","Maquillaje","Calabaza iluminada","Vela","Farol","Dulces","Caramelos","Chocolate","Chuches","Truco o trato","Susto","Grito","Escalofrío","Pesadilla","Terror","Miedo","Oscuridad","Sombra","Espíritu","Aparición","Cadáver","Brebaje","Murciélago vampiro","Luna de sangre","Araña gigante","Calabacera","Pasadizo secreto","Tela de araña","Caldero burbujeante","Capucha","Bruja voladora","Gárgola","Cuervo negro","Quiosco de sustos","Casa del terror","Jorobado","Científico loco","Monstruo de Frankenstein","Hombre invisible","Payaso siniestro","Muñeco diabólico","Muñeca poseída","Espantacuervos","Jinete sin cabeza","Dama de blanco","Novia cadáver","Vampiresa","Murciélago gigante","Rata de cloaca","Cucaracha","Escorpión negro","Tarántula","Lechuza nocturna","Perro del infierno","Gato maullando","Luna sangrienta","Eclipse","Rayo en la noche","Viento aullador","Puerta chirriante","Escalera cruje","Vela parpadeante","Antorcha","Reloj de pared antiguo","Espejo roto","Retrato embrujado","Armadura vieja","Cadena oxidada","Llave oxidada","Cofre maldito","Baúl del tesoro","Mapa del tesoro","Pergamino antiguo","Libro prohibido","Pata de conejo","Herradura","Calabaza tallada","Nabo tallado","Caldero hirviendo","Ala de murciélago","Pata de araña","Gusano asqueroso","Esqueleto bailarín","Mano saliendo de la tumba","Dedo cortado","Cerebro","Corazón latiendo","Globo ocular","Diente podrido","Sarcófago","Pirámide maldita","Castillo tenebroso","Torre encantada","Foso con cocodrilos","Puente levadizo","Reja de hierro","Verja del cementerio","Espantapájaros maldito","Granja abandonada","Bosque tenebroso","Árbol retorcido","Pantano","Niebla espesa","Sábana con agujeros","Peluca morada","Uñas postizas"]
-  },
-  navidad: {
-    nombre: "Navidad", emoji: "🎄", color: "#dc2626",
-    palabras: ["Papá Noel","Reyes Magos","Melchor","Gaspar","Baltasar","Reno","Rudolph","Trineo","Elfo","Duende de Navidad","Árbol de Navidad","Estrella","Bola de Navidad","Guirnalda","Espumillón","Luces de Navidad","Adorno","Lazo","Campana","Cascabel","Vela","Corona de Adviento","Muérdago","Acebo","Piña","Copo de nieve","Nieve","Muñeco de nieve","Bola de nieve","Hielo","Carámbano","Regalo","Paquete","Caja de regalo","Papel de regalo","Calcetín navideño","Chimenea","Fuego","Villancico","Coro","Pandereta","Zambomba","Belén","Pesebre","Portal de Belén","Niño Jesús","Virgen María","San José","Mula","Buey","Pastor","Oveja","Ángel","Estrella de Belén","Carta a los Reyes","Carbón","Turrón","Mazapán","Polvorón","Mantecado","Roscón de Reyes","Haba del roscón","Uvas de Nochevieja","Campanadas","Cava","Brindis","Cena de Navidad","Pavo relleno","Cordero","Jamón","Langostinos","Cascanueces","Bastón de caramelo","Galletas de jengibre","Casita de jengibre","Chocolate caliente","Postal de Navidad","Felicitación","Nochebuena","Nochevieja","Año Nuevo","Día de Reyes","Cabalgata","Confeti","Gorro de Papá Noel","Barba blanca","Saco de regalos","Fábrica de juguetes","Polo Norte","Lista de buenos","Deseo","Invierno","Abrigo","Bufanda","Guantes","Gorro de lana","Patinaje sobre hielo","Muñecos de nieve","Reno Rudolph","Nochebuena mágica","Figura del belén","Tió de Nadal","Nacimiento","Reyes a caballo","Paje real","Carroza de Reyes","Caramelos de la cabalgata","Estrella fugaz","Farolillo","Bengala","Petardo","Cohete","Fuegos artificiales","Serpentina","Matasuegras","Gorro de fiesta","Antifaz de fiesta","Campanillas","Trineo volador","Reno con cuernos","Establo","Paja del pesebre","Camellos de los Reyes","Zapatos en la ventana","Agua para los camellos","Carbón dulce","Bastón de azúcar","Pirulí","Galleta de Navidad","Tronco de Navidad","Bizcocho","Hojaldre","Nuez","Avellana","Almendra","Castaña asada","Mandarina","Besugo","Marisco","Gambas a la plancha","Canelones","Lombarda","Asado de cordero","Cochinillo","Sidra","Ponche","Chocolate con churros","Mantecados variados","Figuritas de mazapán","Caja de bombones","Lazo rojo","Cinta dorada","Etiqueta de regalo","Tarjeta navideña","Buzón de cartas","Cartero real","Lista de regalos","Punta del árbol","Figura de cristal","Cascanueces soldado","Soldadito de plomo","Caja de música","Pandereta de fiesta","Botella de cava","Copa de brindis","Doce campanadas","Confeti dorado","Abrazo de Año Nuevo","Calendario de Adviento","Chimenea con fuego","Leña ardiendo","Calcetín colgado","Media navideña","Cencerro","Ángel de la guarda","Trompeta del ángel","Arpa","Nieve cayendo","Patinador sobre hielo"]
-  },
-  disney: {
-    nombre: "Personajes Disney", emoji: "🏰", color: "#ec4899",
-    palabras: ["Mickey Mouse","Minnie Mouse","Pato Donald","Daisy","Goofy","Pluto","Blancanieves","Cenicienta","Aurora","Ariel","Bella","Jasmín","Pocahontas","Mulán","Tiana","Rapunzel","Mérida","Elsa","Anna","Olaf","Kristoff","Sven","Moana","Maui","Raya","Aladdín","Genio","Jafar","Yago","Simba","Nala","Mufasa","Scar","Timón","Pumba","Rafiki","Zazú","Bambi","Tambor","Dumbo","Peter Pan","Campanilla","Capitán Garfio","Wendy","Pinocho","Pepito Grillo","Gepetto","Alicia","Sombrerero Loco","Reina de Corazones","Gato de Cheshire","Conejo Blanco","Winnie the Pooh","Tigger","Piglet","Ígor","Lilo","Stitch","Hércules","Megara","Hades","Tarzán","Jane","Quasimodo","Esmeralda","Robin Hood","Baloo","Mowgli","Bagheera","Shere Khan","Kaa","Cruella de Vil","Pongo","Dama","Golfo","Woody","Buzz Lightyear","Jessie","Rex","Hamm","Señor Cara de Papa","Slinky","Forky","Bo Peep","Mr. Increíble","Elastigirl","Dash","Violeta","Jack Jack","Nemo","Marlín","Dory","Mike Wazowski","Sulley","Remy","Wall-E","Eva","Carl","Russell","Vaiana","Bruno","Mirabel","Encanto","Chop","Max","Clarabella","Horacio","Maléfica","Hada Madrina","Lucifer el gato","Jaq","Gus","Sebastián","Flounder","Tritón","Úrsula","Príncipe Eric","Scuttle","Bestia","Lumiere","Chip la taza","Señora Potts","Gastón","Abu","Alfombra mágica","Rajah","Flynn Rider","Pascal","Madre Gothel","Hans","Mushu","Pepa","Pua el cerdito","Heihei","Tamatoa","Te Fiti","Jorobado de Notre Dame","Phoebus","Kuzco","Pacha","Yzma","Kronk","Thumper","Pete el gato malo","Dalmata","Perdita","Roger","Anita","Nana la perra","Marie"]
-  },
-  verano: {
-    nombre: "Verano", emoji: "☀️", color: "#06b6d4",
-    palabras: ["Playa","Arena","Mar","Ola","Marea","Orilla","Sombrilla","Toalla de playa","Hamaca","Tumbona","Bañador","Biquini","Chanclas","Gafas de sol","Gorra","Sombrero de paja","Crema solar","Bronceado","Flotador","Manguitos","Colchoneta","Gafas de buceo","Tubo de buceo","Aletas","Snorkel","Tabla de surf","Bodyboard","Piragua","Kayak","Barca","Velero","Yate","Patín de pedales","Moto de agua","Boya","Salvavidas","Socorrista","Castillo de arena","Cubo","Pala","Rastrillo","Molde de arena","Concha","Caracola","Estrella de mar","Cangrejo","Pez","Medusa","Delfín","Gaviota","Faro","Muelle","Puerto","Chiringuito","Helado","Polo","Granizado","Horchata","Limonada","Sandía","Melón","Piña","Coco","Fresa","Cereza","Zumo","Batido","Barbacoa","Pícnic","Nevera portátil","Ventilador","Abanico","Aire acondicionado","Piscina","Trampolín","Tobogán acuático","Pistola de agua","Globo de agua","Manguera","Aspersor","Cometa","Pelota de playa","Palas de playa","Frisbee","Camping","Tienda de campaña","Saco de dormir","Hoguera","Linterna","Senderismo","Montaña","Lago","Río","Cascada","Calor","Vacaciones","Verbena","Puesta de sol","Hamaca de red","Pulsera de verano","Chiringuito de playa","Helado de cucurucho","Duna","Palmera","Cocotero","Acantilado","Isla","Charca","Pozo","Fuente","Surtidor","Aspersor de jardín","Pala de arena","Rastrillo de arena","Molinillo de viento","Raqueta de playa","Volante de bádminton","Red de voleibol","Patinete","Bicicleta de paseo","Monopatín","Patines en línea","Barca de remos","Remo","Canoa","Tabla de paddle surf","Vela de barco","Ancla","Timón","Chaleco salvavidas","Flotador de rosquilla","Colchoneta de agua","Churro de piscina","Manguitos hinchables","Gorro de baño","Tapones para los oídos","Pinza para la nariz","Albornoz","Toalla de microfibra","Sombrilla de playa","Silla plegable","Mesa plegable","Botella de agua fría","Polo de hielo","Helado de palo","Granizado de limón","Agua de coco","Sandía partida","Melón cortado","Brocheta de fruta","Tortilla de patatas","Patatas fritas","Palomitas","Algodón de azúcar","Manzana de caramelo","Churros con chocolate","Bomba de agua","Guerra de agua","Mangueras cruzadas","Tirolina","Parque acuático","Noria","Montaña rusa","Autos de choque","Tiovivo","Puesto de feria","Caseta de tiro","Barraca de feria","Hoguera de San Juan","Petardos de verano","Estrellas fugaces","Cielo estrellado","Luciérnagas en la noche","Hamaca entre palmeras","Caravana","Autocaravana","Mapa de carretera","Maleta de viaje"]
-  },
-  superheroes: {
-    nombre: "Superhéroes", emoji: "🦸", color: "#ef4444",
-    palabras: ["Spiderman","Batman","Superman","Iron Man","Hulk","Thor","Capitán América","Viuda Negra","Ojo de Halcón","Nick Fury","Loki","Visión","Bruja Escarlata","Mercurio","Ant-Man","La Avispa","Doctor Strange","Capitana Marvel","Black Panther","Star-Lord","Gamora","Groot","Rocket","Drax","Nébula","Mantis","Falcon","Soldado de Invierno","War Machine","Spider-Gwen","Miles Morales","Daredevil","Jessica Jones","Luke Cage","Puño de Hierro","Punisher","Deadpool","Lobezno","Cíclope","Jean Grey","Fénix","Tormenta","Bestia","Rondador Nocturno","Coloso","Gatasombra","Pícara","Gambito","Mística","Magneto","Profesor X","Hombre de Hielo","Dientes de Sable","Cable","Mr. Fantástico","Mujer Invisible","Antorcha Humana","La Cosa","Silver Surfer","Galactus","Wonder Woman","Flash","Aquaman","Linterna Verde","Cyborg","Robin","Nightwing","Batgirl","Catwoman","Joker","Harley Quinn","Pingüino","Enigma","Dos Caras","Bane","Espantapájaros","Hiedra Venenosa","Mr. Frío","Supergirl","Shazam","Flecha Verde","Canario Negro","Detective Marciano","Hawkman","Zatanna","Darkseid","Lex Luthor","Doomsday","Brainiac","Los Vengadores","Liga de la Justicia","Patrulla X","Hellboy","Los Increíbles","Capitán Trueno","Antifaz","Capa roja","Rayo láser","Supervillano","Base secreta","Poder invisible","Alfred","Comisario Gordon","Batmóvil","Baticueva","Batiseñal","Red de Spiderman","Tía May","Tío Ben","Doctor Octopus","Duende Verde","Buitre","Rhino","Veneno","Lagarto","Mysterio","Electro","Lois Lane","Jimmy Olsen","Clark Kent","Kriptonita","Fortaleza de la Soledad","Krypto el superperro","Flecha de Flecha Verde","Antifaz de superhéroe","Capa ondeante","Escudo del Capitán América","Martillo de Thor","Reactor del pecho","Mano repulsora","Guantelete del infinito","Gema del infinito","Thanos","Ultron","Hulka","Capitán América joven","Quicksilver","Wanda","Doctor Doom","Lazo de la verdad","Brazaletes mágicos","Avión invisible","Isla Themyscira","Casa de los espejos","Carta explosiva del Joker","Mazo de Harley Quinn","Látigo de Catwoman","Paraguas del Pingüino","Bastón del Enigma","Moneda de Dos Caras"]
-  },
-  dibujos: {
-    nombre: "Dibujos animados", emoji: "📺", color: "#14b8a6",
-    palabras: ["Bob Esponja","Patricio","Calamardo","Don Cangrejo","Arenita","Plankton","Gary","Pikachu","Ash","Charmander","Bulbasaur","Squirtle","Bart Simpson","Homer Simpson","Marge Simpson","Lisa Simpson","Maggie","Ned Flanders","Mr. Burns","Scooby-Doo","Shaggy","Velma","Fred","Daphne","Tom","Jerry","Bugs Bunny","Pato Lucas","Piolín","Silvestre","Correcaminos","Coyote","Porky","Taz","Marvin el Marciano","Speedy González","Doraemon","Nobita","Shin-chan","Peppa Pig","George Pig","Pocoyó","Caillou","Heidi","Marco","Vickie el Vikingo","D'Artacán","Los Pitufos","Papá Pitufo","Pitufina","Popeye","Olivia","Garfield","Odie","Pingu","Pedro Picapiedra","Pablo Mármol","Dino","Los Supersónicos","El oso Yogui","Pantera Rosa","Inspector Gadget","Penny","Las Supernenas","Pétalo","Burbuja","Cactus","Johnny Bravo","Dexter","Dee Dee","Tortugas Ninja","Leonardo","Donatello","Miguel Ángel","Rafael","Shredder","Goku","Vegeta","Krilin","Piccolo","Bulma","Naruto","Sasuke","Oliver y Benji","Caballeros del Zodiaco","Gumball","Darwin","Anaïs","Finn","Jake","Steven Universe","Phineas","Ferb","Perry el ornitorrinco","Mortadelo","Filemón","Zipi y Zape","Doraemon gato","Teen Titans","Ben 10","Mort el pingüino","Perla","Larry la langosta","Hombre Sirena","Chico Percebe","Squidward","Charizard","Jigglypuff","Meowth","Eevee","Snorlax","Psyduck","Mewtwo","Misty","Brock","Abuelo Simpson","Milhouse","Nelson","Barney Gumble","Krusty el payaso","Jefe Wiggum","Director Skinner","Apu","Doctora Juguetes","Mamá Pig","Papá Pig","Susy oveja","Candy el gato","Pedro Poni","Rebecca Coneja","Dora la exploradora","Botas el mono","Swiper el zorro","Rosi","Patán","Masha","El oso de Masha","Nina de Pocoyó","Elly la elefanta","Loula","Bluey","Bingo","Pequeña Dorothy","Max y Ruby","Teletubbies","Tinky Winky","Dipsy","Laa-Laa","Po","Bob el constructor","Lofty la grúa","Scoop la excavadora","Mike el camión","Tractor Tom","Thomas la locomotora","Percy el tren","La patrulla canina","Ryder","Chase el policía","Marshall el bombero","Rubble","Skye","Zuma","Rocky","Everest","Dipper","Mabel","El tío Stan","Pato Waddles","Princesa Chicle","Marceline","El rey Hielo","Bmo","Richard","Nicole","Candace","Doofenshmirtz","Agente P","Avatar Aang","Katara","Sokka","Toph","Appa","El Capitán Calzoncillos","Momo la gata"]
-  },
-  deportes: {
-    nombre: "Deportes", emoji: "⚽", color: "#65a30d",
-    palabras: ["Fútbol","Baloncesto","Tenis","Natación","Boxeo","Esquí","Patinaje","Ciclismo","Kárate","Gimnasia","Saltar a la comba","Hacer surf","Escalar","Remar","Montar a caballo","Tirar con arco","Voleibol","Balonmano","Rugby","Béisbol","Golf","Hockey","Ping-pong","Bádminton","Atletismo","Correr una carrera","Salto de longitud","Salto de altura","Salto con pértiga","Lanzamiento de peso","Lanzamiento de jabalina","Lanzamiento de disco","Carrera de vallas","Maratón","Judo","Taekwondo","Lucha","Esgrima","Halterofilia","Levantar pesas","Hacer flexiones","Hacer sentadillas","Hacer abdominales","Saltar a la pata coja","Dar una voltereta","Hacer el pino","Hacer la rueda","Hacer el puente","Patinaje artístico","Patinaje sobre hielo","Patinar sobre ruedas","Monopatín","Esquí acuático","Submarinismo","Bucear","Waterpolo","Saltos de trampolín","Piragüismo","Vela","Pesca","Senderismo","Hacer escalada en rocódromo","Montar en bici","Ciclismo de montaña","Motocross","Carreras de coches","Patinete","Esquiar en pista","Snowboard","Trineo","Lanzar un balón","Botar un balón","Chutar","Parar un penalti","Encestar","Sacar de banda","Hacer un mate","Driblar","Lanzar un tiro libre","Servir en tenis","Golpear con la raqueta","Devolver la pelota","Saque de voleibol","Rematar","Bloquear","Batear","Lanzar la pelota (béisbol)","Dar un golpe de golf","Marcar un gol","Placar (rugby)","Nadar a crol","Nadar a braza","Nadar de espaldas","Tirarse de cabeza","Dar patadas de kárate","Lanzar un gancho","Esquivar un golpe","Hacer sombra (boxeo)","Saltar el potro","Hacer equilibrio en la barra","Dar una patada alta","Hacer estiramientos","Calentar antes de jugar","Cabecear el balón","Tirar a canasta","Pedalear","Remar en canoa","Tirar de la cuerda","Saltar al agua"]
-  },
-  acciones: {
-    nombre: "Acciones del día a día", emoji: "🏃", color: "#6366f1",
-    palabras: ["Dormir","Despertarse","Bostezar","Lavarse los dientes","Ducharse","Peinarse","Vestirse","Desayunar","Comer","Beber","Cocinar","Fregar los platos","Barrer","Estornudar","Reír","Llorar","Aplaudir","Saludar","Bailar","Saltar","Correr","Leer","Escribir","Pintar","Teclear","Hablar por teléfono","Conducir","Despertar con el despertador","Estirarse al levantarse","Lavarse la cara","Secarse con la toalla","Ponerse los zapatos","Atarse los cordones","Ponerse el abrigo","Ponerse un sombrero","Ponerse gafas","Mirarse al espejo","Hacer la cama","Abrir la puerta","Cerrar la puerta","Llamar al timbre","Subir escaleras","Bajar escaleras","Abrir una ventana","Encender la luz","Apagar la luz","Poner la mesa","Recoger la mesa","Cortar con tijeras","Pelar una fruta","Partir el pan","Remover con una cuchara","Echar sal","Freír en la sartén","Servir agua en un vaso","Masticar","Soplar la sopa","Lavarse las manos","Sonarse la nariz","Toser","Sonreír","Rascarse la cabeza","Guiñar un ojo","Señalar con el dedo","Decir adiós con la mano","Dar la mano","Abrazar","Dar un beso","Chocar los cinco","Hacer el pulgar arriba","Negar con la cabeza","Asentir con la cabeza","Mandar callar","Pensar rascándose la barbilla","Contar con los dedos","Escuchar con la mano en la oreja","Mirar con unos prismáticos","Hacer una foto","Grabar un vídeo","Pasar las páginas de un libro","Dibujar con un lápiz","Borrar con una goma","Recortar papel","Pegar con pegamento","Colorear","Hacer una bola de papel","Lanzar un avión de papel","Encestar el papel en la papelera","Abrir un paraguas","Cerrar un paraguas","Pasar la fregona","Pasar el aspirador","Limpiar el polvo","Doblar la ropa","Tender la ropa","Planchar","Regar las plantas","Dar de comer al perro","Pasear al perro","Acariciar a un gato","Despedirse con un pañuelo","Rezar","Dormir la siesta","Roncar","Contar ovejas","Caminar de puntillas","Andar con prisa","Buscar algo por el suelo","Levantar la mano en clase","Escribir en la pizarra","Sacar punta a un lápiz"]
-  }
-};
-
 const UMBRAL = 6, RETORNO = 3, DWELL = 350;
 let config = Object.assign({ tiempo: 60, invertir: false }, FW.prefs.mimica || {});
 function guardarCfg() { FW.prefs.mimica = { tiempo: config.tiempo, invertir: config.invertir }; FW.save(); }
@@ -193,22 +154,27 @@ const gameEl = $('game'), palabraEl = $('palabra'), timerEl = $('timer'), scoreE
 
 /* ---------- menú ---------- */
 const packsEl = $('packs');
-const azar = document.createElement('button');
-azar.className = 'fw-tile fw-tile--random';
-azar.innerHTML = '<span class="emoji">🎲</span><span>¡Al azar!</span>';
-azar.onclick = () => elegir(FW.shuffle(Object.keys(PAQUETES))[0]);
-packsEl.appendChild(azar);
-Object.entries(PAQUETES).forEach(([clave, p]) => {
-  const b = document.createElement('button');
-  b.className = 'fw-tile'; b.style.background = p.color; b.style.color = '#fff';
-  b.innerHTML = `<span class="emoji">${p.emoji}</span><span>${p.nombre}</span>`;
-  b.onclick = () => elegir(clave);
-  packsEl.appendChild(b);
-});
+function pintarPaquetes(paquetes) {
+  packsEl.replaceChildren(
+    FW.tile('🎲', FW.t('common.random'), null, () => elegir(FW.shuffle(paquetes)[0])),
+    ...paquetes.map(p => FW.tile(p.emoji, p.nombre, p.color, () => elegir(p)))
+  );
+}
+async function cargarPaquetes() {
+  $('packsEstado').hidden = false; $('packsMsg').textContent = FW.t('common.loading'); $('packsRetry').hidden = true;
+  try {
+    pintarPaquetes((await FW.loadContent('mimica')).paquetes);
+    $('packsEstado').hidden = true;
+  } catch (e) {
+    $('packsMsg').textContent = FW.t('mimica.loadError');
+    $('packsRetry').hidden = false;
+  }
+}
+$('packsRetry').onclick = cargarPaquetes;
 
 /* ---------- ajustes ---------- */
 const tLabel = $('tLabel'), swInv = $('swInv');
-function pintarCfg() { tLabel.textContent = config.tiempo + ' s'; swInv.classList.toggle('is-on', config.invertir); }
+function pintarCfg() { tLabel.textContent = FW.t('common.seconds', { n: config.tiempo }); swInv.classList.toggle('is-on', config.invertir); }
 pintarCfg();
 $('tMas').onclick = () => { config.tiempo = Math.min(120, config.tiempo + 15); pintarCfg(); guardarCfg(); };
 $('tMenos').onclick = () => { config.tiempo = Math.max(30, config.tiempo - 15); pintarCfg(); guardarCfg(); };
@@ -228,18 +194,19 @@ async function pedirPermiso() {
 
 /* ---------- flujo ---------- */
 $('noRep').checked = FW.rulesSeen('mimica');
-async function elegir(clave) {
+async function elegir(pack) {
   FW.unlock();
-  juego.pack = clave;
+  juego.pack = pack;
   await pedirPermiso();
   if (FW.rulesSeen('mimica')) irCuenta(); else FW.screen('reglas');
 }
+$('reglasVolver').onclick = () => FW.screen('home');
 $('empezar').onclick = () => { if ($('noRep').checked) FW.setRulesSeen('mimica', true); irCuenta(); };
 
 function irCuenta() { FW.wakeLock(); FW.screen('countdown'); FW.countdown($('countNum'), empezarRonda); }
 
 function empezarRonda() {
-  const pack = PAQUETES[juego.pack];
+  const pack = juego.pack;
   temaChip.textContent = pack.nombre;
   juego.mazo = FW.shuffle(pack.palabras);
   juego.indice = 0; juego.aciertos = 0; juego.resultados = [];
@@ -269,8 +236,8 @@ function registrar(ok) {
   if (!juego.activo) return;
   const palabra = juego.mazo[juego.indice];
   juego.resultados.push({ palabra, ok }); juego.indice++;
-  if (ok) { juego.aciertos++; scoreEl.textContent = '✅ ' + juego.aciertos; flash('var(--fw-green)', '✅ ¡BIEN!', 'var(--fw-green-dark)'); FW.audio.acierto(); FW.haptic(60); }
-  else { flash('var(--fw-pink)', '⏭️ PASO', 'var(--fw-pink-dark)'); FW.audio.pasar(); FW.haptic([30, 40, 30]); }
+  if (ok) { juego.aciertos++; scoreEl.textContent = '✅ ' + juego.aciertos; flash('var(--fw-green)', FW.t('mimica.game.correct'), 'var(--fw-green-dark)'); FW.audio.acierto(); FW.haptic(60); }
+  else { flash('var(--fw-pink)', FW.t('mimica.game.pass'), 'var(--fw-pink-dark)'); FW.audio.pasar(); FW.haptic([30, 40, 30]); }
   if (juego.tiempoRestante > 0) mostrarPalabra();
 }
 let flashT = null;
@@ -330,11 +297,13 @@ function finRonda() {
 }
 function mostrarResultados() {
   $('rScore').textContent = juego.aciertos;
-  $('rTitulo').textContent = juego.aciertos >= 15 ? '¡INCREÍBLE! 🏆' : juego.aciertos >= 8 ? '¡Muy bien! 🎉' : '¡Se acabó! ⏰';
-  const lista = $('lista'); lista.innerHTML = '';
-  if (!juego.resultados.length) lista.innerHTML = '<div class="item">No dio tiempo 😅</div>';
-  juego.resultados.forEach(r => { const d = document.createElement('div'); d.className = 'item'; d.textContent = (r.ok ? '✅ ' : '⏭️ ') + r.palabra; lista.appendChild(d); });
-  $('verPalabras').textContent = '📝 Ver palabras (' + juego.resultados.length + ')';
+  $('rAciertos').textContent = FW.tn('mimica.result.hits', juego.aciertos);
+  $('rTitulo').textContent = juego.aciertos >= 15 ? FW.t('mimica.result.great') : juego.aciertos >= 8 ? FW.t('mimica.result.good') : FW.t('mimica.result.end');
+  const lista = $('lista'); lista.replaceChildren();
+  const item = txt => { const d = document.createElement('div'); d.className = 'item'; d.textContent = txt; lista.appendChild(d); };
+  if (!juego.resultados.length) item(FW.t('mimica.result.none'));
+  juego.resultados.forEach(r => item((r.ok ? '✅ ' : '⏭️ ') + r.palabra));
+  $('verPalabras').textContent = FW.t('mimica.result.words', { n: juego.resultados.length });
   cerrarDrawer();
   FW.screen('result');
 }
@@ -346,9 +315,10 @@ $('verPalabras').onclick = abrirDrawer;
 $('drawerClose').onclick = cerrarDrawer;
 $('drawerBg').onclick = cerrarDrawer;
 
-$('otra').onclick = async () => { cerrarDrawer(); await pedirPermiso(); FW.wakeLock(); irCuenta(); };
+$('otra').onclick = async () => { cerrarDrawer(); await pedirPermiso(); irCuenta(); };
 
 FW.screen('home');
+cargarPaquetes();
 </script>
 </body>
 </html>
