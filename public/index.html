@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <meta name="theme-color" content="#FFC700" />
-<title>FunWait · La cola también se juega</title>
+<title data-i18n="hub.title">FunWait · La cola también se juega</title>
 <link rel="icon" href="./assets/logo.svg" />
 <link rel="stylesheet" href="./css/funwait.css" />
 <style>
@@ -21,8 +21,8 @@
     <div class="fw-topbar">
       <span></span>
       <div class="fw-topbar-actions">
-        <button class="fw-icon-btn fw-help" id="help" aria-label="Ayuda">?</button>
-        <button class="fw-icon-btn" id="sound" aria-label="Sonido">🔊</button>
+        <button class="fw-icon-btn fw-help" id="help" data-i18n-aria-label="hub.help">?</button>
+        <button class="fw-icon-btn" id="sound" data-i18n-aria-label="hub.sound">🔊</button>
       </div>
     </div>
 
@@ -161,48 +161,47 @@
                     <g class="slogan-text">
                         <!-- Background pill for extra readability -->
                         <rect x="110" y="278" width="280" height="32" rx="16" fill="#F4F6F8"/>
-                        <text x="250" y="300" text-anchor="middle" font-family="'Poppins', sans-serif" font-weight="700" font-size="17" fill="#101828" letter-spacing="0.2">
-                            La cola también se juega.
-                        </text>
+                        <text x="250" y="300" text-anchor="middle" font-family="'Poppins', sans-serif" font-weight="700" font-size="17" fill="#101828" letter-spacing="0.2" data-i18n="hub.slogan"></text>
                     </g>
                 </svg></div>
 
-    <h2 class="fw-h2" style="margin: 14px 0 4px">¡A jugar en la cola!</h2>
+    <h2 class="fw-h2" style="margin: 14px 0 4px" data-i18n="hub.heading"></h2>
 
     <button class="fw-game-card" id="goBomba">
       <span class="emoji">💣</span>
       <span class="info">
-        <span class="name">La Bomba</span>
-        <span class="fw-chips"><span class="fw-chip">3–8 jugadores</span><span class="fw-chip">Rápido</span></span>
+        <span class="name" data-i18n="hub.bomba.name"></span>
+        <span class="fw-chips"><span class="fw-chip" data-i18n="hub.bomba.players"></span><span class="fw-chip" data-i18n="hub.bomba.style"></span></span>
       </span>
     </button>
 
     <button class="fw-game-card" id="goMimica">
       <span class="emoji">🎭</span>
       <span class="info">
-        <span class="name">Mímica Express</span>
-        <span class="fw-chips"><span class="fw-chip">Todos</span><span class="fw-chip">Creativo</span></span>
+        <span class="name" data-i18n="hub.mimica.name"></span>
+        <span class="fw-chips"><span class="fw-chip" data-i18n="hub.mimica.players"></span><span class="fw-chip" data-i18n="hub.mimica.style"></span></span>
       </span>
     </button>
 
-    <button class="fw-btn fw-btn--primary fw-btn--block" id="random" style="margin-top: 20px">🎲 Modo aleatorio</button>
-    <p class="fw-mute" style="margin-top: 20px">Más juegos muy pronto 😜</p>
+    <button class="fw-btn fw-btn--primary fw-btn--block" id="random" style="margin-top: 20px" data-i18n="hub.random"></button>
+    <p class="fw-mute" style="margin-top: 20px" data-i18n="hub.more"></p>
   </section>
 
   <!-- AYUDA -->
   <section id="ayuda" class="fw-screen fw-screen--scroll" style="background: var(--fw-night); color: var(--fw-paper)">
     <div style="height: 24px"></div>
-    <h2 class="fw-h1">¿Qué es FunWait?</h2>
+    <h2 class="fw-h1" data-i18n="hub.about.title"></h2>
     <div class="fw-card" style="color: var(--fw-night); text-align: left; width: min(520px, 92%); margin-top: 14px">
-      <p>Minijuegos para pasar el rato en las colas. Elige uno, pasaos el móvil y a reír 🎉</p>
-      <p><b>💣 La Bomba:</b> decid por turnos una palabra del tema y pasad el móvil; pierde quien lo tenga cuando explota.</p>
-      <p><b>🎭 Mímica Express:</b> móvil en la frente, los demás hacen mímica; inclina para acertar o pasar.</p>
+      <p data-i18n="hub.about.intro"></p>
+      <p data-i18n-html="hub.about.bomba"></p>
+      <p data-i18n-html="hub.about.mimica"></p>
     </div>
-    <button class="fw-btn fw-btn--primary" id="cerrarAyuda" style="margin-top: 16px">¡Entendido!</button>
+    <button class="fw-btn fw-btn--primary" id="cerrarAyuda" style="margin-top: 16px" data-i18n="hub.about.close"></button>
   </section>
 
 </div>
 
+<script src="./js/i18n/es.js"></script>
 <script src="./js/funwait.js"></script>
 <script>
   const $ = id => document.getElementById(id);
