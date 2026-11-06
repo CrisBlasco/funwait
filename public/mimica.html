@@ -6,6 +6,12 @@
 <meta name="theme-color" content="#F4F6F8" />
 <title data-i18n="mimica.title">Mímica Express · FunWait</title>
 <link rel="icon" href="./assets/logo.svg" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="FunWait" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <link rel="stylesheet" href="./css/funwait.css" />
 <style>
   body { background: var(--fw-mist); }
@@ -70,6 +76,7 @@
 
   <!-- REGLAS -->
   <section id="reglas" class="fw-screen">
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="reglasVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
     <div class="fw-card fw-rules">
       <div class="ilu">🙆📱🙆‍♀️</div>
       <h2 class="fw-h2" data-i18n="common.rules.title"></h2>
@@ -193,6 +200,7 @@ async function elegir(pack) {
   await pedirPermiso();
   if (FW.rulesSeen('mimica')) irCuenta(); else FW.screen('reglas');
 }
+$('reglasVolver').onclick = () => FW.screen('home');
 $('empezar').onclick = () => { if ($('noRep').checked) FW.setRulesSeen('mimica', true); irCuenta(); };
 
 function irCuenta() { FW.wakeLock(); FW.screen('countdown'); FW.countdown($('countNum'), empezarRonda); }
@@ -307,7 +315,7 @@ $('verPalabras').onclick = abrirDrawer;
 $('drawerClose').onclick = cerrarDrawer;
 $('drawerBg').onclick = cerrarDrawer;
 
-$('otra').onclick = async () => { cerrarDrawer(); await pedirPermiso(); FW.wakeLock(); irCuenta(); };
+$('otra').onclick = async () => { cerrarDrawer(); await pedirPermiso(); irCuenta(); };
 
 FW.screen('home');
 cargarPaquetes();

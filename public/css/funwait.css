@@ -93,7 +93,7 @@ body { overflow: hidden; }
 .fw-topbar {
   position: absolute; top: calc(var(--fw-safe-t) + var(--fw-s3)); left: 0; right: 0;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 calc(var(--fw-safe-l) + var(--fw-s4)) 0 calc(var(--fw-safe-r) + var(--fw-s4));
+  padding: 0 calc(var(--fw-safe-r) + var(--fw-s4)) 0 calc(var(--fw-safe-l) + var(--fw-s4));
   z-index: var(--fw-z-topbar);
 }
 .fw-topbar .fw-logo { height: 34px; }

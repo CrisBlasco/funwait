@@ -6,6 +6,12 @@
 <meta name="theme-color" content="#FFC700" />
 <title data-i18n="hub.title">FunWait · La cola también se juega</title>
 <link rel="icon" href="./assets/logo.svg" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="FunWait" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <link rel="stylesheet" href="./css/funwait.css" />
 <style>
   body { background: var(--fw-mist); }
@@ -195,6 +201,7 @@
       <p data-i18n="hub.about.intro"></p>
       <p data-i18n-html="hub.about.bomba"></p>
       <p data-i18n-html="hub.about.mimica"></p>
+      <p id="instalarIos" data-i18n-html="hub.install.ios" hidden></p>
     </div>
     <button class="fw-btn fw-btn--primary" id="cerrarAyuda" style="margin-top: 16px" data-i18n="hub.about.close"></button>
   </section>
@@ -211,6 +218,11 @@
   const paintSound = () => soundBtn.textContent = FW.prefs.sound ? '🔊' : '🔇';
   paintSound();
   soundBtn.onclick = () => { FW.prefs.sound = !FW.prefs.sound; FW.save(); paintSound(); if (FW.prefs.sound) FW.unlock(); };
+
+  // iOS no ofrece instalar por su cuenta (iPadOS se identifica como Mac).
+  const esIos = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const instalada = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+  $('instalarIos').hidden = !esIos || instalada;
 
   $('help').onclick = () => FW.screen('ayuda');
   $('cerrarAyuda').onclick = () => FW.screen('home');
