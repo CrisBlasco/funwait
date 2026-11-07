@@ -79,9 +79,15 @@ body { overflow: hidden; }
   padding: calc(var(--fw-safe-t) + var(--fw-s4)) calc(var(--fw-safe-r) + var(--fw-s4))
            calc(var(--fw-safe-b) + var(--fw-s4)) calc(var(--fw-safe-l) + var(--fw-s4));
   text-align: center;
+  /* Si el contenido no cabe (móvil pequeño o apaisado), se desplaza en vez de
+     desbordarse por arriba y por abajo. `safe` evita que el centrado lo recorte. */
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  justify-content: safe center;
 }
 .fw-screen.is-active { display: flex; }
-.fw-screen--scroll { justify-content: flex-start; overflow-y: auto; }
+.fw-screen--scroll { justify-content: flex-start; }
+/* Hueco para la barra superior (es absoluta): el contenido nunca queda debajo */
+.fw-screen:has(> .fw-topbar) { padding-top: calc(var(--fw-safe-t) + var(--fw-s3) + 44px + var(--fw-s4)); }
 
 /* ---------- Tipos de texto ---------- */
 .fw-display { font-family: var(--fw-font-display); font-weight: 700; font-size: var(--fw-fs-display); line-height: 1; }
@@ -121,7 +127,9 @@ body { overflow: hidden; }
   font-family: var(--fw-font-display); font-weight: 700;
   font-size: clamp(1.1rem, 4.8vw, 1.35rem);
   color: var(--fw-night); background: var(--fw-paper);
-  padding: 14px 32px; cursor: pointer; margin: var(--fw-s2);
+  padding: 14px clamp(18px, 6vw, 32px); cursor: pointer; margin: var(--fw-s2);
+  max-width: calc(100% - 2 * var(--fw-s2)); line-height: 1.15; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: .3em;
   box-shadow: var(--fw-shadow-hard); transition: transform .06s ease, box-shadow .06s ease;
 }
 .fw-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--fw-night); }
@@ -130,8 +138,11 @@ body { overflow: hidden; }
 .fw-btn--danger  { background: var(--fw-pink); color: var(--fw-paper); }
 .fw-btn--ghost   { background: transparent; color: var(--fw-paper); border-color: var(--fw-paper); box-shadow: none; }
 .fw-btn--ghost:active { transform: translateY(2px); box-shadow: none; }
-.fw-btn--xl { font-size: clamp(1.4rem, 6.5vw, 2rem); padding: 22px 40px; width: min(440px, 88%); }
+.fw-btn--xl { font-size: clamp(1.3rem, 6.5vw, 2rem); padding: clamp(16px, 4.5vw, 22px) clamp(16px, 5vw, 40px); width: min(440px, 88%); }
 .fw-btn--block { width: min(440px, 88%); }
+
+/* Grupo de botones en fila que pasa a columna cuando no caben */
+.fw-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; width: min(560px, 100%); }
 
 /* ---------- Tarjetas ---------- */
 .fw-card {
@@ -158,8 +169,10 @@ body { overflow: hidden; }
 }
 
 /* ---------- Controles de ajustes ---------- */
-.fw-row { display: flex; align-items: center; justify-content: space-between; gap: var(--fw-s3); font-weight: 600; }
-.fw-controls { display: flex; align-items: center; gap: var(--fw-s2); }
+.fw-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--fw-s2) var(--fw-s3); font-weight: 600; text-align: left; }
+/* En pantallas estrechas la etiqueta ocupa su línea y los controles bajan, alineados a la derecha */
+.fw-row > span:first-child { flex: 1 1 9em; min-width: 0; }
+.fw-controls { display: flex; align-items: center; gap: var(--fw-s2); flex: none; margin-left: auto; }
 
 .fw-switch {
   position: relative; width: 58px; height: 34px; flex: none; cursor: pointer;
@@ -190,7 +203,7 @@ body { overflow: hidden; }
 /* ---------- Cuenta atrás ---------- */
 .fw-countdown-num {
   font-family: var(--fw-font-display); font-weight: 700;
-  font-size: clamp(7rem, 42vw, 14rem); line-height: 1;
+  font-size: clamp(5rem, min(42vw, 55vh), 14rem); line-height: 1;
   animation: fw-pop .45s ease;
 }
 @keyframes fw-pop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
