@@ -43,9 +43,16 @@ gh pr create --base main --head dev --fill   # o abrir el PR en la web
 - `node scripts/check-i18n.mjs` → cada key existe y se usa, y no hay texto suelto en el HTML.
 - `node scripts/check-pwa.mjs` → manifest, iconos y metas correctos, y `sw.js` al día con
   `public/` (si no, indica ejecutar `npm run sw`).
+- `node scripts/check-layout.mjs` → diseño responsive: abre cada pantalla en Chromium
+  (Playwright) a varios tamaños de móvil, apaisado y tablet, y falla si hay botones o
+  tarjetas solapados, elementos fuera de pantalla, scroll horizontal, contenido cortado
+  sin scroll o botones cortos partidos en dos líneas. La primera vez en local hace falta
+  `npx playwright install chromium --only-shell`; en CI lo instala el workflow.
+  Si se añade un tamaño de pantalla o un tipo de control nuevo, ampliar `VIEWPORTS` o
+  `SELECTOR` en ese script.
 
-No hay tests ni build porque el sitio es HTML/CSS/JS estático; si en el futuro se añaden,
-se encadenan en el script `check` del `package.json`.
+No hay build porque el sitio es HTML/CSS/JS estático; los tests nuevos se encadenan en el
+script `check` del `package.json`.
 
 ---
 
