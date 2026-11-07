@@ -10,7 +10,7 @@ import { generar } from "./build-sw.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = join(ROOT, "public");
-const PAGES = ["index.html", "mimica.html", "bomba.html"];
+const PAGES = ["index.html", "mimica.html", "bomba.html", "portero.html"];
 
 const errors = [];
 

@@ -61,6 +61,8 @@
 
 /* ---------- Base ---------- */
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* Que `hidden` gane a los display de componentes (.fw-btn es inline-flex). */
+[hidden] { display: none !important; }
 html, body {
   margin: 0; padding: 0; height: 100%; width: 100%;
   font-family: var(--fw-font-body);

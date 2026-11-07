@@ -1,0 +1,844 @@
+{
+  "niveles": [
+    {
+      "id": "facil",
+      "emoji": "🟢",
+      "color": "#16a34a",
+      "descripcion": "Cómo es la cosa: se ve a simple vista.",
+      "nombre": "Fácil",
+      "reglas": [
+        {
+          "id": "es-un-animal",
+          "texto": "Es un animal",
+          "si": ["perro", "águila", "hormiga"],
+          "no": ["mesa", "árbol"]
+        },
+        {
+          "id": "se-puede-comer",
+          "texto": "Se puede comer",
+          "si": ["manzana", "pizza", "pan"],
+          "no": ["zapato", "piedra"]
+        },
+        {
+          "id": "es-una-fruta",
+          "texto": "Es una fruta",
+          "si": ["manzana", "fresa", "uva"],
+          "no": ["zanahoria", "pan"]
+        },
+        {
+          "id": "es-una-verdura",
+          "texto": "Es una verdura",
+          "si": ["zanahoria", "lechuga", "pimiento", "brócoli"],
+          "no": ["manzana", "pan"]
+        },
+        {
+          "id": "se-puede-beber",
+          "texto": "Se puede beber",
+          "si": ["agua", "leche", "zumo", "batido"],
+          "no": ["pan", "queso"]
+        },
+        {
+          "id": "es-dulce",
+          "texto": "Es dulce",
+          "si": ["chocolate", "caramelo", "tarta", "miel"],
+          "no": ["patata", "sal"]
+        },
+        {
+          "id": "es-normalmente-rojo",
+          "texto": "Es (normalmente) rojo",
+          "si": ["fresa", "tomate", "cereza", "camión de bomberos"],
+          "no": ["plátano", "hierba"]
+        },
+        {
+          "id": "es-normalmente-amarillo",
+          "texto": "Es (normalmente) amarillo",
+          "si": ["plátano", "limón", "sol", "pollito"],
+          "no": ["tomate", "rana"]
+        },
+        {
+          "id": "es-normalmente-verde",
+          "texto": "Es (normalmente) verde",
+          "si": ["hierba", "rana", "lechuga", "cocodrilo"],
+          "no": ["tomate", "sol"]
+        },
+        {
+          "id": "es-normalmente-blanco",
+          "texto": "Es (normalmente) blanco",
+          "si": ["nieve", "leche", "nube", "oveja"],
+          "no": ["carbón", "tomate"]
+        },
+        {
+          "id": "se-encuentra-en-una-cocina",
+          "texto": "Se encuentra en una cocina",
+          "si": ["sartén", "nevera", "cuchara", "horno"],
+          "no": ["cama", "coche"]
+        },
+        {
+          "id": "se-encuentra-en-un-banyo",
+          "texto": "Se encuentra en un baño",
+          "si": ["cepillo de dientes", "toalla", "jabón", "bañera"],
+          "no": ["sartén", "coche"]
+        },
+        {
+          "id": "se-encuentra-en-un-colegio",
+          "texto": "Se encuentra en un colegio",
+          "si": ["pizarra", "mochila", "lápiz", "pupitre"],
+          "no": ["cama", "vaca"]
+        },
+        {
+          "id": "se-encuentra-en-la-playa",
+          "texto": "Se encuentra en la playa",
+          "si": ["arena", "toalla", "cubo", "ola"],
+          "no": ["nieve", "sofá"]
+        },
+        {
+          "id": "se-encuentra-en-un-parque-de-atracciones",
+          "texto": "Se encuentra en un parque de atracciones",
+          "si": ["noria", "montaña rusa", "algodón de azúcar"],
+          "no": ["vaca", "cama"]
+        },
+        {
+          "id": "es-un-animal-de-granja",
+          "texto": "Es un animal de granja",
+          "si": ["vaca", "gallina", "cerdo", "oveja"],
+          "no": ["león", "delfín"]
+        },
+        {
+          "id": "vive-en-el-agua",
+          "texto": "Vive en el agua",
+          "si": ["pez", "delfín", "pulpo", "ballena"],
+          "no": ["gato", "vaca"]
+        },
+        {
+          "id": "es-mas-grande-que-una-persona",
+          "texto": "Es más grande que una persona",
+          "si": ["elefante", "casa", "autobús", "árbol"],
+          "no": ["ratón", "pelota"]
+        },
+        {
+          "id": "cabe-en-un-bolsillo",
+          "texto": "Cabe en un bolsillo",
+          "si": ["llave", "moneda", "caramelo", "canica"],
+          "no": ["bici", "sofá"]
+        },
+        {
+          "id": "se-lleva-puesto",
+          "texto": "Se lleva puesto",
+          "si": ["gorra", "reloj", "calcetín", "gafas"],
+          "no": ["silla", "pelota"]
+        },
+        {
+          "id": "se-pone-en-la-cabeza",
+          "texto": "Se pone en la cabeza",
+          "si": ["gorra", "casco", "corona", "sombrero"],
+          "no": ["zapato", "guante"]
+        },
+        {
+          "id": "es-un-juguete",
+          "texto": "Es un juguete",
+          "si": ["pelota", "muñeca", "cometa", "peonza"],
+          "no": ["tenedor", "vaca"]
+        },
+        {
+          "id": "es-un-medio-de-transporte",
+          "texto": "Es un medio de transporte",
+          "si": ["coche", "barco", "avión", "tren"],
+          "no": ["casa", "perro"]
+        },
+        {
+          "id": "es-un-instrumento-musical",
+          "texto": "Es un instrumento musical",
+          "si": ["guitarra", "tambor", "piano", "flauta"],
+          "no": ["pelota", "mesa"]
+        },
+        {
+          "id": "se-usa-para-escribir-o-dibujar",
+          "texto": "Se usa para escribir o dibujar",
+          "si": ["lápiz", "bolígrafo", "tiza", "rotulador"],
+          "no": ["tenedor", "pelota"]
+        },
+        {
+          "id": "tiene-ruedas",
+          "texto": "Tiene ruedas",
+          "si": ["coche", "bici", "patinete", "carrito"],
+          "no": ["barco", "caballo"]
+        },
+        {
+          "id": "vuela",
+          "texto": "Vuela",
+          "si": ["avión", "mariposa", "abeja", "globo"],
+          "no": ["pingüino", "coche"]
+        },
+        {
+          "id": "tiene-alas",
+          "texto": "Tiene alas",
+          "si": ["pájaro", "avión", "mariposa", "murciélago"],
+          "no": ["perro", "coche"]
+        },
+        {
+          "id": "tiene-patas",
+          "texto": "Tiene patas",
+          "si": ["mesa", "silla", "perro", "araña"],
+          "no": ["serpiente", "coche", "pez"]
+        },
+        {
+          "id": "es-redondo",
+          "texto": "Es redondo",
+          "si": ["pelota", "rueda", "naranja", "moneda"],
+          "no": ["libro", "lápiz"]
+        },
+        {
+          "id": "es-frio",
+          "texto": "Es frío",
+          "si": ["helado", "nieve", "polo", "nevera"],
+          "no": ["sopa", "sol"]
+        },
+        {
+          "id": "es-caliente",
+          "texto": "Es caliente",
+          "si": ["sopa", "sol", "fuego", "horno"],
+          "no": ["helado", "nieve"]
+        },
+        {
+          "id": "funciona-con-pilas-o-enchufe",
+          "texto": "Funciona con pilas o enchufe",
+          "si": ["móvil", "linterna", "tele", "secador"],
+          "no": ["libro", "pelota"]
+        },
+        {
+          "id": "es-una-parte-del-cuerpo",
+          "texto": "Es una parte del cuerpo",
+          "si": ["nariz", "mano", "rodilla", "oreja"],
+          "no": ["zapato", "gorro"]
+        },
+        {
+          "id": "hace-ruido",
+          "texto": "Hace ruido",
+          "si": ["tambor", "despertador", "trompeta", "perro"],
+          "no": ["almohada", "nube"]
+        },
+        {
+          "id": "empieza-por-m",
+          "texto": "Empieza por M",
+          "si": ["mesa", "mono", "mar", "montaña"],
+          "no": ["pato", "sol"]
+        },
+        {
+          "id": "empieza-por-s",
+          "texto": "Empieza por S",
+          "si": ["sol", "silla", "sopa", "serpiente"],
+          "no": ["luna", "gato"]
+        }
+      ]
+    },
+    {
+      "id": "medio",
+      "emoji": "🟡",
+      "color": "#d97706",
+      "descripcion": "Cómo es la palabra, o detalles menos obvios.",
+      "nombre": "Medio",
+      "reglas": [
+        {
+          "id": "empieza-por-p",
+          "texto": "Empieza por P",
+          "si": ["pato", "pelota", "perro", "pan"],
+          "no": ["gato", "mesa"]
+        },
+        {
+          "id": "empieza-por-c",
+          "texto": "Empieza por C",
+          "si": ["casa", "coche", "cama", "cebra"],
+          "no": ["perro", "queso", "kiwi"],
+          "nota": "\"Queso\" y \"kiwi\" suenan a C, pero no valen."
+        },
+        {
+          "id": "empieza-por-vocal",
+          "texto": "Empieza por vocal",
+          "si": ["oso", "árbol", "uva", "elefante"],
+          "no": ["mesa", "perro"]
+        },
+        {
+          "id": "termina-en-a",
+          "texto": "Termina en A",
+          "si": ["casa", "pelota", "mariposa"],
+          "no": ["perro", "sol"]
+        },
+        {
+          "id": "termina-en-e",
+          "texto": "Termina en E",
+          "si": ["elefante", "coche", "café", "nube"],
+          "no": ["gato", "mesa"]
+        },
+        {
+          "id": "termina-en-o",
+          "texto": "Termina en O",
+          "si": ["perro", "libro", "gato", "zapato"],
+          "no": ["mesa", "sol"]
+        },
+        {
+          "id": "termina-en-consonante",
+          "texto": "Termina en consonante",
+          "si": ["reloj", "árbol", "ratón", "nariz"],
+          "no": ["mesa", "coche"]
+        },
+        {
+          "id": "lleva-la-letra-r",
+          "texto": "Lleva la letra R",
+          "si": ["perro", "árbol", "fresa"],
+          "no": ["mesa", "gato", "luna"]
+        },
+        {
+          "id": "lleva-la-letra-o",
+          "texto": "Lleva la letra O",
+          "si": ["oso", "sol", "perro", "coche"],
+          "no": ["mesa", "casa", "luna"]
+        },
+        {
+          "id": "lleva-la-letra-s",
+          "texto": "Lleva la letra S",
+          "si": ["sol", "mesa", "casa", "oso"],
+          "no": ["perro", "gato", "luna"]
+        },
+        {
+          "id": "tiene-3-letras-o-menos",
+          "texto": "Tiene 3 letras o menos",
+          "si": ["sol", "pez", "mar", "oso", "té"],
+          "no": ["gato", "perro"]
+        },
+        {
+          "id": "tiene-exactamente-4-letras",
+          "texto": "Tiene exactamente 4 letras",
+          "si": ["mesa", "gato", "sopa", "luna"],
+          "no": ["perro", "sol"]
+        },
+        {
+          "id": "tiene-6-letras-o-mas",
+          "texto": "Tiene 6 letras o más",
+          "si": ["elefante", "mariposa", "pelota", "zapato"],
+          "no": ["gato", "sol", "perro"]
+        },
+        {
+          "id": "tiene-una-sola-silaba",
+          "texto": "Tiene una sola sílaba",
+          "si": ["sol", "pez", "mar", "tren", "flor"],
+          "no": ["gato", "mesa"]
+        },
+        {
+          "id": "tiene-dos-silabas",
+          "texto": "Tiene dos sílabas",
+          "si": ["mesa", "gato", "coche", "perro"],
+          "no": ["sol", "pelota", "elefante"]
+        },
+        {
+          "id": "tiene-tres-silabas",
+          "texto": "Tiene tres sílabas",
+          "si": ["pelota", "zapato", "camisa", "pijama"],
+          "no": ["gato", "sol", "elefante"]
+        },
+        {
+          "id": "es-femenina-se-dice-la",
+          "texto": "Es femenina (se dice \"la …\")",
+          "si": ["mesa", "luna", "pelota", "nariz"],
+          "no": ["coche", "sol", "árbol"],
+          "nota": "\"Agua\" y \"águila\" son femeninas aunque se diga \"el\": mejor evitarlas."
+        },
+        {
+          "id": "es-mas-de-una-palabra",
+          "texto": "Es más de una palabra",
+          "si": ["montaña rusa", "perrito caliente", "oso panda"],
+          "no": ["noria", "perro"]
+        },
+        {
+          "id": "lo-ha-fabricado-una-persona",
+          "texto": "Lo ha fabricado una persona",
+          "si": ["silla", "coche", "pizza", "pelota"],
+          "no": ["árbol", "piedra", "perro"]
+        },
+        {
+          "id": "esta-vivo",
+          "texto": "Está vivo",
+          "si": ["perro", "flor", "árbol", "mosquito"],
+          "no": ["piedra", "coche", "nube"]
+        },
+        {
+          "id": "se-encuentra-en-el-cielo",
+          "texto": "Se encuentra en el cielo",
+          "si": ["sol", "nube", "luna", "avión"],
+          "no": ["coche", "pez"]
+        },
+        {
+          "id": "se-abre-y-se-cierra",
+          "texto": "Se abre y se cierra",
+          "si": ["puerta", "libro", "paraguas", "boca"],
+          "no": ["mesa", "pelota"]
+        },
+        {
+          "id": "tiene-numeros",
+          "texto": "Tiene números",
+          "si": ["reloj", "móvil", "calendario", "dado"],
+          "no": ["árbol", "zapato"]
+        },
+        {
+          "id": "tiene-botones",
+          "texto": "Tiene botones",
+          "si": ["mando", "camisa", "ascensor", "teclado"],
+          "no": ["plátano", "pelota"]
+        },
+        {
+          "id": "tiene-pelo",
+          "texto": "Tiene pelo",
+          "si": ["perro", "oso", "león", "persona"],
+          "no": ["pez", "serpiente", "mesa"]
+        },
+        {
+          "id": "tiene-cola",
+          "texto": "Tiene cola",
+          "si": ["perro", "gato", "avión", "cometa"],
+          "no": ["persona", "mesa", "rana"],
+          "nota": "El avión y la cometa también tienen cola."
+        },
+        {
+          "id": "tiene-motor",
+          "texto": "Tiene motor",
+          "si": ["coche", "moto", "avión", "lavadora"],
+          "no": ["bici", "caballo", "velero"]
+        },
+        {
+          "id": "sirve-para-cortar",
+          "texto": "Sirve para cortar",
+          "si": ["tijeras", "cuchillo", "sierra", "cortaúñas"],
+          "no": ["cuchara", "lápiz"]
+        },
+        {
+          "id": "se-pela-antes-de-comerlo",
+          "texto": "Se pela antes de comerlo",
+          "si": ["plátano", "naranja", "patata", "huevo duro"],
+          "no": ["fresa", "pan"]
+        },
+        {
+          "id": "se-guarda-en-la-nevera",
+          "texto": "Se guarda en la nevera",
+          "si": ["leche", "yogur", "mantequilla", "jamón"],
+          "no": ["galletas", "cereales", "zapato"]
+        },
+        {
+          "id": "va-por-pares",
+          "texto": "Va por pares",
+          "si": ["zapatos", "guantes", "calcetines", "pendientes"],
+          "no": ["gorro", "bufanda"]
+        },
+        {
+          "id": "tiene-agujeros",
+          "texto": "Tiene agujeros",
+          "si": ["colador", "flauta", "botón", "red"],
+          "no": ["pelota", "plátano"]
+        },
+        {
+          "id": "cabe-en-una-mochila",
+          "texto": "Cabe en una mochila",
+          "si": ["libro", "botella", "manzana", "estuche"],
+          "no": ["sofá", "coche", "bici"]
+        },
+        {
+          "id": "se-puede-comer-pero-no-es-dulce",
+          "texto": "Se puede comer pero no es dulce",
+          "si": ["pan", "patata", "queso", "jamón"],
+          "no": ["helado", "piedra"]
+        }
+      ]
+    },
+    {
+      "id": "dificil",
+      "emoji": "🔴",
+      "color": "#dc2626",
+      "descripcion": "Letras, ortografía o dos condiciones a la vez.",
+      "nombre": "Difícil",
+      "reglas": [
+        {
+          "id": "tiene-una-letra-doble-ll-rr-oo",
+          "texto": "Tiene una letra doble (ll, rr, oo…)",
+          "si": ["perro", "silla", "caballo", "arroz", "zoo"],
+          "no": ["pera", "gato", "sol"],
+          "nota": "La pareja perro / pera va muy bien como pista."
+        },
+        {
+          "id": "lleva-dos-vocales-juntas",
+          "texto": "Lleva dos vocales juntas",
+          "si": ["piedra", "huevo", "cielo", "jaula"],
+          "no": ["mesa", "gato", "perro"]
+        },
+        {
+          "id": "todas-sus-vocales-son-la-misma",
+          "texto": "Todas sus vocales son la misma",
+          "si": ["casa", "banana", "bebé", "sol"],
+          "no": ["perro", "gato", "pelota"]
+        },
+        {
+          "id": "empieza-y-termina-por-la-misma-letra",
+          "texto": "Empieza y termina por la misma letra",
+          "si": ["oso", "ala", "elefante", "sábanas"],
+          "no": ["gato", "perro"]
+        },
+        {
+          "id": "empieza-y-termina-por-vocal",
+          "texto": "Empieza y termina por vocal",
+          "si": ["oso", "uva", "ola", "abeja"],
+          "no": ["árbol", "mesa", "gato"]
+        },
+        {
+          "id": "empieza-por-una-letra-de-la-a-a-la-l",
+          "texto": "Empieza por una letra de la A a la L",
+          "si": ["casa", "árbol", "lápiz", "helado"],
+          "no": ["mesa", "perro", "sol"]
+        },
+        {
+          "id": "la-segunda-letra-es-vocal",
+          "texto": "La segunda letra es vocal",
+          "si": ["gato", "mesa", "perro", "luna"],
+          "no": ["árbol", "tren", "plátano", "oso"]
+        },
+        {
+          "id": "termina-en-on",
+          "texto": "Termina en -ón",
+          "si": ["ratón", "camión", "balón", "melón"],
+          "no": ["mesa", "sol"]
+        },
+        {
+          "id": "no-lleva-la-letra-a",
+          "texto": "No lleva la letra A",
+          "si": ["perro", "libro", "sol", "pez"],
+          "no": ["casa", "gato", "plátano"]
+        },
+        {
+          "id": "no-lleva-la-letra-e",
+          "texto": "No lleva la letra E",
+          "si": ["gato", "casa", "sol", "luna"],
+          "no": ["perro", "mesa", "coche"]
+        },
+        {
+          "id": "no-lleva-la-letra-o",
+          "texto": "No lleva la letra O",
+          "si": ["mesa", "casa", "luna", "gafas"],
+          "no": ["perro", "oso", "sol"]
+        },
+        {
+          "id": "lleva-la-letra-n",
+          "texto": "Lleva la letra N",
+          "si": ["luna", "nube", "mano", "nariz"],
+          "no": ["gato", "perro", "sol"]
+        },
+        {
+          "id": "lleva-la-letra-ny",
+          "texto": "Lleva la letra Ñ",
+          "si": ["niño", "piña", "araña", "uña"],
+          "no": ["nido", "pino"]
+        },
+        {
+          "id": "lleva-la-letra-z",
+          "texto": "Lleva la letra Z",
+          "si": ["zapato", "pez", "lápiz", "zorro"],
+          "no": ["cielo", "cine", "mesa"],
+          "nota": "\"Cielo\" suena con Z, pero se escribe con C: no vale."
+        },
+        {
+          "id": "lleva-la-letra-b",
+          "texto": "Lleva la letra B",
+          "si": ["barco", "ballena", "bota", "árbol"],
+          "no": ["vaca", "avión", "mesa"],
+          "nota": "Mejor para mayores (ortografía)."
+        },
+        {
+          "id": "lleva-la-letra-v",
+          "texto": "Lleva la letra V",
+          "si": ["vaca", "avión", "uva", "nieve"],
+          "no": ["barco", "mesa"],
+          "nota": "Mejor para mayores (ortografía)."
+        },
+        {
+          "id": "lleva-la-letra-h",
+          "texto": "Lleva la letra H",
+          "si": ["helado", "huevo", "hormiga", "búho"],
+          "no": ["oso", "mesa"],
+          "nota": "La H no suena: cuesta descubrirla."
+        },
+        {
+          "id": "lleva-tilde",
+          "texto": "Lleva tilde",
+          "si": ["café", "árbol", "ratón", "sofá", "lápiz"],
+          "no": ["mesa", "perro", "reloj"],
+          "nota": "Mejor para mayores (ortografía)."
+        },
+        {
+          "id": "empieza-por-la-ultima-letra-de-lo-que-se-dijo-antes",
+          "texto": "Empieza por la última letra de lo que se dijo antes",
+          "si": ["(antes \"gato\") oso, ojo"],
+          "no": ["(antes \"gato\") mesa"],
+          "nota": "Cuenta lo último que alguien haya dicho, pasara o no."
+        },
+        {
+          "id": "es-un-animal-mas-pequenyo-que-un-gato",
+          "texto": "Es un animal más pequeño que un gato",
+          "si": ["ratón", "hormiga", "pollito", "mariposa"],
+          "no": ["perro", "caballo", "mesa"]
+        },
+        {
+          "id": "es-un-animal-que-no-tiene-patas",
+          "texto": "Es un animal que no tiene patas",
+          "si": ["serpiente", "pez", "gusano", "ballena"],
+          "no": ["perro", "araña", "pájaro"]
+        },
+        {
+          "id": "es-un-animal-que-pone-huevos",
+          "texto": "Es un animal que pone huevos",
+          "si": ["gallina", "pato", "serpiente", "tortuga"],
+          "no": ["perro", "vaca", "gato"]
+        },
+        {
+          "id": "se-come-y-es-verde",
+          "texto": "Se come y es verde",
+          "si": ["lechuga", "kiwi", "guisante", "pepino"],
+          "no": ["hierba", "fresa", "rana"]
+        },
+        {
+          "id": "vuela-pero-no-es-un-animal",
+          "texto": "Vuela pero no es un animal",
+          "si": ["avión", "globo", "cometa", "helicóptero"],
+          "no": ["pájaro", "abeja", "coche"]
+        },
+        {
+          "id": "tiene-ruedas-pero-no-tiene-motor",
+          "texto": "Tiene ruedas pero no tiene motor",
+          "si": ["bici", "patinete", "carrito", "monopatín"],
+          "no": ["coche", "moto", "barco"]
+        },
+        {
+          "id": "esta-en-casa-pero-no-en-la-cocina",
+          "texto": "Está en casa pero no en la cocina",
+          "si": ["cama", "sofá", "tele", "ducha"],
+          "no": ["sartén", "nevera", "árbol"]
+        },
+        {
+          "id": "cabe-en-la-mano-pero-no-se-come",
+          "texto": "Cabe en la mano pero no se come",
+          "si": ["llave", "lápiz", "moneda", "móvil"],
+          "no": ["manzana", "galleta", "sofá"]
+        },
+        {
+          "id": "es-mas-grande-que-una-pelota-pero-cabe-en-una-casa",
+          "texto": "Es más grande que una pelota pero cabe en una casa",
+          "si": ["sofá", "perro", "nevera"],
+          "no": ["canica", "elefante"]
+        },
+        {
+          "id": "es-mas-pesado-que-un-coche",
+          "texto": "Es más pesado que un coche",
+          "si": ["camión", "elefante", "casa", "ballena"],
+          "no": ["perro", "bici", "persona"]
+        },
+        {
+          "id": "es-de-metal",
+          "texto": "Es de metal",
+          "si": ["llave", "moneda", "tenedor", "clavo"],
+          "no": ["pelota", "libro", "árbol"]
+        }
+      ]
+    },
+    {
+      "id": "trampa",
+      "emoji": "🃏",
+      "color": "#101828",
+      "descripcion": "No importa qué dices, sino cómo lo preguntas.",
+      "nombre": "Trampa",
+      "reglas": [
+        {
+          "id": "vale-si-dices-por-favor",
+          "texto": "Vale si dices \"por favor\"",
+          "si": ["¿Puedo pasar con un gato, por favor?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-das-las-gracias-al-final",
+          "texto": "Vale si das las gracias al final",
+          "si": ["¿Puedo pasar con un gato? ¡Gracias!"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-la-pregunta-empieza-por-oye",
+          "texto": "Vale si la pregunta empieza por \"Oye\"",
+          "si": ["Oye, ¿puedo pasar con un gato?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-la-pregunta-termina-con-vale",
+          "texto": "Vale si la pregunta termina con \"¿vale?\"",
+          "si": ["Paso con un gato, ¿vale?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-dices-el-nombre-del-portero",
+          "texto": "Vale si dices el nombre del portero",
+          "si": ["Lucía, ¿puedo pasar con un gato?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-llamas-senyor-portero-o-senyora-portera",
+          "texto": "Vale si llamas \"señor portero\" o \"señora portera\"",
+          "si": ["Señora portera, ¿puedo pasar con un gato?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-dices-tu-nombre-antes",
+          "texto": "Vale si dices tu nombre antes",
+          "si": ["Soy Pablo, ¿puedo pasar con un gato?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-preguntas-en-plural-podemos",
+          "texto": "Vale si preguntas en plural (\"podemos\")",
+          "si": ["¿Podemos pasar con un gato?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-dices-entrar-en-vez-de-pasar",
+          "texto": "Vale si dices \"entrar\" en vez de \"pasar\"",
+          "si": ["¿Puedo entrar con un gato?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-la-frase-empieza-por-con",
+          "texto": "Vale si la frase empieza por \"Con\"",
+          "si": ["Con un gato, ¿puedo pasar?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-dices-el-o-la-en-vez-de-un-o-una",
+          "texto": "Vale si dices \"el\" o \"la\" en vez de \"un\" o \"una\"",
+          "si": ["¿Puedo pasar con el gato?"],
+          "no": ["¿Puedo pasar con un gato?"]
+        },
+        {
+          "id": "vale-si-dices-la-cosa-en-plural",
+          "texto": "Vale si dices la cosa en plural",
+          "si": ["con unos patines, con gatos"],
+          "no": ["con un patín, con un gato"]
+        },
+        {
+          "id": "vale-si-lo-dices-en-diminutivo",
+          "texto": "Vale si lo dices en diminutivo",
+          "si": ["perrito, casita"],
+          "no": ["perro, casa"]
+        },
+        {
+          "id": "vale-si-lo-dices-en-aumentativo",
+          "texto": "Vale si lo dices en aumentativo",
+          "si": ["perrazo, cochazo"],
+          "no": ["perro, coche"]
+        },
+        {
+          "id": "vale-si-le-anyades-un-color",
+          "texto": "Vale si le añades un color",
+          "si": ["con un gato negro"],
+          "no": ["con un gato"]
+        },
+        {
+          "id": "vale-si-dices-dos-cosas-a-la-vez",
+          "texto": "Vale si dices dos cosas a la vez",
+          "si": ["con un perro y un gato"],
+          "no": ["con un perro"]
+        },
+        {
+          "id": "vale-si-lo-dices-en-otro-idioma",
+          "texto": "Vale si lo dices en otro idioma",
+          "si": ["with a dog, con un chat"],
+          "no": ["con un perro"]
+        },
+        {
+          "id": "vale-si-repites-algo-que-ya-ha-dicho-otro",
+          "texto": "Vale si repites algo que ya ha dicho otro",
+          "si": ["(otro dijo \"gato\") con un gato"],
+          "no": ["(nadie lo dijo) con un gato"]
+        },
+        {
+          "id": "vale-si-empieza-por-la-inicial-de-quien-pregunta",
+          "texto": "Vale si empieza por la inicial de quien pregunta",
+          "si": ["(Lucía) león, luna"],
+          "no": ["(Lucía) perro"]
+        },
+        {
+          "id": "vale-si-es-algo-que-se-ve-desde-aqui",
+          "texto": "Vale si es algo que se ve desde aquí",
+          "si": ["lo que tengáis a la vista"],
+          "no": ["lo que no se vea"],
+          "nota": "Muy buena en la cola: cambia según dónde estéis."
+        },
+        {
+          "id": "vale-si-es-algo-que-llevas-encima-ahora-mismo",
+          "texto": "Vale si es algo que llevas encima ahora mismo",
+          "si": ["ropa, mochila, lo del bolsillo"],
+          "no": ["lo que no lleves"]
+        },
+        {
+          "id": "vale-si-lo-preguntas-susurrando",
+          "texto": "Vale si lo preguntas susurrando",
+          "si": ["(en voz baja)"],
+          "no": ["(en voz normal)"]
+        },
+        {
+          "id": "vale-si-lo-preguntas-cantando",
+          "texto": "Vale si lo preguntas cantando",
+          "si": ["(cantando)"],
+          "no": ["(hablando)"]
+        },
+        {
+          "id": "vale-si-te-tocas-la-oreja-al-preguntar",
+          "texto": "Vale si te tocas la oreja al preguntar",
+          "si": ["(con la mano en la oreja)"],
+          "no": ["(sin tocarla)"]
+        },
+        {
+          "id": "vale-si-te-tocas-la-nariz-al-preguntar",
+          "texto": "Vale si te tocas la nariz al preguntar",
+          "si": ["(tocándote la nariz)"],
+          "no": ["(sin tocarla)"]
+        },
+        {
+          "id": "vale-si-preguntas-con-la-mano-levantada",
+          "texto": "Vale si preguntas con la mano levantada",
+          "si": ["(mano arriba)"],
+          "no": ["(mano abajo)"]
+        },
+        {
+          "id": "vale-si-preguntas-con-los-brazos-cruzados",
+          "texto": "Vale si preguntas con los brazos cruzados",
+          "si": ["(brazos cruzados)"],
+          "no": ["(brazos sueltos)"]
+        },
+        {
+          "id": "vale-si-preguntas-con-las-manos-en-los-bolsillos",
+          "texto": "Vale si preguntas con las manos en los bolsillos",
+          "si": ["(manos en los bolsillos)"],
+          "no": ["(manos fuera)"]
+        },
+        {
+          "id": "vale-si-guinyas-un-ojo-al-preguntar",
+          "texto": "Vale si guiñas un ojo al preguntar",
+          "si": ["(guiñando)"],
+          "no": ["(sin guiñar)"]
+        },
+        {
+          "id": "vale-si-das-una-palmada-antes-de-preguntar",
+          "texto": "Vale si das una palmada antes de preguntar",
+          "si": ["(palmada) ¿Puedo pasar…?"],
+          "no": ["¿Puedo pasar…?"]
+        },
+        {
+          "id": "vale-si-preguntas-con-los-ojos-cerrados",
+          "texto": "Vale si preguntas con los ojos cerrados",
+          "si": ["(ojos cerrados)"],
+          "no": ["(ojos abiertos)"],
+          "nota": "⚠️ Revisar: con la cola en marcha, mejor solo con la cola parada."
+        }
+      ]
+    }
+  ]
+}
