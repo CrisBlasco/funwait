@@ -12,7 +12,8 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      - run: npm run check # wrangler --dry-run + scripts/check-html.mjs
+      - run: npx playwright install --with-deps --only-shell chromium # para scripts/check-layout.mjs
+      - run: npm run check # wrangler --dry-run + scripts/check-*.mjs
 
   deploy:
     needs: check # si la calidad falla, NO despliega
