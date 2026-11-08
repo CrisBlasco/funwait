@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0066FF" />
+<title data-i18n="portero.title">El Portero · FunWait</title>
+<link rel="icon" href="./assets/logo.svg" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="FunWait" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link rel="stylesheet" href="./css/funwait.css" />
+<style>
+  :root { --portero: #5B21B6; }
+  body { background: var(--portero); }
+  #home, #reglas, #opciones, #countdown, #game, #fin { color: var(--fw-paper); }
+  #home .fw-panel, #home .fw-tile, #reglas .fw-card, #opciones .fw-panel { color: var(--fw-night); }
+  #secreto, #vistazo { background: var(--fw-night); color: var(--fw-paper); }
+  #fin { background: var(--portero); }
+
+  /* Tarjeta de la regla (secreto, vistazo y fin) */
+  .regla {
+    width: min(540px, 94%); background: var(--fw-paper); color: var(--fw-night);
+    border: var(--fw-border); border-radius: var(--fw-r-md); box-shadow: var(--fw-shadow-soft);
+    padding: 16px 18px; margin: 14px 0; text-align: left;
+  }
+  .regla .et { display: block; font-size: .7rem; letter-spacing: 2px; font-weight: 700; opacity: .6; text-align: center; }
+  .regla .txt { display: block; font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(1.5rem, 7vw, 2.3rem); line-height: 1.1; text-align: center; margin: 4px 0 10px; }
+  .regla .ej { margin: 6px 0 0; font-weight: 600; font-size: var(--fw-fs-body); line-height: 1.35; }
+  .regla .ej b { display: block; font-size: var(--fw-fs-small); }
+  .regla .nota { margin: 10px 0 0; font-size: var(--fw-fs-small); opacity: .75; }
+
+  /* JUEGO */
+  #game { justify-content: flex-start; gap: 8px; }
+  .game-top { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  #pausaBtn { flex: none; }
+  #timer { font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(1.7rem, 7.5vw, 2.8rem); background: var(--fw-night); color: var(--fw-paper); padding: 2px 16px; border-radius: var(--fw-r-pill); min-width: 96px; text-align: center; }
+  #timer.is-low { background: var(--fw-pink); }
+  .nivel-chip { font-weight: 600; background: var(--fw-yellow); color: var(--fw-night); border: 2px solid var(--fw-night); border-radius: var(--fw-r-pill); padding: 3px 14px; font-size: .9rem; }
+  .puerta { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .puerta .emoji { font-size: clamp(4.5rem, min(34vw, 26vh), 11rem); line-height: 1; }
+  .puerta .pregunta { font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(1.4rem, 6.5vw, 2.2rem); margin: 10px 0 2px; }
+  .puerta .pista { font-weight: 600; opacity: .9; margin: 0; }
+  #revelar.is-confirm { background: var(--fw-pink); border-color: var(--fw-pink); }
+  @media (orientation: landscape) and (max-height: 520px) {
+    #game { gap: 4px; }
+    .puerta .emoji { font-size: 22vh; }
+    .puerta .pregunta { margin-top: 4px; }
+  }
+  .no-repetir input { width: 18px; height: 18px; }
+</style>
+</head>
+<body>
+<div class="fw-app">
+
+  <!-- HOME: elegir nivel -->
+  <section id="home" class="fw-screen fw-screen--scroll">
+    <div class="fw-topbar">
+      <a class="fw-icon-btn fw-back" href="./index.html" data-i18n-aria-label="common.menu"></a>
+      <div class="fw-topbar-actions">
+        <button class="fw-icon-btn" id="opcionesBtn" data-i18n-aria-label="common.options">⚙️</button>
+      </div>
+    </div>
+    <h1 class="fw-h1" data-i18n="portero.heading"></h1>
+    <p style="margin: 4px 0 16px; font-weight: 600; opacity: .95" data-i18n="portero.tagline"></p>
+    <div id="nivelesEstado" role="status">
+      <p class="fw-mute" id="nivelesMsg"></p>
+      <button class="fw-btn" id="nivelesRetry" data-i18n="common.retry" hidden></button>
+    </div>
+    <div class="fw-grid" id="niveles"></div>
+  </section>
+
+  <!-- OPCIONES -->
+  <section id="opciones" class="fw-screen fw-screen--scroll">
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="opcVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
+    <h1 class="fw-h1" data-i18n="common.options.title"></h1>
+    <div class="fw-panel" style="margin-top: 18px">
+      <div class="fw-row"><span data-i18n="common.sound"></span><div class="fw-switch" id="swSonido"></div></div>
+      <div class="fw-row"><span data-i18n="portero.options.time"></span>
+        <div class="fw-controls"><button class="fw-stepper" id="tMenos" data-i18n-aria-label="common.decrease">−</button><span id="tLabel" style="min-width: 56px"></span><button class="fw-stepper" id="tMas" data-i18n-aria-label="common.increase">+</button></div></div>
+    </div>
+    <button class="fw-btn fw-btn--primary" id="opcHecho" style="margin-top: 18px" data-i18n="common.done"></button>
+  </section>
+
+  <!-- REGLAS -->
+  <section id="reglas" class="fw-screen">
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="reglasVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
+    <div class="fw-card fw-rules">
+      <div class="ilu">🚪🤫✅</div>
+      <h2 class="fw-h2" data-i18n="common.rules.title"></h2>
+      <ol>
+        <li><span data-i18n-html="portero.rules.step1"></span></li>
+        <li><span data-i18n-html="portero.rules.step2"></span></li>
+        <li><span data-i18n-html="portero.rules.step3"></span></li>
+      </ol>
+      <p class="nota" data-i18n="portero.rules.note"></p>
+      <button class="fw-btn fw-btn--primary fw-btn--xl" id="empezar" data-i18n="common.rules.start"></button>
+      <label class="no-repetir"><input type="checkbox" id="noRep" /> <span data-i18n="common.rules.noRepeat"></span></label>
+    </div>
+  </section>
+
+  <!-- SECRETO: solo lo mira el portero -->
+  <section id="secreto" class="fw-screen">
+    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="secretoVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
+    <h2 class="fw-h1" data-i18n="portero.secret.title"></h2>
+    <p style="font-weight: 600; margin: 6px 0 4px" data-i18n="portero.secret.text"></p>
+    <div class="regla" id="secretoRegla" hidden></div>
+    <button class="fw-btn fw-btn--primary fw-btn--xl" id="verSecreto" style="margin-top: 16px" data-i18n="portero.secret.show"></button>
+    <button class="fw-btn fw-btn--success fw-btn--xl" id="ocultarEmpezar" data-i18n="portero.secret.start" hidden></button>
+  </section>
+
+  <!-- CUENTA ATRÁS -->
+  <section id="countdown" class="fw-screen">
+    <p class="fw-h2" style="margin-bottom: 10px" data-i18n-html="portero.countdown"></p>
+    <div class="fw-countdown-num" id="countNum">3</div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="game" class="fw-screen">
+    <div class="game-top">
+      <button class="fw-icon-btn" id="pausaBtn" data-i18n-aria-label="portero.pause">⏸</button>
+      <div id="timer">3:00</div>
+      <div class="nivel-chip" id="nivelChip"></div>
+    </div>
+    <div class="puerta">
+      <div class="emoji">🚪</div>
+      <p class="pregunta" data-i18n="portero.game.ask"></p>
+      <p class="pista" data-i18n="portero.game.hint"></p>
+    </div>
+    <div class="fw-actions">
+      <button class="fw-btn fw-btn--primary" id="verRegla" data-i18n="portero.game.peek"></button>
+      <button class="fw-btn fw-btn--ghost" id="revelar" data-i18n="portero.game.reveal"></button>
+    </div>
+  </section>
+
+  <!-- VISTAZO: el portero vuelve a mirar la regla; el tiempo sigue corriendo -->
+  <section id="vistazo" class="fw-screen">
+    <div class="regla" id="vistazoRegla"></div>
+    <button class="fw-btn fw-btn--primary fw-btn--xl" id="ocultar" data-i18n="portero.peek.hide"></button>
+  </section>
+
+  <!-- PAUSA -->
+  <section id="pause" class="fw-screen" style="background: rgba(16,24,40,.96); color: var(--fw-paper)">
+    <h2 class="fw-h1" data-i18n="portero.pause.title"></h2>
+    <button class="fw-btn fw-btn--success fw-btn--block" id="seguir" data-i18n="portero.pause.resume"></button>
+    <button class="fw-btn fw-btn--ghost fw-btn--block" id="salir" data-i18n="portero.pause.exit"></button>
+  </section>
+
+  <!-- FIN: se revela la regla -->
+  <section id="fin" class="fw-screen">
+    <h2 class="fw-h1" id="finTitulo"></h2>
+    <p style="font-weight: 600; margin: 8px 0 0" data-i18n="portero.end.was"></p>
+    <div class="regla" id="finRegla"></div>
+    <div class="fw-actions">
+      <button class="fw-btn fw-btn--success" id="nuevoPortero" data-i18n="portero.end.next"></button>
+      <button class="fw-btn fw-btn--ghost" id="cambiarNivel" data-i18n="portero.end.change"></button>
+    </div>
+  </section>
+
+</div>
+
+<script src="./js/i18n/es.js"></script>
+<script src="./js/funwait.js"></script>
+<script>
+const guardado = FW.prefs.portero || {};
+let config = { tiempo: guardado.tiempo || 180 };
+// Ids de reglas ya jugadas por nivel: no se repiten hasta agotar el nivel.
+let usadas = guardado.usadas || {};
+function guardarCfg() { FW.prefs.portero = { tiempo: config.tiempo, usadas }; FW.save(); }
+let juego = { nivel: null, regla: null, activo: false, tiempoRestante: 0, timerId: null };
+const $ = id => document.getElementById(id);
+const timerEl = $('timer');
+const mmss = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+
+/* ---------- menú ---------- */
+const nivelesEl = $('niveles');
+function pintarNiveles(niveles) {
+  nivelesEl.replaceChildren(
+    FW.tile('🎲', FW.t('common.random'), null, () => empezar(niveles[Math.floor(Math.random() * niveles.length)])),
+    ...niveles.map(n => FW.tile(n.emoji, n.nombre, n.color, () => empezar(n)))
+  );
+}
+async function cargarNiveles() {
+  $('nivelesEstado').hidden = false; $('nivelesMsg').textContent = FW.t('common.loading'); $('nivelesRetry').hidden = true;
+  try {
+    const contenido = await FW.loadContent('portero');
+    pintarNiveles(contenido.niveles);
+    $('nivelesEstado').hidden = true;
+  } catch (e) {
+    $('nivelesMsg').textContent = FW.t('portero.loadError');
+    $('nivelesRetry').hidden = false;
+  }
+}
+$('nivelesRetry').onclick = cargarNiveles;
+
+/* ---------- ajustes ---------- */
+const pintar = () => { $('tLabel').textContent = mmss(config.tiempo); };
+$('tMas').onclick = () => { config.tiempo = Math.min(600, config.tiempo + 30); pintar(); guardarCfg(); };
+$('tMenos').onclick = () => { config.tiempo = Math.max(60, config.tiempo - 30); pintar(); guardarCfg(); };
+pintar();
+$('opcionesBtn').onclick = () => FW.screen('opciones');
+$('opcVolver').onclick = () => FW.screen('home');
+$('opcHecho').onclick = () => FW.screen('home');
+
+FW.bindSoundToggle($('swSonido'));
+
+/* ---------- flujo ---------- */
+$('noRep').checked = FW.rulesSeen('portero');
+function empezar(nivel) {
+  FW.unlock();
+  juego.nivel = nivel;
+  if (FW.rulesSeen('portero')) nuevaRegla(); else FW.screen('reglas');
+}
+$('reglasVolver').onclick = () => FW.screen('home');
+$('empezar').onclick = () => { if ($('noRep').checked) FW.setRulesSeen('portero', true); nuevaRegla(); };
+
+function elegirRegla(nivel) {
+  let vistas = new Set(usadas[nivel.id] || []);
+  let libres = nivel.reglas.filter(r => !vistas.has(r.id));
+  // Al agotar el nivel se empieza de nuevo, sin repetir justo la última.
+  if (!libres.length) { vistas = new Set(); libres = nivel.reglas.filter(r => r.id !== juego.regla?.id); }
+  const regla = libres[Math.floor(Math.random() * libres.length)];
+  usadas[nivel.id] = [...vistas, regla.id];
+  guardarCfg();
+  return regla;
+}
+
+function pintarRegla(el, r) {
+  const linea = (cls, txt) => { const e = document.createElement('span'); e.className = cls; e.textContent = txt; return e; };
+  const ejemplos = (titulo, lista) => {
+    const p = document.createElement('p'); p.className = 'ej';
+    const b = document.createElement('b'); b.textContent = titulo;
+    p.append(b, lista.join(' · '));
+    return p;
+  };
+  el.replaceChildren(
+    linea('et', FW.t('portero.rule.label')),
+    linea('txt', r.texto),
+    ejemplos(FW.t('portero.rule.yes'), r.si),
+    ejemplos(FW.t('portero.rule.no'), r.no)
+  );
+  if (r.nota) { const n = document.createElement('p'); n.className = 'nota'; n.textContent = '💡 ' + r.nota; el.append(n); }
+}
+
+function nuevaRegla() {
+  juego.regla = elegirRegla(juego.nivel);
+  pintarRegla($('secretoRegla'), juego.regla);
+  $('secretoRegla').hidden = true; $('ocultarEmpezar').hidden = true; $('verSecreto').hidden = false;
+  FW.screen('secreto');
+}
+$('verSecreto').onclick = () => { $('secretoRegla').hidden = false; $('ocultarEmpezar').hidden = false; $('verSecreto').hidden = true; };
+$('secretoVolver').onclick = () => FW.screen('home');
+$('ocultarEmpezar').onclick = () => { FW.wakeLock(); FW.screen('countdown'); FW.countdown($('countNum'), lanzar); };
+
+function lanzar() {
+  $('nivelChip').textContent = `${juego.nivel.emoji} ${juego.nivel.nombre}`;
+  juego.tiempoRestante = config.tiempo; juego.activo = true;
+  armarRevelar(false); pintarTimer(); correrTimer();
+  FW.screen('game');
+}
+
+function pintarTimer() { timerEl.textContent = mmss(juego.tiempoRestante); timerEl.classList.toggle('is-low', juego.tiempoRestante <= 10); }
+function correrTimer() {
+  clearInterval(juego.timerId);
+  juego.timerId = setInterval(() => {
+    juego.tiempoRestante--; pintarTimer();
+    if (juego.tiempoRestante <= 10 && juego.tiempoRestante > 0) FW.audio.tic();
+    if (juego.tiempoRestante <= 0) fin(false);
+  }, 1000);
+}
+function parar() { juego.activo = false; clearInterval(juego.timerId); armarRevelar(false); }
+
+/* ---------- vistazo: el tiempo sigue corriendo ---------- */
+$('verRegla').onclick = () => { pintarRegla($('vistazoRegla'), juego.regla); FW.screen('vistazo'); };
+$('ocultar').onclick = () => { if (juego.activo) FW.screen('game'); };
+
+/* ---------- pausa: para cuando la cola avanza ---------- */
+$('pausaBtn').onclick = () => { if (!juego.activo) return; parar(); FW.screen('pause'); };
+$('seguir').onclick = () => { juego.activo = true; correrTimer(); FW.screen('game'); };
+$('salir').onclick = () => { parar(); FW.releaseWake(); FW.screen('home'); };
+
+/* ---------- revelar: dos toques, para no destapar la regla sin querer ---------- */
+const revelarBtn = $('revelar');
+let revelarT = null;
+function armarRevelar(armado) {
+  clearTimeout(revelarT); revelarT = armado ? setTimeout(() => armarRevelar(false), 2500) : null;
+  revelarBtn.classList.toggle('is-confirm', armado);
+  revelarBtn.textContent = armado ? FW.t('portero.game.revealConfirm') : FW.t('portero.game.reveal');
+}
+revelarBtn.onclick = () => { if (!revelarT) { armarRevelar(true); return; } fin(true); };
+
+/* ---------- fin ---------- */
+function fin(revelada) {
+  parar();
+  FW.audio.fin(); FW.haptic([300, 80, 300]); FW.releaseWake();
+  $('finTitulo').textContent = revelada ? FW.t('portero.end.reveal') : FW.t('portero.end.time');
+  pintarRegla($('finRegla'), juego.regla);
+  FW.screen('fin');
+}
+$('nuevoPortero').onclick = nuevaRegla;
+$('cambiarNivel').onclick = () => FW.screen('home');
+
+FW.screen('home');
+cargarNiveles();
+</script>
+</body>
+</html>

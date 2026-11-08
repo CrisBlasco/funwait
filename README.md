@@ -12,6 +12,10 @@ Ideal para entretener a los niños mientras hacéis cola en un parque temático 
 - **🎭 Mímica Express** (todos, creativo). Móvil en la frente: los demás hacen mímica.
   **Inclina hacia abajo si lo adivinan** y **hacia arriba para pasar**. Si no hay sensores
   de inclinación (o en el ordenador), funciona tocando: **abajo = acierto**, **arriba = pasar**.
+- **🚪 El Portero** (3+ jugadores, deducir). El portero mira en secreto una regla
+  ("termina en E", "tiene ruedas"…) y los demás preguntan *«¿Puedo pasar con…?»*; para pasar
+  hay que acertar dos veces seguidas. Cuatro niveles (Fácil, Medio, Difícil y Trampa) de ≥30
+  reglas cada uno, que no se repiten hasta agotar el nivel. Temporizador con pausa.
 - **🎲 Modo aleatorio** para que elija por vosotros.
 - Más juegos muy pronto 😜
 
@@ -26,6 +30,7 @@ public/
   index.html     # hub de FunWait (elige juego)
   mimica.html    # Mímica Express
   bomba.html     # La Bomba
+  portero.html   # El Portero
   data/es/       # contenido de los juegos (palabras, temas) en JSON
   js/i18n/es.js  # textos de la interfaz (keys de traducción)
   manifest.webmanifest, icons/, sw.js, _headers   # PWA instalable y sin conexión
