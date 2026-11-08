@@ -16,7 +16,7 @@ import { chromium } from "playwright";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = join(ROOT, "public");
-const PAGES = ["index.html", "mimica.html", "bomba.html", "portero.html"];
+const PAGES = ["index.html", "mimica.html", "bomba.html", "portero.html", "lengua.html"];
 
 // Ancho × alto en CSS px. Cubren el móvil más estrecho habitual (320), los típicos,
 // el apaisado bajo (donde más se rompe) y una tablet.

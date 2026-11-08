@@ -164,11 +164,8 @@
 <script src="./js/i18n/es.js"></script>
 <script src="./js/funwait.js"></script>
 <script>
-const guardado = FW.prefs.portero || {};
-let config = { tiempo: guardado.tiempo || 180 };
-// Ids de reglas ya jugadas por nivel: no se repiten hasta agotar el nivel.
-let usadas = guardado.usadas || {};
-function guardarCfg() { FW.prefs.portero = { tiempo: config.tiempo, usadas }; FW.save(); }
+let config = Object.assign({ tiempo: 180 }, FW.prefs.portero || {});
+function guardarCfg() { FW.prefs.portero = { tiempo: config.tiempo }; FW.save(); }
 let juego = { nivel: null, regla: null, activo: false, tiempoRestante: 0, timerId: null };
 const $ = id => document.getElementById(id);
 const timerEl = $('timer');
@@ -216,17 +213,6 @@ function empezar(nivel) {
 $('reglasVolver').onclick = () => FW.screen('home');
 $('empezar').onclick = () => { if ($('noRep').checked) FW.setRulesSeen('portero', true); nuevaRegla(); };
 
-function elegirRegla(nivel) {
-  let vistas = new Set(usadas[nivel.id] || []);
-  let libres = nivel.reglas.filter(r => !vistas.has(r.id));
-  // Al agotar el nivel se empieza de nuevo, sin repetir justo la última.
-  if (!libres.length) { vistas = new Set(); libres = nivel.reglas.filter(r => r.id !== juego.regla?.id); }
-  const regla = libres[Math.floor(Math.random() * libres.length)];
-  usadas[nivel.id] = [...vistas, regla.id];
-  guardarCfg();
-  return regla;
-}
-
 function pintarRegla(el, r) {
   const linea = (cls, txt) => { const e = document.createElement('span'); e.className = cls; e.textContent = txt; return e; };
   const ejemplos = (titulo, lista) => {
@@ -245,7 +231,8 @@ function pintarRegla(el, r) {
 }
 
 function nuevaRegla() {
-  juego.regla = elegirRegla(juego.nivel);
+  // Las reglas no se repiten en el nivel hasta haberlas jugado todas.
+  juego.regla = FW.pickUnused('portero', juego.nivel.id, juego.nivel.reglas, r => r.id);
   pintarRegla($('secretoRegla'), juego.regla);
   $('secretoRegla').hidden = true; $('ocultarEmpezar').hidden = true; $('verSecreto').hidden = false;
   FW.screen('secreto');

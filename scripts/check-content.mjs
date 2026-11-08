@@ -11,10 +11,11 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = join(ROOT, "public", "data");
 
 // Cada idioma es una carpeta; es es el idioma base y siempre debe existir.
-const REQUIRED = ["es/mimica.json", "es/bomba.json", "es/portero.json"];
+const REQUIRED = ["es/mimica.json", "es/bomba.json", "es/portero.json", "es/lengua.json"];
 
-// El Portero se juega varias veces seguidas al mismo nivel: por debajo de esto se repite pronto.
-const MIN_REGLAS = 30;
+// El Portero y Muérdete la Lengua se juegan varias veces seguidas al mismo nivel:
+// por debajo de esto se repite pronto.
+const MIN_POR_NIVEL = 30;
 
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const COLOR = /^#[0-9a-fA-F]{6}$/;
@@ -26,8 +27,11 @@ for (const f of REQUIRED) {
 }
 
 const texto = (v) => typeof v === "string" && v.trim() !== "";
+// Para comparar palabras: sin mayúsculas ni tildes (la ñ se conserva).
+const normal = (v) => v.toLowerCase().replace(/ñ/g, "\0").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\0/g, "ñ").trim();
 
-// Campos comunes de un paquete de Mímica, un tema de La Bomba o un nivel de El Portero.
+// Campos comunes de un paquete de Mímica, un tema de La Bomba o un nivel de El Portero
+// o de Muérdete la Lengua.
 function revisarEntradas(rel, entradas, nombreLista, extra) {
   if (!Array.isArray(entradas) || entradas.length === 0) {
     errors.push(`${rel}: "${nombreLista}" debe ser una lista con elementos`);
@@ -74,8 +78,8 @@ const VALIDADORES = {
     const listaDeTextos = (v) => Array.isArray(v) && v.length > 0 && v.every(texto);
     revisarEntradas(rel, datos.niveles, "niveles", (n, donde) => {
       if (!texto(n?.descripcion)) errors.push(`${donde}: falta "descripcion"`);
-      if (!Array.isArray(n?.reglas) || n.reglas.length < MIN_REGLAS) {
-        errors.push(`${donde}: necesita al menos ${MIN_REGLAS} reglas (tiene ${n?.reglas?.length ?? 0})`);
+      if (!Array.isArray(n?.reglas) || n.reglas.length < MIN_POR_NIVEL) {
+        errors.push(`${donde}: necesita al menos ${MIN_POR_NIVEL} reglas (tiene ${n?.reglas?.length ?? 0})`);
         return;
       }
       for (const r of n.reglas) {
@@ -87,6 +91,37 @@ const VALIDADORES = {
         if (!listaDeTextos(r?.si)) errors.push(`${dr}: "si" debe ser una lista de textos con elementos`);
         if (!listaDeTextos(r?.no)) errors.push(`${dr}: "no" debe ser una lista de textos con elementos`);
         if (r?.nota !== undefined && !texto(r.nota)) errors.push(`${dr}: "nota" vacía`);
+      }
+    });
+  },
+  // La palabra es el id de la tarjeta (el juego la guarda para no repetirla): única en todo el fichero.
+  // Una prohibida no puede contener la palabra ni estar dentro de ella: ya está prohibida de por sí.
+  "lengua.json": (rel, datos) => {
+    const palabras = new Set();
+    revisarEntradas(rel, datos.niveles, "niveles", (n, donde) => {
+      if (!texto(n?.descripcion)) errors.push(`${donde}: falta "descripcion"`);
+      if (!Number.isInteger(n?.nProhibidas) || n.nProhibidas < 1) errors.push(`${donde}: "nProhibidas" debe ser un entero positivo`);
+      if (!Array.isArray(n?.tarjetas) || n.tarjetas.length < MIN_POR_NIVEL) {
+        errors.push(`${donde}: necesita al menos ${MIN_POR_NIVEL} tarjetas (tiene ${n?.tarjetas?.length ?? 0})`);
+        return;
+      }
+      for (const t of n.tarjetas) {
+        const dt = `${donde}: tarjeta[${t?.palabra}]`;
+        if (!texto(t?.palabra)) { errors.push(`${donde}: tarjeta sin "palabra"`); continue; }
+        const clave = normal(t.palabra);
+        if (palabras.has(clave)) errors.push(`${dt}: palabra repetida`);
+        palabras.add(clave);
+        if (!Array.isArray(t.prohibidas) || !t.prohibidas.every(texto)) {
+          errors.push(`${dt}: "prohibidas" debe ser una lista de textos`);
+          continue;
+        }
+        if (t.prohibidas.length !== n.nProhibidas) errors.push(`${dt}: tiene ${t.prohibidas.length} prohibidas y el nivel pide ${n.nProhibidas}`);
+        const vistas = new Set();
+        for (const pr of t.prohibidas.map(normal)) {
+          if (vistas.has(pr)) errors.push(`${dt}: prohibida repetida → "${pr}"`);
+          vistas.add(pr);
+          if (pr.includes(clave) || clave.includes(pr)) errors.push(`${dt}: la prohibida "${pr}" contiene la palabra o está dentro de ella`);
+        }
       }
     });
   },

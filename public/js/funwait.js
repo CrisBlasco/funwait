@@ -6,7 +6,7 @@ window.FW = (function () {
   const PREF_KEY = 'funwait:prefs';
 
   function load() { try { return JSON.parse(localStorage.getItem(PREF_KEY)) || {}; } catch (e) { return {}; } }
-  const prefs = Object.assign({ sound: true, rulesSeen: {} }, load());
+  const prefs = Object.assign({ sound: true, rulesSeen: {}, vistos: {} }, load());
   function save() { try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch (e) {} }
 
   /* ---------- Pantallas ---------- */
@@ -107,6 +107,24 @@ window.FW = (function () {
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   }
+  // Elige al azar sin repetir hasta agotar la lista, y lo recuerda entre partidas
+  // (prefs.vistos[juego][grupo]). Al agotarla vuelve a empezar, sin repetir justo el último.
+  function pickUnused(game, group, items, idOf) {
+    const porJuego = prefs.vistos[game] || (prefs.vistos[game] = {});
+    const vistos = porJuego[group] || [];
+    const ya = new Set(vistos);
+    let libres = items.filter(x => !ya.has(idOf(x)));
+    let base = vistos;
+    if (!libres.length) {
+      const ultimo = vistos[vistos.length - 1];
+      libres = items.filter(x => idOf(x) !== ultimo);
+      base = [];
+    }
+    const elegido = libres[Math.floor(Math.random() * libres.length)];
+    porJuego[group] = [...base, idOf(elegido)];
+    save();
+    return elegido;
+  }
   function flash(el) { el.classList.remove('is-on'); void el.offsetWidth; el.classList.add('is-on'); }
   function randomGame(urls) { location.href = urls[Math.floor(Math.random() * urls.length)]; }
   // Tarjeta de paquete/tema. Sin color = tarjeta "al azar".
@@ -159,6 +177,6 @@ window.FW = (function () {
 
   return {
     t, tn, applyI18n, prefs, save, screen, audio, unlock, haptic, wakeLock, releaseWake,
-    countdown, shuffle, flash, randomGame, tile, loadContent, bindSoundToggle, rulesSeen, setRulesSeen
+    countdown, shuffle, pickUnused, flash, randomGame, tile, loadContent, bindSoundToggle, rulesSeen, setRulesSeen
   };
 })();

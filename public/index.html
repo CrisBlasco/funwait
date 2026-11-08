@@ -247,6 +247,13 @@
           <span class="fw-chips"><span class="fw-chip" data-i18n="hub.portero.players"></span><span class="fw-chip" data-i18n="hub.portero.style"></span></span>
         </span>
       </button>
+      <button class="fw-game-card" id="goLengua">
+        <span class="emoji">👅</span>
+        <span class="info">
+          <span class="name" data-i18n="hub.lengua.name"></span>
+          <span class="fw-chips"><span class="fw-chip" data-i18n="hub.lengua.players"></span><span class="fw-chip" data-i18n="hub.lengua.style"></span></span>
+        </span>
+      </button>
     </nav>
   </section>
 
@@ -259,6 +266,7 @@
       <p data-i18n-html="hub.about.bomba"></p>
       <p data-i18n-html="hub.about.mimica"></p>
       <p data-i18n-html="hub.about.portero"></p>
+      <p data-i18n-html="hub.about.lengua"></p>
       <p id="instalarIos" data-i18n-html="hub.install.ios" hidden></p>
     </div>
     <button class="fw-btn fw-btn--primary" id="cerrarAyuda" style="margin-top: 16px" data-i18n="hub.about.close"></button>
@@ -287,7 +295,8 @@
   $('goBomba').onclick = () => { FW.unlock(); location.href = './bomba.html'; };
   $('goMimica').onclick = () => { FW.unlock(); location.href = './mimica.html'; };
   $('goPortero').onclick = () => { FW.unlock(); location.href = './portero.html'; };
-  $('random').onclick = () => { FW.unlock(); FW.randomGame(['./bomba.html', './mimica.html', './portero.html']); };
+  $('goLengua').onclick = () => { FW.unlock(); location.href = './lengua.html'; };
+  $('random').onclick = () => { FW.unlock(); FW.randomGame(['./bomba.html', './mimica.html', './portero.html', './lengua.html']); };
 </script>
 </body>
 </html>

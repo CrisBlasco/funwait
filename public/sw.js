@@ -7,13 +7,14 @@
    ============================================================ */
 
 // <generado por npm run sw>
-const VERSION = '0277cd2f2f60';
+const VERSION = 'ee2344a6f8dc';
 const PRECACHE = [
   './assets/icon.svg',
   './assets/logo.svg',
   './bomba',
   './css/funwait.css',
   './data/es/bomba.json',
+  './data/es/lengua.json',
   './data/es/mimica.json',
   './data/es/portero.json',
   './fonts/fredoka-600.woff2',
@@ -28,6 +29,7 @@ const PRECACHE = [
   './',
   './js/funwait.js',
   './js/i18n/es.js',
+  './lengua',
   './manifest.webmanifest',
   './mimica',
   './portero',
