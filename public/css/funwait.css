@@ -165,6 +165,7 @@ body { overflow: hidden; }
   width: min(520px, 94%); border: var(--fw-border); border-radius: var(--fw-r-lg);
   background: var(--fw-paper); box-shadow: var(--fw-shadow-hard);
   padding: var(--fw-s5); margin: var(--fw-s3) auto 0; cursor: pointer;
+  font: inherit; color: inherit; text-decoration: none; -webkit-touch-callout: none; /* también se usa como <a> */
   display: flex; align-items: center; gap: var(--fw-s4); text-align: left;
   transition: transform .07s ease, box-shadow .07s ease;
 }

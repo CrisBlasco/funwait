@@ -233,34 +233,34 @@
 
     <button class="fw-btn fw-btn--primary fw-btn--block fw-hub-random" id="random" data-i18n="hub.random"></button>
     <nav class="fw-game-grid" data-i18n-aria-label="hub.heading">
-      <button class="fw-game-card" id="goBomba">
+      <a class="fw-game-card" id="goBomba" href="./bomba.html">
         <span class="emoji">💣</span>
         <span class="info">
           <span class="name" data-i18n="hub.bomba.name"></span>
           <span class="fw-chips"><span class="fw-chip" data-i18n="hub.bomba.players"></span><span class="fw-chip" data-i18n="hub.bomba.style"></span></span>
         </span>
-      </button>
-      <button class="fw-game-card" id="goMimica">
+      </a>
+      <a class="fw-game-card" id="goMimica" href="./mimica.html">
         <span class="emoji">🎭</span>
         <span class="info">
           <span class="name" data-i18n="hub.mimica.name"></span>
           <span class="fw-chips"><span class="fw-chip" data-i18n="hub.mimica.players"></span><span class="fw-chip" data-i18n="hub.mimica.style"></span></span>
         </span>
-      </button>
-      <button class="fw-game-card" id="goPortero">
+      </a>
+      <a class="fw-game-card" id="goPortero" href="./portero.html">
         <span class="emoji">🚪</span>
         <span class="info">
           <span class="name" data-i18n="hub.portero.name"></span>
           <span class="fw-chips"><span class="fw-chip" data-i18n="hub.portero.players"></span><span class="fw-chip" data-i18n="hub.portero.style"></span></span>
         </span>
-      </button>
-      <button class="fw-game-card" id="goLengua">
+      </a>
+      <a class="fw-game-card" id="goLengua" href="./lengua.html">
         <span class="emoji">👅</span>
         <span class="info">
           <span class="name" data-i18n="hub.lengua.name"></span>
           <span class="fw-chips"><span class="fw-chip" data-i18n="hub.lengua.players"></span><span class="fw-chip" data-i18n="hub.lengua.style"></span></span>
         </span>
-      </button>
+      </a>
     </nav>
   </section>
 
@@ -299,10 +299,10 @@
 
   $('help').onclick = () => FW.screen('ayuda');
   $('cerrarAyuda').onclick = () => FW.screen('home');
-  $('goBomba').onclick = () => { FW.unlock(); location.href = './bomba.html'; };
-  $('goMimica').onclick = () => { FW.unlock(); location.href = './mimica.html'; };
-  $('goPortero').onclick = () => { FW.unlock(); location.href = './portero.html'; };
-  $('goLengua').onclick = () => { FW.unlock(); location.href = './lengua.html'; };
+  $('goBomba').onclick = () => FW.unlock();
+  $('goMimica').onclick = () => FW.unlock();
+  $('goPortero').onclick = () => FW.unlock();
+  $('goLengua').onclick = () => FW.unlock();
   $('random').onclick = () => { FW.unlock(); FW.randomGame(['./bomba.html', './mimica.html', './portero.html', './lengua.html']); };
 </script>
 </body>
