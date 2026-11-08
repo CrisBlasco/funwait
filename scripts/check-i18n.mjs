@@ -51,6 +51,12 @@ for (const file of pages) {
     if (!(key in dict)) errors.push(`${rel}: key inexistente → "${key}"`);
   }
 
+  // El <title> va literal para los buscadores y applyI18n lo reescribe: deben coincidir.
+  const tm = html.match(/<title data-i18n="([^"]+)">([^<]*)<\/title>/);
+  if (tm && tm[1] in dict && dict[tm[1]] !== tm[2]) {
+    errors.push(`${rel}: el <title> literal no coincide con la key "${tm[1]}"`);
+  }
+
   // 3) El diccionario debe cargarse antes que funwait.js.
   const iDict = html.indexOf(`src="./${DICT}"`);
   const iFw = html.indexOf('src="./js/funwait.js"');

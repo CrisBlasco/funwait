@@ -7,7 +7,7 @@
    ============================================================ */
 window.FW_I18N = {
   /* ---------- Hub ---------- */
-  'hub.title': 'FunWait · La cola también se juega',
+  'hub.title': 'FunWait · Minijuegos de grupo para jugar en la cola',
   'hub.help': 'Ayuda',
   'hub.sound': 'Sonido',
   'hub.slogan': 'La cola también se juega.',
@@ -54,7 +54,7 @@ window.FW_I18N = {
   'common.playAgain': '🔁 Otra vez',
 
   /* ---------- Mímica Express ---------- */
-  'mimica.title': 'Mímica Express · FunWait',
+  'mimica.title': 'Mímica Express: juego de mímica para el móvil · FunWait',
   'mimica.heading': '🎭 Mímica Express',
   'mimica.tagline': 'Móvil en la frente · inclina para jugar',
   'mimica.loadError': 'No se han podido cargar los paquetes. Revisa la conexión.',
@@ -81,7 +81,7 @@ window.FW_I18N = {
   'mimica.words.title': 'Palabras',
 
   /* ---------- La Bomba ---------- */
-  'bomba.title': 'La Bomba · FunWait',
+  'bomba.title': 'La Bomba: juego de palabras por turnos · FunWait',
   'bomba.heading': '💣 La Bomba',
   'bomba.tagline': 'Decid una palabra del tema y pasad el móvil',
   'bomba.loadError': 'No se han podido cargar los temas. Revisa la conexión.',
@@ -103,7 +103,7 @@ window.FW_I18N = {
   'bomba.boom.change': '🎯 Cambiar tema',
 
   /* ---------- El Portero ---------- */
-  'portero.title': 'El Portero · FunWait',
+  'portero.title': 'El Portero: adivina la regla secreta · FunWait',
   'portero.heading': '🚪 El Portero',
   'portero.tagline': 'Descubre la regla secreta para pasar',
   'portero.loadError': 'No se han podido cargar las reglas. Revisa la conexión.',
@@ -137,7 +137,7 @@ window.FW_I18N = {
   'portero.end.change': '🎯 Cambiar nivel',
 
   /* ---------- Muérdete la Lengua ---------- */
-  'lengua.title': 'Muérdete la Lengua · FunWait',
+  'lengua.title': 'Muérdete la Lengua: juego de palabras prohibidas · FunWait',
   'lengua.heading': '👅 Muérdete la Lengua',
   'lengua.tagline': 'Describe la palabra sin decir las prohibidas',
   'lengua.loadError': 'No se han podido cargar las palabras. Revisa la conexión.',

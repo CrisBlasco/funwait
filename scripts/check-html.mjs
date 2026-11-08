@@ -47,7 +47,21 @@ for (const file of existsSync(PUBLIC) ? htmlFiles(PUBLIC) : []) {
     errors.push(`${rel}: no se encuentra la etiqueta de cierre </html>`);
   }
 
-  // 3) Referencias locales (src/href) que apunten a un archivo inexistente.
+  // 3) Metadatos para buscadores y previsualizaciones (no ejecutan JS): descripción
+  //    de longitud útil, y og:* coherentes con <title> y la descripción.
+  const meta = (attr, name) =>
+    html.match(new RegExp(`<meta\\s+${attr}="${name}"\\s+content="([^"]*)"`, "i"))?.[1];
+  const title = html.match(/<title\b[^>]*>([^<]*)<\/title>/i)?.[1].trim();
+  const desc = meta("name", "description");
+  if (!title) errors.push(`${rel}: falta <title> o está vacío`);
+  if (!desc) errors.push(`${rel}: falta <meta name="description">`);
+  else if (desc.length < 70 || desc.length > 160) {
+    errors.push(`${rel}: la descripción mide ${desc.length} caracteres (entre 70 y 160)`);
+  }
+  if (meta("property", "og:title") !== title) errors.push(`${rel}: og:title no coincide con <title>`);
+  if (meta("property", "og:description") !== desc) errors.push(`${rel}: og:description no coincide con la descripción`);
+
+  // 4) Referencias locales (src/href) que apunten a un archivo inexistente.
   for (const m of html.matchAll(SRC_HREF)) {
     let ref = m[1].trim();
     // Ignora recursos externos, anclas, data URIs y protocolos especiales.
