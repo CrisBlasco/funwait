@@ -27,15 +27,34 @@
   #timer.is-low { background: var(--fw-yellow); color: var(--fw-night); }
   #score { font-family: var(--fw-font-display); font-weight: 700; font-size: 1.3rem; min-width: 44px; text-align: right; }
   .tarjeta-wrap { flex: 1; min-height: 0; width: 100%; display: flex; align-items: center; justify-content: center; }
-  #tarjeta {
-    width: min(480px, 100%); background: var(--fw-paper); color: var(--fw-night);
+  /* Tarjeta de dos caras: A = la palabra (solo quien describe), B = las prohibidas (todo el grupo).
+     Las dos caras se apilan en la misma celda: la tarjeta mide lo que la más alta. */
+  .tarjeta-wrap { perspective: 1200px; }
+  #carta { width: min(480px, 100%); display: grid; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.3,1.3,.5,1); }
+  #carta.is-girada { transform: rotateY(180deg); }
+  .cara {
+    grid-area: 1 / 1; -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    background: var(--fw-paper); color: var(--fw-night);
     border: var(--fw-border); border-radius: var(--fw-r-lg); box-shadow: var(--fw-shadow-hard);
-    padding: clamp(14px, 3vh, 24px) 18px;
+    padding: clamp(14px, 3vh, 24px) 18px; display: flex; flex-direction: column; justify-content: center;
   }
-  #tarjeta .et { display: block; font-size: .7rem; letter-spacing: 2px; font-weight: 700; opacity: .6; }
+  .cara-b { transform: rotateY(180deg); background: var(--fw-yellow); }
+  .cara .et { display: block; font-size: .7rem; letter-spacing: 2px; font-weight: 700; opacity: .6; }
   #palabra { font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(2rem, 10vw, 3.4rem); line-height: 1.05; margin: 2px 0 12px; overflow-wrap: anywhere; }
-  #prohibidas { list-style: none; margin: 6px 0 0; padding: 12px 0 0; border-top: 3px dashed var(--fw-mist-2); display: flex; flex-direction: column; gap: 4px; }
-  #prohibidas li { font-weight: 700; font-size: clamp(1.1rem, 5vw, 1.45rem); color: var(--fw-pink-dark); }
+  #giraEn { font-weight: 700; font-size: var(--fw-fs-body); margin: 0; }
+  .cara-a .fw-mute { margin: 4px 0 0; }
+  #prohibidas { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  #prohibidas li { font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(1.3rem, 6vw, 1.8rem); }
+  .jugadas.is-off { opacity: .35; pointer-events: none; }
+  /* Tapa entre tarjetas: el móvil está girado hacia el grupo y la palabra nueva no debe verse */
+  #tapa {
+    position: absolute; inset: 0; z-index: var(--fw-z-overlay); border: 0; cursor: pointer;
+    background: var(--fw-night); color: var(--fw-paper); font-family: var(--fw-font-body);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 24px;
+  }
+  #tapa .emoji { font-size: clamp(4rem, 22vw, 7rem); line-height: 1; }
+  #tapa .titulo { font-family: var(--fw-font-display); font-weight: 700; font-size: var(--fw-fs-h1); }
+  #tapa .txt { font-weight: 600; font-size: var(--fw-fs-body); max-width: 320px; }
   /* Tres botones grandes abajo: se juega con una mano, también andando */
   .jugadas { width: min(480px, 100%); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; flex: none; }
   .jugada {
@@ -48,14 +67,14 @@
   .jugada:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--fw-night); }
   #acierto { background: var(--fw-green); }
   #prohibida { background: var(--fw-yellow); }
-  #feedback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(2.6rem, 15vw, 7rem); color: var(--fw-paper); -webkit-text-stroke: 2px var(--fw-night); opacity: 0; pointer-events: none; }
+  #feedback { position: absolute; inset: 0; z-index: var(--fw-z-flash); display: flex; align-items: center; justify-content: center; font-family: var(--fw-font-display); font-weight: 700; font-size: clamp(2.6rem, 15vw, 7rem); color: var(--fw-paper); -webkit-text-stroke: 2px var(--fw-night); opacity: 0; pointer-events: none; }
   #feedback.show { animation: fb .5s ease; }
   @keyframes fb { 0% { opacity: 0; transform: scale(.5); } 30% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0; transform: scale(1.3); } }
   @media (orientation: landscape) and (max-height: 520px) {
     #game { gap: 6px; }
     #palabra { font-size: clamp(1.6rem, 9vh, 2.4rem); margin-bottom: 6px; }
     #prohibidas { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 2px 14px; padding-top: 6px; }
-    #prohibidas li { font-size: 1rem; }
+    #prohibidas li { font-size: 1.15rem; }
     .jugada { min-height: 0; flex-direction: row; padding: 6px; }
     .jugada .ico { font-size: 1.3rem; }
   }
@@ -129,19 +148,26 @@
       <div id="score">✅ 0</div>
     </div>
     <div class="tarjeta-wrap">
-      <div id="tarjeta">
-        <span class="et" data-i18n="lengua.game.say"></span>
-        <div id="palabra">…</div>
-        <span class="et" data-i18n="lengua.game.forbidden"></span>
-        <ul id="prohibidas"></ul>
+      <div id="carta">
+        <div class="cara cara-a">
+          <span class="et" data-i18n="lengua.game.say"></span>
+          <div id="palabra">…</div>
+          <p id="giraEn"></p>
+          <p class="fw-mute" data-i18n="lengua.game.flipNow"></p>
+        </div>
+        <div class="cara cara-b">
+          <span class="et" data-i18n="lengua.game.forbidden"></span>
+          <ul id="prohibidas"></ul>
+        </div>
       </div>
     </div>
-    <div class="jugadas">
+    <div class="jugadas" id="jugadas">
       <button class="jugada" id="prohibida"><span class="ico">🤐</span><span data-i18n="lengua.game.taboo"></span></button>
       <button class="jugada" id="pasar"><span class="ico">⏭️</span><span data-i18n="lengua.game.pass"></span></button>
       <button class="jugada" id="acierto"><span class="ico">✅</span><span data-i18n="lengua.game.hit"></span></button>
     </div>
     <div id="feedback"></div>
+    <button id="tapa" hidden><span class="emoji">🙈</span><span class="titulo" data-i18n="lengua.cover.title"></span><span class="txt" data-i18n="lengua.cover.text"></span></button>
   </section>
 
   <!-- PAUSA: para cuando la cola avanza -->
@@ -178,7 +204,10 @@
 <script>
 let config = Object.assign({ tiempo: 60 }, FW.prefs.lengua || {});
 function guardarCfg() { FW.prefs.lengua = { tiempo: config.tiempo }; FW.save(); }
-let juego = { nivel: null, tarjeta: null, aciertos: 0, resultados: [], tiempoRestante: 0, timerId: null, activo: false };
+const VISTAZO = 5; // segundos para memorizar la palabra, con el reloj de la ronda parado
+// fase: 'palabra' (cara A), 'prohibidas' (cara B, corre el reloj) o 'tapa' (entre tarjetas)
+let juego = { nivel: null, tarjeta: null, aciertos: 0, resultados: [], tiempoRestante: 0, timerId: null,
+  activo: false, fase: null, vistazoId: null, vistazoRestante: 0 };
 const $ = id => document.getElementById(id);
 const timerEl = $('timer'), scoreEl = $('score'), fbEl = $('feedback');
 
@@ -229,16 +258,43 @@ function empezarRonda() {
   juego.aciertos = 0; juego.resultados = [];
   juego.tiempoRestante = config.tiempo; juego.activo = true;
   scoreEl.textContent = '✅ 0';
-  pintarTimer(); siguiente(); correrTimer();
+  pintarTimer(); siguiente();
   FW.screen('game');
 }
 
-// Las tarjetas no se repiten en el nivel hasta haberlas jugado todas, también entre rondas.
+// Cara A: quien describe memoriza la palabra. Las tarjetas no se repiten en el nivel
+// hasta haberlas jugado todas, también entre rondas.
 function siguiente() {
   const t = juego.tarjeta = FW.pickUnused('lengua', juego.nivel.id, juego.nivel.tarjetas, x => x.palabra);
   $('palabra').textContent = t.palabra;
   $('prohibidas').replaceChildren(...t.prohibidas.map(p => { const li = document.createElement('li'); li.textContent = p; return li; }));
+  $('tapa').hidden = true;
+  $('carta').classList.remove('is-girada');
+  juego.fase = 'palabra';
+  $('jugadas').classList.add('is-off');
+  juego.vistazoRestante = VISTAZO;
+  correrVistazo();
 }
+function pintarVistazo() { $('giraEn').textContent = FW.t('lengua.game.flipIn', { n: juego.vistazoRestante }); }
+function correrVistazo() {
+  clearInterval(juego.vistazoId); pintarVistazo();
+  juego.vistazoId = setInterval(() => {
+    juego.vistazoRestante--; pintarVistazo();
+    if (juego.vistazoRestante <= 0) girar();
+  }, 1000);
+}
+// Cara B: las prohibidas, a la vista de todos. Ahora sí corre el reloj de la ronda.
+function girar() {
+  if (juego.fase !== 'palabra') return;
+  clearInterval(juego.vistazoId);
+  juego.fase = 'prohibidas';
+  $('carta').classList.add('is-girada');
+  $('jugadas').classList.remove('is-off');
+  FW.haptic(40);
+  correrTimer();
+}
+$('carta').onclick = () => { if (juego.activo) girar(); };
+$('tapa').onclick = () => { if (juego.activo) siguiente(); };
 
 function pintarTimer() { timerEl.textContent = juego.tiempoRestante; timerEl.classList.toggle('is-low', juego.tiempoRestante <= 5); }
 function correrTimer() {
@@ -251,13 +307,17 @@ function correrTimer() {
 }
 
 // estado: 'ok' (acierto), 'pasa' o 'prohibida'. Decir una prohibida solo pasa de tarjeta.
+// La siguiente palabra no sale directamente: el móvil mira al grupo, así que primero se tapa.
 function registrar(estado) {
-  if (!juego.activo) return;
+  if (!juego.activo || juego.fase !== 'prohibidas') return;
+  clearInterval(juego.timerId);
   juego.resultados.push({ palabra: juego.tarjeta.palabra, estado });
   if (estado === 'ok') { juego.aciertos++; scoreEl.textContent = '✅ ' + juego.aciertos; feedback(FW.t('lengua.game.fbHit')); FW.audio.acierto(); FW.haptic(60); }
   else if (estado === 'pasa') { feedback(FW.t('lengua.game.fbPass')); FW.audio.pasar(); FW.haptic([30, 40, 30]); }
   else { feedback(FW.t('lengua.game.fbTaboo')); FW.audio.pasar(); FW.haptic([120, 60, 120]); }
-  siguiente();
+  juego.fase = 'tapa';
+  $('jugadas').classList.add('is-off');
+  $('tapa').hidden = false;
 }
 function feedback(texto) { fbEl.textContent = texto; fbEl.classList.remove('show'); void fbEl.offsetWidth; fbEl.classList.add('show'); }
 $('acierto').onclick = () => registrar('ok');
@@ -265,9 +325,14 @@ $('pasar').onclick = () => registrar('pasa');
 $('prohibida').onclick = () => registrar('prohibida');
 
 /* ---------- pausa: para cuando la cola avanza ---------- */
-function parar() { juego.activo = false; clearInterval(juego.timerId); }
+function parar() { juego.activo = false; clearInterval(juego.timerId); clearInterval(juego.vistazoId); }
 $('pausaBtn').onclick = () => { if (!juego.activo) return; parar(); FW.screen('pause'); };
-$('seguir').onclick = () => { juego.activo = true; correrTimer(); FW.screen('game'); };
+$('seguir').onclick = () => {
+  juego.activo = true;
+  if (juego.fase === 'prohibidas') correrTimer();
+  else if (juego.fase === 'palabra') correrVistazo();
+  FW.screen('game');
+};
 $('salir').onclick = () => { parar(); FW.releaseWake(); FW.screen('home'); };
 
 /* ---------- fin ---------- */

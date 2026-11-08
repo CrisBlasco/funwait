@@ -7,7 +7,7 @@
    ============================================================ */
 
 // <generado por npm run sw>
-const VERSION = 'ee2344a6f8dc';
+const VERSION = '38c38aed5d84';
 const PRECACHE = [
   './assets/icon.svg',
   './assets/logo.svg',
