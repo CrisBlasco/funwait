@@ -16,7 +16,7 @@ import { chromium } from "playwright";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = join(ROOT, "public");
-const PAGES = ["index.html", "mimica.html", "bomba.html", "portero.html"];
+const PAGES = ["index.html", "mimica.html", "bomba.html", "portero.html", "lengua.html"];
 
 // Ancho × alto en CSS px. Cubren el móvil más estrecho habitual (320), los típicos,
 // el apaisado bajo (donde más se rompe) y una tablet.
@@ -28,7 +28,7 @@ const VIEWPORTS = [
 // Lo que se comprueba que no se pise: controles y bloques principales.
 const SELECTOR = [
   "button", "a.fw-btn", ".fw-icon-btn", ".fw-switch", ".fw-tile", ".fw-game-card",
-  ".fw-card", ".fw-panel", "#temaBox", "#timer", "#score", ".tema-chip",
+  ".fw-card", ".fw-panel", "#temaBox", "#timer", "#score", ".tema-chip", ".fw-chip",
 ].join(", ");
 
 // Botones con texto de hasta este largo deben caber en una línea.

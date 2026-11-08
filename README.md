@@ -16,6 +16,10 @@ Ideal para entretener a los niños mientras hacéis cola en un parque temático 
   ("termina en E", "tiene ruedas"…) y los demás preguntan *«¿Puedo pasar con…?»*; para pasar
   hay que acertar dos veces seguidas. Cuatro niveles (Fácil, Medio, Difícil y Trampa) de ≥30
   reglas cada uno, que no se repiten hasta agotar el nivel. Temporizador con pausa.
+- **👅 Muérdete la Lengua** (2+ jugadores, describir). Quien tiene el móvil describe la
+  palabra para que su equipo la adivine, sin decir ninguna de las prohibidas; los rivales
+  vigilan. Tres niveles (3, 4 y 5 prohibidas) de ≥30 tarjetas que no se repiten hasta agotar
+  el nivel. Temporizador con pausa.
 - **🎲 Modo aleatorio** para que elija por vosotros.
 - Más juegos muy pronto 😜
 
@@ -31,6 +35,7 @@ public/
   mimica.html    # Mímica Express
   bomba.html     # La Bomba
   portero.html   # El Portero
+  lengua.html    # Muérdete la Lengua
   data/es/       # contenido de los juegos (palabras, temas) en JSON
   js/i18n/es.js  # textos de la interfaz (keys de traducción)
   manifest.webmanifest, icons/, sw.js, _headers   # PWA instalable y sin conexión

@@ -43,13 +43,13 @@
 
   <!-- HOME: elegir paquete -->
   <section id="home" class="fw-screen fw-screen--scroll">
-    <div class="fw-topbar">
+    <div class="fw-topbar fw-topbar--title">
       <a class="fw-icon-btn fw-back" href="./index.html" data-i18n-aria-label="common.menu"></a>
+      <h1 class="fw-h1" data-i18n="mimica.heading"></h1>
       <div class="fw-topbar-actions">
         <button class="fw-icon-btn" id="opcionesBtn" data-i18n-aria-label="common.options">⚙️</button>
       </div>
     </div>
-    <h1 class="fw-h1" data-i18n="mimica.heading"></h1>
     <p class="fw-mute" style="margin: 4px 0 16px" data-i18n="mimica.tagline"></p>
     <div id="packsEstado" role="status">
       <p class="fw-mute" id="packsMsg"></p>
@@ -60,8 +60,7 @@
 
   <!-- OPCIONES -->
   <section id="opciones" class="fw-screen fw-screen--scroll">
-    <div class="fw-topbar"><button class="fw-icon-btn fw-back" id="opcVolver" data-i18n-aria-label="common.back"></button><div class="fw-topbar-actions"></div></div>
-    <h1 class="fw-h1" data-i18n="common.options.title"></h1>
+    <div class="fw-topbar fw-topbar--title"><button class="fw-icon-btn fw-back" id="opcVolver" data-i18n-aria-label="common.back"></button><h1 class="fw-h1" data-i18n="common.options.title"></h1><div class="fw-topbar-actions"></div></div>
     <div class="fw-panel" style="margin-top: 18px">
       <div class="fw-row"><span data-i18n="common.sound"></span><div class="fw-switch" id="swSonido"></div></div>
       <div class="fw-row"><span data-i18n="mimica.options.time"></span>

@@ -11,7 +11,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = join(ROOT, "public");
 
 // Ficheros que SIEMPRE deben existir (si falta uno, el deploy no tiene sentido).
-const REQUIRED = ["index.html", "mimica.html", "bomba.html", "portero.html", "sw.js"];
+const REQUIRED = ["index.html", "mimica.html", "bomba.html", "portero.html", "lengua.html", "sw.js"];
 
 const errors = [];
 
