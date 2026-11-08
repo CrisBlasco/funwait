@@ -15,24 +15,61 @@
 <link rel="stylesheet" href="./css/funwait.css" />
 <style>
   body { background: var(--fw-mist); }
-  .fw-hero-logo { width: min(380px, 90vw); margin: 0 auto; }
-  .fw-hero-logo svg { width: 100%; height: auto; display: block; }
+  /* Hub: sin fila reservada para la topbar; los iconos van en la cabecera con el logo */
+  #home.fw-hub { padding-top: calc(var(--fw-safe-t) + var(--fw-s3)); gap: 0; }
+  .fw-hub-head {
+    width: min(560px, 100%); display: grid; grid-template-columns: 44px 1fr 44px;
+    align-items: start; gap: var(--fw-s2); flex: none;
+  }
+  .fw-hub-head .fw-icon-btn:last-child { justify-self: end; }
+  .fw-hero-logo { justify-self: center; height: clamp(72px, 22vh, 200px); height: clamp(72px, 22svh, 200px); max-width: 100%; }
+  .fw-hero-logo svg { height: 100%; width: auto; max-width: 100%; display: block; }
+  .fw-hub-random { flex: none; margin: var(--fw-s3) auto var(--fw-s2); }
+  .fw-game-grid {
+    width: min(560px, 100%); display: grid; gap: var(--fw-s3);
+    grid-template-columns: repeat(2, minmax(0, 1fr)); flex: none;
+  }
+  .fw-game-grid .fw-game-card {
+    width: auto; margin: 0; padding: var(--fw-s3) var(--fw-s2);
+    flex-direction: column; justify-content: center; gap: 6px; text-align: center;
+    border-radius: var(--fw-r-md);
+  }
+  .fw-game-grid .fw-game-card .emoji { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .fw-game-grid .fw-game-card .info { flex: none; display: flex; flex-direction: column; align-items: center; }
+  .fw-game-grid .fw-game-card .name { font-size: clamp(1.05rem, 4.8vw, 1.35rem); line-height: 1.1; }
+  .fw-game-grid .fw-chips { justify-content: center; gap: 4px; margin-top: 6px; }
+  .fw-game-grid .fw-chip { font-size: .72rem; padding: 1px 7px; white-space: nowrap; }
+  .fw-game-grid .fw-game-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  /* Muy estrecho (320): una columna con tarjeta horizontal compacta */
+  @media (max-width: 339px) {
+    .fw-game-grid { grid-template-columns: 1fr; gap: 10px; }
+    .fw-game-grid .fw-game-card { flex-direction: row; justify-content: flex-start; text-align: left; padding: 10px 14px; gap: 12px; }
+    .fw-game-grid .fw-game-card .info { align-items: flex-start; }
+    .fw-game-grid .fw-game-card .emoji { font-size: 2.2rem; }
+    .fw-game-grid .fw-chips { justify-content: flex-start; margin-top: 4px; }
+  }
+  /* Apaisado bajo: logo pequeño y las 4 tarjetas en una fila */
+  @media (orientation: landscape) and (max-height: 500px) {
+    .fw-hero-logo { height: clamp(56px, 20vh, 96px); height: clamp(56px, 20svh, 96px); }
+    .fw-game-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); width: min(760px, 100%); }
+    .fw-game-grid .fw-game-card:last-child:nth-child(odd) { grid-column: auto; }
+    .fw-hub-head { width: min(760px, 100%); }
+    .fw-hub-random { margin: var(--fw-s2) auto; padding-block: 8px; }
+    .fw-game-grid .fw-game-card { padding: var(--fw-s2); gap: 4px; }
+    .fw-game-grid .fw-game-card .emoji { font-size: 1.9rem; }
+    .fw-game-grid .fw-game-card .name { font-size: 1.1rem; }
+    .fw-game-grid .fw-chips { margin-top: 4px; }
+  }
 </style>
 </head>
 <body>
 <div class="fw-app">
 
   <!-- HUB -->
-  <section id="home" class="fw-screen fw-screen--scroll">
-    <div class="fw-topbar">
-      <span></span>
-      <div class="fw-topbar-actions">
-        <button class="fw-icon-btn fw-help" id="help" data-i18n-aria-label="hub.help">?</button>
-        <button class="fw-icon-btn" id="sound" data-i18n-aria-label="hub.sound">🔊</button>
-      </div>
-    </div>
-
-    <div class="fw-hero-logo"><svg id="funwait-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 340" class="w-full h-auto drop-shadow-md">
+  <section id="home" class="fw-screen fw-screen--scroll fw-hub">
+    <header class="fw-hub-head">
+      <button class="fw-icon-btn fw-help" id="help" data-i18n-aria-label="hub.help">?</button>
+      <div class="fw-hero-logo"><svg id="funwait-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="45 30 425 290">
                     <defs>
                         <!-- Gradients -->
                         <linearGradient id="sandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -169,35 +206,33 @@
                         <text x="250" y="300" text-anchor="middle" font-family="'Poppins', sans-serif" font-weight="700" font-size="17" fill="#101828" letter-spacing="0.2" data-i18n="hub.slogan"></text>
                     </g>
                 </svg></div>
+      <button class="fw-icon-btn" id="sound" data-i18n-aria-label="hub.sound">🔊</button>
+    </header>
 
-    <h2 class="fw-h2" style="margin: 14px 0 4px" data-i18n="hub.heading"></h2>
-
-    <button class="fw-game-card" id="goBomba">
-      <span class="emoji">💣</span>
-      <span class="info">
-        <span class="name" data-i18n="hub.bomba.name"></span>
-        <span class="fw-chips"><span class="fw-chip" data-i18n="hub.bomba.players"></span><span class="fw-chip" data-i18n="hub.bomba.style"></span></span>
-      </span>
-    </button>
-
-    <button class="fw-game-card" id="goMimica">
-      <span class="emoji">🎭</span>
-      <span class="info">
-        <span class="name" data-i18n="hub.mimica.name"></span>
-        <span class="fw-chips"><span class="fw-chip" data-i18n="hub.mimica.players"></span><span class="fw-chip" data-i18n="hub.mimica.style"></span></span>
-      </span>
-    </button>
-
-    <button class="fw-game-card" id="goPortero">
-      <span class="emoji">🚪</span>
-      <span class="info">
-        <span class="name" data-i18n="hub.portero.name"></span>
-        <span class="fw-chips"><span class="fw-chip" data-i18n="hub.portero.players"></span><span class="fw-chip" data-i18n="hub.portero.style"></span></span>
-      </span>
-    </button>
-
-    <button class="fw-btn fw-btn--primary fw-btn--block" id="random" style="margin-top: 20px" data-i18n="hub.random"></button>
-    <p class="fw-mute" style="margin-top: 20px" data-i18n="hub.more"></p>
+    <button class="fw-btn fw-btn--primary fw-btn--block fw-hub-random" id="random" data-i18n="hub.random"></button>
+    <nav class="fw-game-grid" data-i18n-aria-label="hub.heading">
+      <button class="fw-game-card" id="goBomba">
+        <span class="emoji">💣</span>
+        <span class="info">
+          <span class="name" data-i18n="hub.bomba.name"></span>
+          <span class="fw-chips"><span class="fw-chip" data-i18n="hub.bomba.players"></span><span class="fw-chip" data-i18n="hub.bomba.style"></span></span>
+        </span>
+      </button>
+      <button class="fw-game-card" id="goMimica">
+        <span class="emoji">🎭</span>
+        <span class="info">
+          <span class="name" data-i18n="hub.mimica.name"></span>
+          <span class="fw-chips"><span class="fw-chip" data-i18n="hub.mimica.players"></span><span class="fw-chip" data-i18n="hub.mimica.style"></span></span>
+        </span>
+      </button>
+      <button class="fw-game-card" id="goPortero">
+        <span class="emoji">🚪</span>
+        <span class="info">
+          <span class="name" data-i18n="hub.portero.name"></span>
+          <span class="fw-chips"><span class="fw-chip" data-i18n="hub.portero.players"></span><span class="fw-chip" data-i18n="hub.portero.style"></span></span>
+        </span>
+      </button>
+    </nav>
   </section>
 
   <!-- AYUDA -->

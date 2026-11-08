@@ -28,7 +28,7 @@ const VIEWPORTS = [
 // Lo que se comprueba que no se pise: controles y bloques principales.
 const SELECTOR = [
   "button", "a.fw-btn", ".fw-icon-btn", ".fw-switch", ".fw-tile", ".fw-game-card",
-  ".fw-card", ".fw-panel", "#temaBox", "#timer", "#score", ".tema-chip",
+  ".fw-card", ".fw-panel", "#temaBox", "#timer", "#score", ".tema-chip", ".fw-chip",
 ].join(", ");
 
 // Botones con texto de hasta este largo deben caber en una línea.

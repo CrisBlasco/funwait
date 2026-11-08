@@ -22,7 +22,6 @@ window.FW_I18N = {
   'hub.portero.players': '3+ jugadores',
   'hub.portero.style': 'Deducir',
   'hub.random': '🎲 Modo aleatorio',
-  'hub.more': 'Más juegos muy pronto 😜',
   'hub.about.title': '¿Qué es FunWait?',
   'hub.about.intro': 'Minijuegos para pasar el rato en las colas. Elige uno, pasaos el móvil y a reír 🎉',
   'hub.about.bomba': '<b>💣 La Bomba:</b> decid por turnos una palabra del tema y pasad el móvil; pierde quien lo tenga cuando explota.',

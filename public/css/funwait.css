@@ -106,6 +106,15 @@ body { overflow: hidden; }
 }
 .fw-topbar .fw-logo { height: 34px; }
 .fw-topbar-actions { display: flex; gap: var(--fw-s2); }
+/* Barra con título: va en el flujo y el título ocupa el hueco entre los botones,
+   así no se reserva una fila solo para la barra. Lados de igual ancho para centrarlo. */
+.fw-topbar--title {
+  position: static; width: 100%; padding: 0; gap: var(--fw-s2);
+  flex: none; margin-bottom: var(--fw-s2);
+}
+.fw-topbar--title > :first-child, .fw-topbar--title > .fw-topbar-actions { flex: 0 0 auto; min-width: 44px; }
+.fw-topbar--title .fw-h1 { flex: 1; min-width: 0; font-size: clamp(1.3rem, 6vw, 2.6rem); line-height: 1.1; }
+.fw-screen:has(> .fw-topbar--title) { padding-top: calc(var(--fw-safe-t) + var(--fw-s3)); }
 
 .fw-icon-btn {
   border: var(--fw-border); background: var(--fw-paper); color: var(--fw-night);
