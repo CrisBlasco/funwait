@@ -2,7 +2,7 @@
   "id": "./",
   "name": "FunWait",
   "short_name": "FunWait",
-  "description": "Minijuegos para pasar el rato en las colas.",
+  "description": "Juegos de grupo con un solo móvil para esperar en la cola: mímica, La Bomba, El Portero y Muérdete la Lengua. Gratis y sin conexión.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
