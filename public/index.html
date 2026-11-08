@@ -16,25 +16,30 @@
 <style>
   body { background: var(--fw-mist); }
   /* Hub: sin fila reservada para la topbar; los iconos van en la cabecera con el logo */
-  #home.fw-hub { padding-top: calc(var(--fw-safe-t) + var(--fw-s3)); gap: 0; }
+  /* --aire: separación que crece con la altura de la pantalla (svh donde exista) */
+  #home.fw-hub { --aire: clamp(12px, 3.5vh, 36px); padding-top: calc(var(--fw-safe-t) + var(--fw-s3)); gap: var(--aire); }
+  @supports (height: 1svh) { #home.fw-hub { --aire: clamp(12px, 3.5svh, 36px); } }
   .fw-hub-head {
     width: min(560px, 100%); display: grid; grid-template-columns: 44px 1fr 44px;
-    align-items: start; gap: var(--fw-s2); flex: none;
+    align-items: center; gap: var(--fw-s2); flex: 1 0 auto;
   }
+  /* La cabecera se queda el espacio sobrante: el logo se centra en él y los botones siguen arriba */
+  .fw-hub-head .fw-icon-btn { align-self: start; }
   .fw-hub-head .fw-icon-btn:last-child { justify-self: end; }
-  .fw-hero-logo { justify-self: center; height: clamp(72px, 22vh, 200px); height: clamp(72px, 22svh, 200px); max-width: 100%; }
+  /* El logo crece más deprisa que la pantalla: pequeño en móviles bajos, protagonista en los altos */
+  .fw-hero-logo { justify-self: center; height: clamp(72px, calc(45vh - 130px), 260px); height: clamp(72px, calc(45svh - 130px), 260px); max-width: 100%; }
   .fw-hero-logo svg { height: 100%; width: auto; max-width: 100%; display: block; }
-  .fw-hub-random { flex: none; margin: var(--fw-s3) auto var(--fw-s2); }
+  .fw-hub-random { flex: none; margin: 0 auto; }
   .fw-game-grid {
-    width: min(560px, 100%); display: grid; gap: var(--fw-s3);
+    width: min(560px, 100%); display: grid; gap: clamp(10px, calc(var(--aire) * .6), 20px);
     grid-template-columns: repeat(2, minmax(0, 1fr)); flex: none;
   }
   .fw-game-grid .fw-game-card {
-    width: auto; margin: 0; padding: var(--fw-s3) var(--fw-s2);
+    width: auto; margin: 0; padding: calc(var(--aire) * .75) var(--fw-s2);
     flex-direction: column; justify-content: center; gap: 6px; text-align: center;
     border-radius: var(--fw-r-md);
   }
-  .fw-game-grid .fw-game-card .emoji { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .fw-game-grid .fw-game-card .emoji { font-size: clamp(2rem, 9vw, 3rem); }
   .fw-game-grid .fw-game-card .info { flex: none; display: flex; flex-direction: column; align-items: center; }
   .fw-game-grid .fw-game-card .name { font-size: clamp(1.05rem, 4.8vw, 1.35rem); line-height: 1.1; }
   .fw-game-grid .fw-chips { justify-content: center; gap: 4px; margin-top: 6px; }
@@ -54,7 +59,8 @@
     .fw-game-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); width: min(760px, 100%); }
     .fw-game-grid .fw-game-card:last-child:nth-child(odd) { grid-column: auto; }
     .fw-hub-head { width: min(760px, 100%); }
-    .fw-hub-random { margin: var(--fw-s2) auto; padding-block: 8px; }
+    #home.fw-hub { --aire: 8px; }
+    .fw-hub-random { padding-block: 8px; }
     .fw-game-grid .fw-game-card { padding: var(--fw-s2); gap: 4px; }
     .fw-game-grid .fw-game-card .emoji { font-size: 1.9rem; }
     .fw-game-grid .fw-game-card .name { font-size: 1.1rem; }
